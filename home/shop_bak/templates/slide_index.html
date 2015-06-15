@@ -1,0 +1,83 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<div>
+							<button style="float:right;" onclick="javascript:location.href='slide.php?a=add'">添加幻灯片</button>
+						</div>
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入标题" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" title="搜索" type="submit">
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">序号</th>
+										<th class="enable">图片</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.ordernum}></div></td>
+										<td><div><img src="../../data/image_c/<{$v.pic}>" style="height:51px;" /></div></td>
+										<td>
+											<div class="btn-operate">
+											<a href="slide.php?a=add&id=<{$v.id}>">修改</a> | 
+											<a href="#" onclick="delRow(event,'<{$v.id}>')">删除</a>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('幻灯片');
+set_menu_cur('menu_61', 'cur');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"slide.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

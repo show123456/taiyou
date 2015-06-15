@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+/*搜索样式*/
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:23px;line-height:23px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+margin-left:5px;margin-top:5px;}
+.toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+</style>
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+</head>
+<body>
+<!-- <div class="place">
+	<span>位置：</span>
+	<ul class="placeul">
+		<li><a href="#">首页</a></li>
+		<li><a href="#">讲师审批</a></li>
+	</ul>
+</div> -->
+<div class="rightinfo">
+	<div class="tools">
+		<ul class="toolbar">
+			<li class="click"><span><img src="__PUBLIC__/admin/images/t05.png" /></span>讲师列表</li>
+		</ul>
+		<form action="" name="searchForm" method="get">
+		<input type="hidden" name='m' value='<{$moduleName}>' />
+		<input type="hidden" name='a' value="<{$actionName}>" />
+		<ul class="toolbar1">
+			<li>
+				<span>
+					<input type="text" name="name" placeholder="请输入讲师名" value="<{:I('get.name')}>" />
+				</span>
+				<b onclick="document.searchForm.submit()">搜索</b>
+			</li>
+		</ul>
+		</form>
+	</div>
+	<table class="imgtable">
+		<thead>
+			<tr>
+				<th>名字</th>
+				<th>常驻地</th>
+				<th>擅长行业</th>
+				<th>擅长领域</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name='list[data]' item='vo'>
+			<tr style="height:40px;">
+				<td><a href="<{:U('see',array('id'=>$vo['id']))}>" target='_blank'><{$vo.name}></a></td>
+				<td><{$vo.province_name}><{$vo.city_name}></td>
+				<td><{$vo.trade_str}></td>
+				<td><{$vo.field_str}></td>
+			</tr>
+			</foreach>
+		</tbody>
+	</table>
+	<div class="pagin">
+		<ul class="paginList">
+			<{$list['page']}>
+		</ul>
+	</div>
+</div>	
+<script type="text/javascript">
+$('.imgtable tbody tr:odd').addClass('odd');
+function delRow(str){
+	if(confirm('Sure to delete?/确定要删除吗？')) window.location.href=str;
+}
+
+//修改状态
+function changeState(u,s,obj){
+	if(confirm('确定要执行此操作吗？')){
+		$.get(u,function(res){
+			if(res){
+				if(s=='1') $(obj).parent().prev().text('已通过');
+				if(s=='2') $(obj).parent().prev().text('未通过');
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

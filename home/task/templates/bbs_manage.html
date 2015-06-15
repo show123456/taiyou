@@ -1,0 +1,100 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/sub-manage.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style-forum.css" media="all" />
+<style type="text/css">
+	.cc_button{border:1px solid #ccc;background-color:#EDEDED;border-radius:3px;padding:2px 4px;color: #686868;font-family:"Microsoft YaHei","黑体","宋体";}
+	.c-green{font-family:"Microsoft YaHei","黑体","宋体";font-size:16px;}
+	.sub-set-title ul li a{font-family:"Microsoft YaHei","黑体","宋体";}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="sub-manage">
+			<div class="sub-set">
+				<div style="margin:6px; background:#fff; border:1px solid #DBDBDB; border-radius:3px;box-shadow: 0px 2px 2px #E3E3E3;" class="sub-list">
+					<div class="yhhf">用户回复管理</div>
+					<!-------回复列表开始------->
+					<{if $replyArr}>
+					<{foreach from=$replyArr item="v"}>
+					<div class="weiforum_replyuser replyList<{$v.id}>">
+						<div class="weiforum_reptop">
+							<b class="c-green"><{$v.name|default:'匿名'}></b><span> <a href="javascript:void(0);" onclick='delRow(event,"<{$v.id}>")' class='cc_button'>删除</a> </span>
+						</div>
+						<div class="weiforum_reply">
+							<{$v.content}>
+						</div>
+						<div class="weiforum_date">
+							<{$v.addtime}>
+						</div>
+						<div class="clr"></div>
+					</div>
+					<{/foreach}>
+					<{/if}>
+					<!-------回复列表结束------->
+					<{if $page}><div class="page-list" style="margin-top:30px;"><{$page}></div><{/if}>
+				</div>
+				<form action="" id="m_post">
+					<div class="wei_forum_reply">
+						<h3>回复：</h3>
+						<div class="wei_forum_reply_left">
+							<input type='hidden' value="<{$vo.id}>" name='pid'>
+							<textarea class="wei_forum_reply_text" name="content" id="content"></textarea>
+						</div>
+						<div class="wei_forum_reply_right">
+							<span class="btngreen30" onclick="replyAdd(event)" id="reply">回复</span>&nbsp;&nbsp;&nbsp;
+							<span onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	set_title_name('图片分享');
+	set_menu_cur('menu_41', 'cur omega');
+	//保存回复信息
+	function replyAdd(event) {
+		var replyContent=$('textarea[name=content]').val();
+		var pid="<{$vo.id}>";
+		if(replyContent==''){
+			note_info('信息内容不能为空', 'warn', event);
+			return;
+		}
+		$.ajax({
+			url:"bbs_manage.php",
+			data:{tid:pid,content:replyContent,action:'add'},
+			type:"POST",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('保存成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('保存失败','warn',event);
+				}
+			}
+		});
+	};
+	//删除评论
+	function delRow(event,id){
+		var pid="<{$vo.id}>";
+		if(confirm("确定删除这条评论吗?")){
+			$.ajax({
+				url : "bbs_manage.php",
+				data : {id:id,tid:pid,action:'del'},
+				type : "get",
+				dataType : 'json',
+				async : false,
+				success : function(res) {
+					if(res){
+						note_info('删除成功','success',event);
+						setTimeout("window.location.reload()",300);
+					}else{
+						note_info('删除失败','warn',event);
+					}
+				}
+			});
+		}
+	}
+</script>

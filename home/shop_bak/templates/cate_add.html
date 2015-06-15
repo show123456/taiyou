@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="../public/css/sub-manage.css" media="all" />
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.cc_title_h4{border:1px solid #C9E4C3;height:35px;background-color:#E8FFE2;padding-left:25px;border-radius:4px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content" style="min-height:1000px;height:auto;">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class="msg_editer">
+						<div class="sub-list">
+							<div class="shop_sort_box">
+								<form id="memberform">
+									<input type="hidden" name='a' value='add'/>
+									<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+									<h4 class='cc_title_h4'>商品分类</h4>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>名称：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[name]" value="<{$vo.name}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo"subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('商品分类');
+set_menu_cur('menu_62', 'cur');
+function save(event){
+	$.ajax({
+		url:"cate.php",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res){
+			res=jQuery.trim(res);
+			if(res){
+				note_info('保存成功','success',event);
+				setTimeout("window.location.href='cate.php'",300);
+			}else{
+				note_info('保存失败','warn',event);
+			}
+		}
+	});
+}
+</script>

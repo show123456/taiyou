@@ -1,0 +1,103 @@
+<style type="text/css">
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+</style>
+<div class=" main-content">
+	<!-- <div style='height:20px;'>
+		<a href="/home/account/suser.php?a=addShow">
+		<button class='btn btn-success' style='float:right;margin-right:20px;'>添加</button></a>
+	</div> -->
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<!-- <input type="hidden" name='p' value="<{$smarty.get.p|default:1}>"/> -->
+								<select name="groupnum">
+									<option value="0">用户类别</option>
+									<{foreach key="gk" item="gv" from=$groupArr}>
+									<option value="<{$gk}>" <{if $smarty.get.groupnum==$gk}>selected<{/if}> ><{$gv}></option>
+									<{/foreach}>
+								</select>
+								<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>">
+								<input value="搜索" id="search" class="" title="搜索" type="submit">
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper">
+							<table style="table-layout: auto;" class="stable">
+								<colgroup span="5">
+									<col class="Theme">
+									<col class="Reply">
+									<col class="Reply">
+									<col class="Time">
+									<col class="Operate">
+								</colgroup>
+								<thead>
+									<tr>
+										<th name="Theme" class="hover enable">登录名</th>
+										<th name="Theme" class="hover enable">用户类别</th>
+										<th name="Theme" class="hover enable">名称</th>
+										<th name="Theme" class="hover enable">添加时间</th>
+										<th name="Operate" class="hover enable">操作</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------帖子列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.name}></div></td>
+										<td><div><{$groupArr[$v.groupnum]}></div></td>
+										<td><div><{$v.rename}></div></td>
+										<td><div><{$v.addtime}></div></td>
+										<td>
+											<div class="btn-operate">
+											<a href="/home/suser/index.php?a=editpShow&id=<{$v.id}>" class="redactbtn">修改密码</a>
+											<{if $v.id!=1}> | <a href="index.php?a=edit&id=<{$v.id}>" class="redactbtn">修改信息</a>
+											 | <a href="#" onclick="delRow(event,'<{$v.id}>')" class="redactbtn">删除</a><{/if}>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+									<!------------帖子列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('后台用户管理');
+set_menu_cur('menu_11', 'cur');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"/home/suser/index.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

@@ -1,0 +1,60 @@
+li{list-style:none;}
+.Titles{font-weight:bold;border-bottom:1px solid #DBDBDB; font-weight:500;}
+	.Titles label{padding:14px 8px;display:block; font-size:28px;width:180px;border-bottom:1px solid #719c69;color:#719c69; font-family:"微软雅黑";}
+dl{ padding:10px;}
+a{ text-decoration:none;}
+div.Hline{ margin-left:20px;}
+i{ font-style:normal;}
+dl.dlList dd{ height:60px; line-height:60px;border-bottom:1px solid #F5F5F5;}
+.Textson{ height:26px; line-height:26px;border:1px solid #C9C9C9; padding-left:6px; }
+.Text_w2b{width:200px;}
+.Text_w0b{width:50px;}
+.Text_w1b{width:100px;}
+.Text_w5b{width:573px;}
+dl dd label{display:inline-block;width:70px; font-size:14px;}
+dl dd span{display:inline-block;margin-left:10px; font-size:14px; padding-right:3px;color:#555;}
+.check{ margin:3px;position:relative; top:2px;}
+	
+	.d1{float:left;width:370px;}
+	.Txtmx{width:40px; text-align:center;}
+	.textareson{width:870px; height:60px; font-size:14px; margin-bottom:20px; padding:10px;border:1px solid #D3D3D3;}
+
+.dlHei dd{ padding:8px 0;border-bottom:1px solid #F5F5F5;}
+
+#container{
+	margin:0 auto;
+	width:680px;
+	background:#fff;
+	padding-bottom:20px;
+}
+#content{margin:0 20px;}
+p.sig{	margin:0 auto;width:680px;padding:1em 0;}
+form{margin:1em 0;padding:.2em 20px;background:#eee;}
+table, td{font:100% Arial, Helvetica, sans-serif; }
+table{width:100%;border-collapse:collapse;margin:1em 0;}
+th, td{text-align:left;padding:.5em;border:1px solid #fff;}
+th{background:#719c69 url() repeat-x;color:#fff; font-size:14px;}
+td{background:#e5f1f4;}
+
+tr.even td{background:#e5f1f4; font-size:14px;}
+tr.odd td{background:#f8fbfc;}
+th.over, tr.even th.over, tr.odd th.over{background:#4a98af;}
+th.down, tr.even th.down, tr.odd th.down{background:#719c69;}
+th.selected, tr.even th.selected, tr.odd th.selected{}
+td.over, tr.even td.over, tr.odd td.over{background:#ecfbd4;}
+td.down, tr.even td.down, tr.odd td.down{background:#bce774;color:#fff;}
+td.selected, tr.even td.selected, tr.odd td.selected{background:#bce774;color:#555;}
+td.empty, tr.odd td.empty, tr.even td.empty{background:#fff;}
+.Text_Table{border:none; background:none;width:100%;height:25px; line-height:25px;font-size:14px}
+.Text_Table:focus{background-color:#FFF;}
+
+ul.adddel{ height:20px;}
+ul.adddel li{float:left;}
+ul.adddel li a{display:block; padding:8px 22px;background:#719c69;color:#fff;border-radius:3px; font-size:14px;}
+.add_icon{display:inline-block;float:left; margin:-3px 0 0 -5px;width:20px; height:20px; background:url(./back_icon.png) no-repeat 0 0;}
+
+.postData_btn{ padding:10px 25px;display:block; font-size:14px; font-weight:bold;background:#F54343;color:#fff;float:right; text-align:center; margin-bottom:30px; border-radius:3px;}
+.postData_btn .add_icon{ margin-top:-2px;}
+.del_btn{display:inline-block; padding:5px 12px; border-radius:3px; white-space:nowrap; font-size:12px;text-align:center;border: 1px solid #8cc382;color: #719c69;}
+
+.Animation tr th{ font-weight:bold;}

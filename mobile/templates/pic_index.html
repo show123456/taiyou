@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>图片分享</title>
+	<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+	<meta content="no-cache" http-equiv="pragma">
+	<meta content="0" http-equiv="expires">
+	<meta content="telephone=no, address=no" name="format-detection">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/global.css"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/masonry-docs.min.js"></script>
+</head>
+<style>
+.container-fluid {margin:15px 5px 7px 5px;}
+.box{margin-bottom:6px;width:45%;border:1px solid #CCCCCC; padding:5px 5px 0 5px; background-color:#fff; border-radius:3px;}
+.box:nth-child(odd){float:left;}
+.box:nth-child(even){float:right;}
+.box img{width: 100%}
+.box .pic_info{padding:5px 0;font-size:14px;color:#999;}
+
+#TB_overlayBG {background-color: #666;position: absolute;z-index: 99;left: 0;top: 0;display: none;
+	width: 100%;height: 100%;opacity: 0.8;filter: alpha(opacity=80);-moz-opacity: 0.8;display: none;}
+.upload_pic {width: 150px;margin: 0 auto;height: 105px;}
+.share_add {width: 90%;margin: 0 auto;padding: 10px 2%;position: fixed;bottom: 10%;
+	background-color: #fff;border-radius: 3px;left: 3%;display: none;z-index: 999;}
+.discuss_btn {width: 120px;height: 41px;line-height: 41px;color: #fff;border-radius: 5px;
+	background-color: #01B4EC;text-align: center;float: left;margin: 0 5px;}
+</style>
+<body style="background-color:#eeeeee;">
+	<div class="main" style="padding-bottom:81px;">
+		<div id="masonry" class="container-fluid">
+		<{foreach from=$list item=v}>
+		<a href="javascript:void(0)"> 
+			<div class="box">
+				<img src="../data/image_c/<{$v.pic}>" onclick="window.location.href='index.php?m=pic&a=detail&id=<{$v.id}>'">
+				<div class="pic_info">
+					<{$v.introduce}>
+				</div>
+				<div class="record" style="border-bottom:0;">
+					<b style='display:inline-block;font-weight:normal;font-size:14px;color:#999;'>评论数:<{$v.countnum}></b>
+					<span onclick="eggClick(this,<{$v.id}>)"><{$v.enum}></span>
+					<p onclick="flowerClick(this,<{$v.id}>)"><{$v.fnum}></p>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</a>
+		<{/foreach}>
+		<!-- <div class="box lastbox" id="pageSeeDiv" style='height:200px;border:0;background-color:#eeeeee;'></div> -->
+		</div>
+	</div>
+
+	<div class="footer" style="bottom:40px;">
+		<a href="#">
+		<div class="register_end" style="width:96%;margin:20px auto;">
+			我也要分享
+		</div></a>
+	</div>
+	<!--弹出层-->
+	<div id="TB_overlayBG"></div>
+	<form action="index.php?m=pic&a=add" id="meminfo" method="post">
+	<input type="hidden" id="picInput" name="str[pic]" value="" />
+	<div class="share_add">
+		<img class="upload_pic" id="picImg" src="images/upload_img.png" onclick="$('#img-file').click()" />
+		<div class="discuss_list">
+			<textarea style="width:96%;margin:10px 2%;" name="str[introduce]" maxlength="100" placeholder="图片简介（限100字以内）"></textarea>
+			<div style="margin:0 auto;width:260px;">
+				<div class="discuss_btn end" style="background-color: #FF7E00;">
+					取消
+				</div>
+				<div class="discuss_btn submit_btn" onclick="save()">
+					提交
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	</form>
+	<!--弹出层 结束-->
+<div style="visibility:hidden;">
+	<iframe name='img-frame' id="img-frame" style="visibility:hidden;height:10px"></iframe>
+	<form id="img-form" action="upload_img.php" encType="multipart/form-data" method="post" target="img-frame">
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<{include file="footer.html"}>
+</body>
+<script type="text/javascript">
+function liuxiaofan() {
+	var h = [0];
+	var boxObj = $('.box');
+	var box_width = boxObj.eq(0).width()+15;
+	var n = parseInt( ($('body').width()) / box_width );//每行图片个数
+	for (var i = 0; i < boxObj.length; i++){
+		box_height = boxObj.eq(i).height();
+		if(i<n){
+				h[i] = box_height;
+				boxObj.eq(i).css("top",0);
+				boxObj.eq(i).css("left",i * box_width + 'px');//第i个li的左坐标就是i*li的宽度
+		}else{
+			min_height = Math.min.apply(null, h);//取得区块中最小的高度值
+			min_key = getarraykey(h, min_height);//最小的值对应的指针
+			h[min_key] += box_height;
+			if(i%2==0){
+				boxObj.eq(i).css("top",(min_height+5*i + 'px'));
+			}else{
+				boxObj.eq(i).css("top",(min_height+5*i-5 + 'px'));
+			}
+			boxObj.eq(i).css("left",(min_key * box_width + 'px'));
+		}
+	}
+}
+//返回数组中某一值的索引
+function getarraykey(s, v) {
+	for (k in s) {
+		if (s[k] == v) {
+			return k;
+		}
+	}
+}
+function save(){
+	if($('input[name="str[pic]"]').val()==''){
+		alert("请上传图片");return;
+	}
+	if($('textarea[name="str[introduce]"]').val()==''){
+		alert("请填写图片简介");return;
+	}
+	$.post('index.php?m=pic&a=add',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('保存成功');
+			window.location.href="index.php?m=pic&a=index";
+		}else if(res=='err'){
+			alert('保存失败');
+		}
+	});
+}
+$(function(){
+	var $container = $('#masonry');
+    $container.imagesLoaded(function() {
+        $container.masonry({
+                itemSelector: '.box',
+                gutter: 6,
+                isAnimated: true,
+            });
+     });
+	 
+	$('#img-frame').load(function(){
+		try{var html = $(this).contents().find('body').html();
+		}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+		try{
+			var result = $.parseJSON(html);
+			if(result.success==1){
+				$("#picImg").attr('src',"/data/image_c/"+result.data.path);
+				$("#picInput").val(result.data.path);
+			}else{
+				alert("照片太大或其他错误");
+			}
+		}catch(e){}
+	});
+
+	$(".register_end").click(function(){
+		$("#TB_overlayBG").css({
+			display:"block",height:$(document).height()
+		});
+		$(".share_add").css({
+			display:"block"
+		});
+	});
+	$(".end").click(function(){
+		$("#TB_overlayBG").css("display","none");
+		$(".share_add ").css("display","none");
+	});
+});
+//鲜花
+function flowerClick(obj,pid){
+	var flowerNum=parseInt($(obj).text())+1;
+	$.get('index.php?m=pic&a=flower&pid='+pid,function(res){
+		res=jQuery.trim(res);
+		if(res=='suc') $(obj).text(flowerNum);
+	})
+}
+//鸡蛋
+function eggClick(obj,pid){
+	var eggNum=parseInt($(obj).text())+1;
+	$.get('index.php?m=pic&a=egg&pid='+pid,function(res){
+		res=jQuery.trim(res);
+		if(res=='suc') $(obj).text(eggNum);
+	})
+}
+//滑动分页
+function mobile_see(objDiv) {
+	var see = document.documentElement.clientHeight;
+	var winScroll = $(this).scrollTop();
+	var lastLisee = $(objDiv).offset().top;
+	return lastLisee < (see + winScroll) ? true : false;
+}
+</script>
+</html>

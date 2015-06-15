@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登录</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<body>
+<div class="main">
+	<div class="banner"><img src="images/banner_3.jpg"/></div>
+	<form action="" id="memInfo">
+	<input type="hidden" name="a" value="dologin" />
+	<div class="tabs_info">
+		<input class="user" type="text" name="username" placeholder="请输入用户名"/>
+		<input class="pw" type="password" name="pass" placeholder="请输入密码"/>
+		<div class="register_end" onclick="save()">登录</div></a>
+	</div>
+	</form>
+	<div class="miss"><a href="editp.php">忘记密码</a><span> | </span>
+	<a href="register.php?a=mid_reg">点击注册</a></div>
+</div>
+<script type="text/javascript">
+function save(){
+	if($('input[name="username"]').val()==''){
+		alert("请填写手机账号");return;
+	}
+	if($('input[name="pass"]').val()==''){
+		alert("请填写密码");return;
+	}
+	$.post("login.php",$("#memInfo").serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res){
+			if(res=='usernameerr'){
+				alert("手机账号错误");
+			}else if(res=='passerr'){
+				alert("密码错误");
+			}else if(res=='success'){
+				window.location.href="index.php?m=user&a=user_index";
+			}
+		}else{
+			alert("注册失败");
+		}
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>后台管理</title>
+		<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+		<style type="text/css">
+			.welinfo{height:25px;line-height:25px;padding-bottom:0;}
+		</style>
+	</head>
+	<body>
+		<div class="place">
+			<span>位置：</span>
+			<ul class="placeul">
+				<li><a href="#">首页</a></li>
+				<li><a href="#">基本信息</a></li>
+			</ul>
+		</div>
+		<div class="mainindex" style="padding-bottom:0;">
+			<div class="welinfo" style="height:150px;"><b><img src="__PUBLIC__/<{$model['pic']}>" style="width:150px;" /></b></div>
+		</div>
+		<div class="mainindex" style="padding-left:30px;">
+			<div class="welinfo"><b>账号名：<{$model.username}></b></div>
+			<div class="welinfo"><b>名字：<{$model.name}></b></div>
+			<div class="welinfo"><b>定位：<{$model.location}></b></div>
+			<div class="welinfo"><b>级别：<{$model.class}></b></div>
+			<div class="welinfo"><b>风格：<{$model.style}></b></div>
+			<div class="welinfo"><b>专注领域：<{$model.area}></b></div>
+			<div class="welinfo"><b>职业理想：<{$model.ideal}></b></div>
+			<div class="welinfo"><b>联系方式：<{$model.contact}></b></div>
+			<div class="welinfo"><b>简介：<{$model.desc}></b></div>
+			<div class="welinfo"><b>Email：<{$model.mail}></b></div>
+			<div class="welinfo"><b>电话：<{$model.phone}></b></div>
+			<div class="welinfo" style="margin-top:10px;"><b>
+				<input type="button" class="btn yaheifont" style="font-size:16px;" value="修&nbsp;&nbsp;&nbsp;改" onclick="window.location.href='<{:U('detail',array('id'=>$model['id']))}>'"/>
+			</b></div>
+		</div>
+	</body>
+</html>

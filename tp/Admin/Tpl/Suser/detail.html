@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/select-ui.min.js"></script>
+<script language="JavaScript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<!-- <script type="text/javascript" src="__PUBLIC__/kindeditor/kindeditor.js"></script>
+<script type="text/javascript">
+	KE.show({
+		id : 'content7',
+		cssPath : './index.css'
+	});
+</script> -->
+<script type="text/javascript">
+	$(document).ready(function(e) {
+		$(".select1").uedSelect({
+			width : 345
+		});
+		$(".select2").uedSelect({
+			width : 167
+		});
+		$(".select3").uedSelect({
+			width : 100
+		});
+	});
+</script>
+</head>
+<body>
+<!-- <div class="place">
+	<span>位置：</span>
+	<ul class="placeul">
+		<li><a href="#">首页</a></li>
+		<li><a href="#">幻灯片管理</a></li>
+	</ul>
+</div> -->
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">经纪人详情</a></li>
+				<!-- <li><a href="#tab2">自定义</a></li> -->
+			</ul>
+		</div>
+		<form method="post" action="<{:U('detail')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$model['id']}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>头像<b></b></label>
+					<input type="file" name="pic" class="yaheifont" onchange="$('.picShow').hide();">
+					<span style='color:red;display:inline'>注：请上传300px*300px大小的图片</span>
+				</li>
+				<notempty name="model.pic">
+				<li class="picShow">
+					<label>&nbsp;<b></b></label>
+					<span><img src="__PUBLIC__/<{$model['pic']}>" style="width:150px;" /></span>
+				</li>
+				</notempty>
+				<li>
+					<label>姓名<b>*</b></label>
+					<input type="text" name="info[name]" value="<{$model['name']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>定位<b></b></label>
+					<input type="text" name="info[location]" value="<{$model['location']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>级别<b></b></label>
+					<input type="text" name="info[class]" value="<{$model['class']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>风格<b></b></label>
+					<input type="text" name="info[style]" value="<{$model['style']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>专注领域<b></b></label>
+					<input type="text" name="info[area]" value="<{$model['area']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>职业理想<b></b></label>
+					<input type="text" name="info[idea]" value="<{$model['idea']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>联系方式<b></b></label>
+					<input type="text" name="info[contact]" value="<{$model['contact']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>简介<b></b></label>
+					<input type="text" name="info[desc]" value="<{$model['desc']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>邮箱<b></b></label>
+					<input type="text" name="info[mail]" value="<{$model['mail']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>手机<b></b></label>
+					<input type="text" name="info[phone]" value="<{$model['phone']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>微信<b></b></label>
+					<input type="text" name="info[wechat]" value="<{$model['wechat']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>QQ<b></b></label>
+					<input type="text" name="info[qq]" value="<{$model['qq']}>" class="dfinput yaheifont">
+				</li>
+				<!-- <li>
+					<label>排序<b></b></label>
+					<input type="text" name="info[ordernum]" value="<{$model['ordernum']|default='0'}>" class="dfinput yaheifont">
+					<span style='color:red;display:inline'>注：序号越大排序越靠前</span>
+				</li> -->
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保&nbsp;&nbsp;&nbsp;存" onclick="save(this);return false"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返&nbsp;&nbsp;&nbsp;回" onclick="history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$("#usual1 ul").idTabs();
+$('.tablelist tbody tr:odd').addClass('odd');
+function save(obj){
+	if($("input[name='info[name]']").val()==''){
+		alert_tip('姓名不能为空');
+		return;
+	}
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

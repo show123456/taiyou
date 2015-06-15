@@ -1,0 +1,72 @@
+<link rel="stylesheet" type="text/css" href="../public/css/sub-manage.css" media="all" />
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.cc_title_h4{border:1px solid #C9E4C3;height:35px;background-color:#E8FFE2;padding-left:25px;border-radius:4px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+	b{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content" style="min-height:1000px;height:auto;">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class="msg_editer">
+						<div class="sub-list">
+							<div class="shop_sort_box">
+								<form id="memberform">
+									<h4 class='cc_title_h4'>该消息将会通过微信公众号发送给所有用户(因用户量较大，发送后，响应时间较长，请停留在页面一小段时间)</h4>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>微信内容：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea name="content" maxlength="200" class="shop_sort_text" style="width:400px;height:150px;" placeholder="200字以内"><{$vo.introduce}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+										发送
+									</button>&nbsp;&nbsp;&nbsp;
+									<!-- <button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button> -->
+								</div>
+								<div class="clr"></div>
+							</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('积分设置');
+set_menu_cur('menu_71', 'cur omega');
+function save(event){
+	if($("textarea[name='content']").val()==''){
+		note_info('信息内容不能为空','warn',event);return;
+	}
+	note_info_time('微信发送中，可能需等待一段时间，请勿关闭页面','success',event,5000);
+	$.ajax({
+		url:"index.php",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res) {
+			if(res){
+				note_info('发送成功','success',event);
+				setTimeout("window.location.reload()",600);
+			}else{
+				note_info('发送失败','warn',event);
+			}
+		}
+	});
+}
+</script>

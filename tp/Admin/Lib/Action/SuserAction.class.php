@@ -1,0 +1,87 @@
+<?php
+class SuserAction extends CommonAction{
+	//修改密码
+	public function editp(){
+		if(IS_POST){
+            $m=M("Suser");
+			$memberInfo=getSuserInfo();
+			$id=$memberInfo['id'];
+			$res=$m->find($id);
+			$p0=md5(I('post.pass0'));
+			$p1=md5(I('post.pass1'));
+			$p2=md5(I('post.pass2'));
+			if($p0!=$res['pass']){
+				$this->error("原密码输入错误！");
+			}
+			if($p2!=$p1){
+				$this->error("两次密码输入不一致！");
+			}
+			$result=$m->where(array('id'=>$id))->setField("pass",$p1);
+			if($result){
+				$this->success("修改成功！");
+			}else{
+				$this->error("修改失败！");
+			}
+        }
+    }
+	
+	public function add(){
+		if(IS_POST){
+			if(I('post.pass')==''){
+				$this->error("密码不能为空！");
+			}
+			if(I('post.pass')!=I('post.pass1')){
+				$this->error("两次密码输入不一致！");
+			}
+			$m=M("Suser");
+			$data['username']=I('post.username');
+			$data['pass']=md5(I('post.pass'));	
+			//账号查重
+			$suserRow=$m->where(array('username'=>$data['username']))->find();
+			if($suserRow){
+				$this->error("账号名已存在！");
+			}
+			//添加账号		
+			if($m->add($data)){
+				$this->success("添加成功！",I('post.lastURL'));
+			}else{
+				$this->error("添加失败！");
+			}
+        }else{
+			$id=I('get.id');
+            if($id){
+                $this->assign('model',D($this->moduleName)->find($id));
+            }
+			$this->assign('lastURL',$_SERVER['HTTP_REFERER']);
+            $this->display();
+        }
+	}
+	
+	//账号修改
+	public function edit(){
+		if(IS_POST){
+			if(I('post.pass')==''){
+				$this->error("密码不能为空！");
+			}
+			if(I('post.pass')!=I('post.pass1')){
+				$this->error("两次密码输入不一致！");
+			}
+			$m=M("Suser");
+			$data['id']=I('post.id');
+			$data['pass']=md5(I('post.pass'));	
+			//添加账号		
+			if($m->save($data)){
+				$this->success("修改成功！",I('post.lastURL'));
+			}else{
+				$this->error("修改失败！");
+			}
+        }else{
+			$id=I('get.id');
+            if($id){
+                $this->assign('model',D($this->moduleName)->find($id));
+            }
+			$this->assign('lastURL',$_SERVER['HTTP_REFERER']);
+            $this->display();
+        }
+	}
+}

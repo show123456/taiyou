@@ -1,0 +1,811 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v1.0 | 2013/11/23
+   by Bany
+   QQ: 21362281
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    outline:none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+    font: normal 100% Helvetica, Arial, sans-serif;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+a{
+    text-decoration: none;
+}
+.clearfix:after {	visibility:hidden;	display:block;	font-size:0;	content:" ";	clear:both;	height:0;}
+.clearfix {	zoom:1;}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+img{
+    width: 100%;
+}
+/* VM */
+html{
+    height:100%;
+}
+body{
+    background: #e6e6e6;
+    height: 100%;
+    width:100%;
+    font-size: 100%;
+    font-family: "Microsoft YaHei";
+}
+body.white{
+    background: #fff;
+}
+/*基准尺寸*/
+/*960 1380  3*/
+/*800 1150  2.5*/
+/*640 920  2*/
+/*480 690  1.5*/
+/*320 460  1*/
+/*160 230  0.5*/
+
+
+@media screen and (min-width: 310px) {
+    body{
+        font-size: 100%;
+        height: 460px;
+    }
+}
+@media screen and (min-width: 470px) {
+    body{
+        font-size: 150%;
+        height: 690px;
+    }
+}
+@media screen and (min-width: 630px) {
+    body{
+        font-size: 200%;
+        height: 920px;
+    }
+}
+@media screen and (min-width: 790px) {
+    body{
+        font-size: 250%;
+        height: 1150px;
+    }
+}
+@media screen and (min-width: 950px) {
+    body{
+        font-size: 300%;
+        height: 1380px;
+    }
+}
+header{
+    width:100%;
+    height:7.391%;
+    background-color:#46b0e0;
+}
+header h2{
+    width:100%;
+    text-align: center;
+    color:#fff;
+    font-size: 1em;
+    line-height: 2em;
+}
+.Main{
+    width:100%;
+    height:73.804%;
+    position: relative;
+}
+.Main .nav{
+    width:100%;
+    position: relative;
+    height:50%;
+    overflow: hidden;
+}
+.Main .nav a{
+    position: relative;
+    float: left;
+}
+.Main .nav a.current{
+    display: block;
+}
+.Main .nav a,.Main .nav a img{
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+.Main .nav ul{
+    position: absolute;
+    top:10%;
+    left:5%;
+    width: 80%;
+}
+.Main .nav ul li{
+    width:0.5em;
+    height:0.5em;
+    background-color: #46b0e0;
+    border-radius: 50%;
+    float: left;
+    margin-right:0.5em;
+}
+.Main .nav ul li.current{
+    background-color: #fff;
+}
+.Main .menu{
+    width:100%;
+    height:50%;
+}
+.Main .menu .menuButton{
+    display: block;
+    height: 45.882%;
+    width: 31.4625%;
+    background-repeat: no-repeat;
+    background-position: 80% 20%;
+    background-color: #fff;
+    background-size: 29.70% 38.46%;
+    margin-left:1.56%;
+    margin-top:2.941%;
+    float: left;
+}
+.Main .menu .menuButton:nth-child(3n+0){
+    margin-right: 0;
+}
+.Main .menu .menu1{
+    background-image: url("../images/iCon1.png");
+}
+.Main .menu .menu2{
+    background-image: url("../images/iCon2.png");
+}
+.Main .menu .menu3{
+    background-image: url("../images/iCon3.png");
+}
+.Main .menu .menu4{
+    background-image: url("../images/iCon4.png");
+}
+.Main .menu .menu5{
+    background-image: url("../images/iCon5.png");
+}
+.Main .menu .menu6{
+    background-image: url("../images/iCon6.png");
+}
+.Main .menu .menuButton span{
+    color:#716d6e;
+    font-size: 0.8em;
+    padding-top: 50%;
+    margin-left:10%;
+    display: block;
+}
+
+/*introduce.html*/
+.introduce{
+    width:100%;
+    height:50%;
+}
+.introduce .introduceList{
+    width:95%;
+    height:24%;
+    border: 1px solid #d6d5d5;
+    border-bottom:none;
+    display: table;
+    margin-left:2.5%;
+    color:#716d6e;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: 92% 49%;
+    background-color: #fff;
+    background-size: 1.973% 18.518%;
+    background-image: url("../images/arrow.png");
+}
+.introduce .introduceList.first{
+    margin-top:2%;
+}
+.introduce .introduceList:nth-child(4n+0){
+    border-bottom:1px solid #d6d5d5;
+}
+.introduce .introduceList .point{
+    width:0.4em;
+    height:0.4em;
+    border:0.1em solid #89cdeb;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 7%;
+    margin-top: -0.3em;
+}
+.introduce .introduceList p{
+    font-size: 0.8em;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 12%;
+}
+
+/*detail.html*/
+.detail{
+    width:100%;
+    height:50%;
+    background-color: #fff;
+}
+.detail .accountantName{
+    height:20.588%;
+    width: 100%;
+    display: table;
+    background-color: #46b0e0;
+}
+.detail .accountantName span{
+    color:#fff;
+    font-size: 0.8em;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left:6%;
+}
+.detail article{
+    font-size: 0.8em;
+    color:#716d6e;
+    margin-left:6%;
+    margin-top: 4%;
+    line-height: 1.5em;
+}
+.detail article .phoneNumber{
+    color:#46b0e0;
+    text-decoration: underline;
+}
+.phoneIcon{
+    padding: 0.5em;
+    line-height: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 90% 41%;
+    background-image: url("../images/phoneIcon.png");
+}
+.female{
+    padding: 0.5em;
+    line-height: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 50%;
+    background-image: url("../images/female.png");
+}
+/*detail.html*/
+.recommend{
+    width:100%;
+    height:100%;
+    background-color: #fff;
+    font-size: 120%;
+}
+.recommend h3{
+    height:7.5%;
+    width: 100%;
+    display: table;
+    background-color: #716d6e;
+}
+.recommend h3 span:first-child{
+    color:#fff;
+    font-size: 0.7em;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left:6%;
+}
+.recommend h3 span:last-child{
+   float: right;
+   color: #fff;
+   background-color: #46B0E0;
+   font-size: 0.7em;
+   display: table-cell;
+   vertical-align: middle;
+   margin-top: 0.3em;
+   margin-right: 6%;
+   padding: 0 0.3em;
+   border-radius: 0.2em;
+}
+.recommendList{
+    height:20.271%;
+    width:89.68%;
+    border-bottom: 1px solid #c9c8c8;
+    display: block;
+    margin-left:5%;
+    padding-top: 4%;
+}
+.recommendList .recommendListTitle{
+    width:100%;
+    font-size: 0.8em;
+    color:#46b0e0;
+    padding-left: 4.52%;
+    line-height: 2em;
+}
+.recommendList .lineLeft, .recommendList .lineRight{
+    font-size: 0.6em;
+    color:#716d6e;
+    float:left;
+    display: block;
+    line-height: 1.6em;
+}
+.recommendList .lineLeft{
+    margin-left:4.52%;
+    width:43.554%;
+}
+.recommendList .lineRight{
+    width:48.554%;
+}
+.recommend .female,.recommend .phoneIcon{
+    margin-right:2%;
+}
+/*search.html*/
+.search{
+    width:100%;
+    height:100%;
+    background-color: #fff;
+}
+.search h4{
+    width: 100%;
+}
+.search .demoinput{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    width: 87%;
+    margin: 2% 0 0 5%;
+    color:#7d7a7b;
+    border:none;
+    border-radius: 0;
+    border-bottom: 1px solid #46b0e0;
+    padding-left: 10px;
+    font-size: 1em;
+    line-height: 2em;
+}
+.search .filter{
+    width: 90%;
+    margin-left: 5%;
+    height: 26.714%;
+    margin-top: 1%;
+}
+.search .filter .filterLeft{
+    width:58.291%;
+    float: left;
+}
+.search .filter .filterLeft select{
+    margin-right:20%;
+}
+.search .filter .filterRight{
+    width:35.931%;
+    float: left;
+}
+.search .filter .filterLeft,.search .filter .filterRight{
+    height:40%;
+    display: table;
+}
+.filter p{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    color:#716d6e;
+    font-size: 0.7em;
+    width: 100%;
+    padding-right: 11%;
+}
+.filter select{
+    width: 7em;
+    height: 80%;
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border:1px solid #d7d6d6;
+    color:#46b0e0;
+    background: url("../images/arrowDown.png") no-repeat;
+    background-size: 15% 27%;
+    background-position: 80% 53%;
+    float: right;
+    font-size: 0.6em;
+    margin-top: 5%;
+    padding-left: 0.5em;
+    border-radius: 0;
+}
+.filter .searchBtn{
+    width:100%;
+    height:75%;
+    margin-top:3%;
+    background: #46b0e0;
+    display: table;
+    float: left;
+}
+.filter .searchBtn span{
+    display: table-cell;
+    color:#fff;
+    vertical-align: middle;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7em;
+}
+.recommendListSearch{
+    width:95%;
+    margin-left: 2.5%;
+    height:6.7024%;
+    background: #46b0e0;
+    display: table;
+    font-size: 120%;
+}
+.recommendListSearch a.more{
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+    color:#fff;
+    font-size: 0.6em;
+    height:100%;
+    text-align: right;
+    padding-right: 3%;
+}
+.recommendListSearch span{
+    display: table-cell;
+    color:#fff;
+    vertical-align: middle;
+    text-align: left;
+    font-size: 0.7em;
+    padding-left:5%;
+}
+.recommendListArea{
+    height:44%;
+}
+.search .recommendList{
+    height:44%;
+    position: relative;
+    font-size: 120%;
+}
+.search .female,.search .phoneIcon{
+    margin-right:2%;
+}
+.recommendList .level{
+    position: absolute;
+    top: 30%;
+    right: 4%;
+    font-size: 0.6em;
+    color:#716d6e;
+}
+/*searchEmp.html*/
+.searchEmp .filter{
+    height: 13.714%;
+}
+.searchEmp .filter .filterLeft, .searchEmp .filter .filterRight{
+    height:80%;
+}
+.searchEmp .filter .filterLeft select{
+    width: 8em;
+}
+.empListArea{
+    height:56%;
+    width: 95%;
+    margin-left: 2.5%;
+}
+.empListArea table{
+    font-size: 0.7em;
+    width: 100%;
+    text-align: center;
+    line-height: 2.8em;
+    color:#716d6e;
+}
+.empListArea table thead{
+    background: #f2f0f1;
+}
+.empListArea table thead .borderL{
+    background: url("../images/bl.png") no-repeat center left;
+    background-size: 1.5% 50%;
+}
+.empListArea table tbody{
+    border: 1px solid #f2f0f1;
+}
+.empListArea table tbody tr{
+    background: #f2f0f1;
+}
+.empListArea table tbody tr:nth-child(odd){
+    background: #fff;
+}
+.empListArea table tbody tr.current{
+    color: #46b0e0;
+}
+
+/*newsList.html*/
+.newsList .newsListLine{
+    height:18.271%;
+    width:89.68%;
+    border-bottom: 1px solid #c9c8c8;
+    display: block;
+    margin-left:5%;
+    padding-top: 4%;
+}
+.newsList .newsListLine.more{
+    height:10.271%;
+    width:89.68%;
+    display: block;
+    margin-left:5%;
+    padding-top: 4%;
+    font-size: 0.6em;
+    color:#716d6e;
+    text-align: center;
+    border-bottom: none;
+}
+.newsList .newsListLine .img{
+    height: 80%;
+    width: 30%;
+    margin: 0 5% 0 3%;
+    float: left;
+}
+.newsList .newsListLine .img img{
+    width:100%;
+    height:100%;
+    border:none;
+}
+.newsList .newsListLine .titles .name{
+    font-size: 0.8em;
+    color:#46b0e0;
+}
+.newsList .newsListLine .titles .keywords{
+    font-size: 0.6em;
+    color:#716d6e;
+    margin-top: 2%;
+}
+.newsList .newsListLine .titles{
+    width: 60%;
+    float: left;
+}
+/*news.html*/
+.newsPage .newsHead{
+    height:14.271%;
+    width:89.68%;
+    display: block;
+    margin-left:5%;
+    padding-top: 4%;
+    padding-bottom: 5%;
+    border-bottom: 1px solid #eee;
+}
+.newsPage .newsHead h2{
+    color:#46b0e0;
+    font-size: 1.1em;
+    width: 100%;
+    text-align: center;
+}
+.newsPage .newsHead p{
+    color:#716d6e;
+    font-size: 0.6em;
+    width: 60%;
+    text-align: center;
+    margin: auto;
+}
+.newsPage .newsHead p span{
+    width:50%;
+    float: left;
+}
+.newsPage .newsContent{
+    height:70.813%;
+    width:79.68%;
+    display: block;
+    margin-left:10%;
+    padding-top: 4%;
+    font-size: 0.8em;
+    line-height: 1.2em;
+}
+.newsPage .newsContent img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/*introduce_detail.html*/
+.introduce_detail .detail{
+    font-size: 0.8em;
+    background: #fff;
+    width:95%;
+    margin-left:2.5%;
+    display: none;
+    color:#716d6e;
+}
+.introduce_detail .detail p{
+    width:80%;
+    margin:auto;
+    font-size: 1em;
+    line-height: 1.4em;
+}
+.introduce_detail .introduceList p{
+    color:#0e0c18;
+    padding-left:7%;
+}
+.introduce_detail .introduceList.current{
+    background-image: url("../images/arrow2.png");
+}
+
+/*advice.html*/
+.advice .recommendList{
+    height:auto;
+}
+.adviceContent{
+    width: 90%;
+    font-size: 0.7em;
+    float: left;
+    color: #716d6e;
+    margin-left: 4.52%;
+    margin-bottom: 2%;
+}
+.adviceContent.reply{
+    color:#000;
+}
+.adviceform {
+    position: fixed;
+    bottom:0;
+    width:100%;
+    height:13em;
+    font-size: 1em;
+    background: #fff;
+}
+.adviceSubmit{
+    position: fixed;
+    bottom:0;
+    width:100%;
+    height: 2.5em;
+    line-height: 2.5em;
+    margin-top: 3%;
+    font-size: 1em;
+    color: #fff;
+    background: #46b0e0;
+    font-weight: bold;
+    text-align: center;
+}
+.adviceform .formLine{
+    width:89.68%;
+    margin-left: 5%;
+}
+.adviceform .formLine.top{
+    vertical-align:top;
+}
+.adviceform .formLine .demoinput{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    width: 62%;
+    margin: 2% 0 0 5%;
+    color:#7d7a7b;
+    border:1px solid #46b0e0;
+    border-radius: 0;
+    padding-left: 1.5em;
+    font-size: 1em;
+    line-height: 2em;
+}
+.adviceform .formLine textarea{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    width: 72%;
+    margin: 2% 0 0 5%;
+    color:#7d7a7b;
+    border:1px solid #46b0e0;
+    border-radius: 0;
+    font-size: 0.8em;
+    line-height: 1.6em;
+}
+.adviceform .formLine .demoSubmit{
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    border:none;
+    border-radius: 0;
+    width: 20%;
+    height: 2.5em;
+    margin-top: 3%;
+    font-size: 0.8em;
+    color: #fff;
+    background: #46b0e0;
+    margin-left: 4%;
+    font-weight: bold;
+}
+.pagenation{
+    height: 4.5em;
+    width:89.68%;
+    margin-left: 5%;
+}
+.pagenation a{
+    width:50%;
+    float: left;
+    display: block;
+    text-align: right;
+    font-size: 0.8em;
+    color:#7d7a7b;
+    margin:1.5em 0 4.5em 0;
+}
+.pagenation a.left{
+    text-align: left;
+}
+.functionbar{
+    height: 4.5em;
+    width:89.68%;
+    margin-left: 5%;
+}
+.functionbar a{
+    width:50%;
+    float: left;
+    display: block;
+    height: 2.5em;
+    line-height: 2.5em;
+    margin-top: 3%;
+    font-size: 0.8em;
+    color: #fff;
+    background: #46b0e0;
+    font-weight: bold;
+    text-align: center;
+}
+.functionbar a.cancel{
+    background: #7d7a7b;
+}
+
+/*demo.html*/
+.magazine{
+    width:400px;
+    height:600px;
+    margin: auto;
+}
+.magazine .page{
+    width:100%;
+    height:100%;
+    background-color: #000;
+}
+.magazine .photo{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #000;
+}
+.magazine .dash{
+    background-image: url("../images/04.jpg");
+}
+.magazine .eo{
+    background-image: url("../images/06.jpg");
+}
+.magazine select{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    width:100px;
+    height:40px;
+    border:1px solid #0066FF;
+    background: url("../images/arrowDown.png") no-repeat;
+    background-size: 15% 27%;
+    background-position: 80% 53%;
+}
+.magazine .demoinput{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    width:80%;
+    margin:10% 0 0 10%;
+    border:none;
+    border-radius: 0;
+    border-bottom: 1px solid #0066FF;
+    padding-left: 10px;
+    font-size: 1em;
+    line-height: 2em;
+}

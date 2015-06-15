@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>报名列表</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<body style="background-color:#eeeeee;">
+<form action="" id="meminfo">
+<div class="main">
+	<div class="sign">
+		<{foreach from=$list item=v}>
+		<div class="sign_list">
+			<div class="user_icon">
+				<img src="<{$v.headPic|default:'images/user_icon.gif'}>"/>
+			</div>
+			<div class="sign_info">
+				<div class="user_title">
+					<p><{$v.nickname}></p>
+					<img src="images/<{if $v.sex==1}>male<{else}>female<{/if}>.gif"/>
+					<span>5.05 KM</span>
+					<div class="clear"></div>
+				</div>
+				<{if $userRow.is_see}>
+				<div class="info_detail">
+					<font class="fa fa-map-marker"></font>
+					<{$v.district}><{$v.address}>
+				</div>
+				<{/if}>
+			</div>
+			<div class="clear"></div>
+			<div class="select_icon" style="<{if $userRow.is_see==0}>margin-top:-20px;<{/if}>">
+				<p><input type="radio" name="info[valid_<{$v.sign_id}>]" value="1"><label>有效</label></p>			
+				<p><input type="radio" name="info[valid_<{$v.sign_id}>]" value="2"><label>无效</label></p>			
+			</div>
+			<div class="clear"></div>
+		</div>
+		<{/foreach}>
+		<div class="total_num">共<{$signNum}>人报名</div>
+	</div>
+	<div class="register_end" style="width:45%;float:left;margin-left:3%;" onclick="save()">确认</div>
+	<div class="register_end" style="width:45%;float:right;margin-right:3%;" onclick="window.location.href='index.php?m=task_company&a=sign_js&tid=<{$smarty.get.tid}>'">去结算</div>
+</div>
+</form>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	$.post('index.php?m=task_company&a=sign_valid',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('确认成功');
+			//window.location.href='index.php?m=task_company&a=sign_js&tid=<{$smarty.get.tid}>';
+		}else if(res=='err'){
+			alert('确认失败');
+		}
+	});
+}
+</script>
+</body>
+</html>

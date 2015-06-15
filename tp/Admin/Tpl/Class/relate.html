@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+	
+	#selectLi li{clear:none ! important;}
+	.radioDiv label{cursor:pointer;}
+	.radioDiv label input{vertical-align:middle;}
+	.upload_btn{font-family:"Microsoft YaHei","黑体","宋体";width:80px;height:25px;
+		font-weight:normal;font-size:14px;}
+	
+	.xuhao_div{width:30px;height:30px;line-height:30px;text-align:center;font-size:14px;
+		color:#fff;background:url(./Public/admin/images/index_bg.png);}
+	.step_textarea{font-family:"Microsoft YaHei","黑体","宋体";height:100px;width:450px;}
+	.closeB{font-size:16px;color:#fff ! important;background-color:#4299CA;
+		padding:1px 5px;padding-left:5px ! important;border-radius:3px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">相关课程</a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('relate')}>" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$Think.get.id}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<foreach name="list" key="k" item="v">
+				<div style="padding-right:15px;float:left;margin-top:8px;">
+					<label><input type="checkbox" name="relate[]" value="<{$v.id}>" <{:in_array($v['id'],$relateArr) ? 'checked' : ''}> style="vertical-align:middle;" /> <{$v.title}></label>
+				</div>
+			</foreach>
+			<div style="clear:both;height:20px;"></div>
+			<input type="button" class="btn yaheifont" style="font-size:16px;" value="保&nbsp;&nbsp;&nbsp;存" onclick="save();return false"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返&nbsp;&nbsp;&nbsp;回" onclick="window.history.go(-1);"/>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

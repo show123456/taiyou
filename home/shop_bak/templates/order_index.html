@@ -1,0 +1,86 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<!-- <div>
+							<button style="float:right;" onclick="javascript:location.href='cate.php?a=add'">增加分类</button>
+						</div> -->
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入订单号" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" class="" title="搜索" type="submit">
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">订单号</th>
+										<th class="enable">订单金额</th>
+										<th class="enable">收货人</th>
+										<th class="enable">手机号</th>
+										<th class="enable">下单时间</th>
+										<th name="Status" class="enable">状态</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.id}></div></td>
+										<td><div><{$v.money}></div></td>
+										<td><div><{$v.name}></div></td>
+										<td><div><{$v.phone}></div></td>
+										<td><div><{$v.addtime}></div></td>
+										<td><div><{if $v.status==0}>未处理<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效<{/if}></div></td>
+										<td><div><a href="order.php?a=detail&id=<{$v.id}>" class="minutebtn">详情</a></div></td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('订单管理');
+set_menu_cur('menu_64', 'cur omega');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"order.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

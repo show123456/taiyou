@@ -1,0 +1,85 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<span style='float:left;line-height:35px;font-weight:bold;'>人数：<{$countnum}></span>
+						<!-- <div class="pull-right" style="margin-right:8px">
+							<form method="get" action="index.php">
+								<input type="hidden" name="a" value="sign" />
+								<input type="hidden" name="id" value="<{$smarty.get.id}>" />
+								<input name="keywords" class="keywords" placeholder="输入姓名" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" class="" title="搜索" type="submit">
+							</form>
+						</div> -->
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th name="Theme" class="hover enable">姓名</th>
+										<th name="Theme" class="hover enable">性别</th>
+										<th name="Theme" class="hover enable">电话</th>
+										<th name="Theme" class="hover enable">取消日期</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.uname}></div></td>
+										<td><div><{$v.usex}></div></td>
+										<td><div><{$v.uphone}></div></td>
+										<td><div><{$v.addtime}></div></td>
+										<!-- <td>
+											<div class="btn-operate">
+											<a href="javascript:void(0);" onclick="delRow(event,'<{$v.id}>')" class="redactbtn">删除</a>
+											</div>
+										</td> -->
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('任务取消');
+set_menu_cur('menu_11_1', 'cur omega');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"<{$WEB_DOMAIN}>/home/job/index.php",
+			data:{id:id,a:'delsign'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

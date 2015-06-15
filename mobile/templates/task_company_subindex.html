@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>报名管理</title>
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+<style type="text/css">
+.job_adress{margin-top:8px;margin-bottom:-3px;;}
+.history .item_list ul{margin-top:0;}
+</style>
+</head>
+<body style="background-color:#eeeeee;">
+<div class="main">  
+	<div class="history">
+		<{foreach from=$list item=v}>
+			<div class="item_list" onclick="window.location.href='index.php?m=task_company&a=sign_mid&tid=<{$v.id}>'">
+				<div class="list_title">
+					<div class="job_title"><{$v.title}></div>
+					<div class="price"><{$v.money}>元</div>
+					<div class="clear"></div>
+				</div>
+				<div class="job_adress"><{$v.addr}>
+					<{if $v.sh_status==1}>
+						<div style="float:right;color:#ff6f28;">已审核通过</div>
+					<{else}>
+						<div style="float:right;">未审核</div>
+					<{/if}>
+				</div>
+				<div style='clear:both;'></div>
+				<ul style='margin-top:5px;'>
+					<li><{$userRow.nickname}></li>
+					<li><span class="fa fa-clock-o"></span><{$v.start_time}></li>
+					<li class="people_num">
+						<{if $v.is_js==1}>
+						已结算
+						<{else}>
+						已有<b><{$v.sign_num}></b>人报名
+						<{/if}>
+					</li>
+				</ul>
+				<div class="clear"></div>
+			</div>
+		<{/foreach}>
+		<div class="total_num">
+			共有<{$task_num|default:0}>个职位
+		</div>
+	</div>
+</div>
+<{include file="footer.html"}>
+</body>
+</html>

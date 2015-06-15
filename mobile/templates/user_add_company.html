@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>企业资料</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<body style="background-color:#F6F6F6;">
+<div class="main">	
+    <div class="personal_top" >
+		<div class="personal_img">
+		<img src="<{if $headPic}><{$headPic}><{else}>images/people.png<{/if}>" style="border:none;" />
+		</div>
+		<p><{$vo.nickname|default:'匿名'}></p>
+	</div>
+	<form action="" id="meminfo">
+	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
+	<div class="tabs_info">
+		<!-- <img class="vip" src="images/vip.gif"/> -->
+		<div class="input_group">
+			<input style="text-indent:6em;" type="text" name="str[nickname]" value="<{$vo.nickname}>"/>
+			<div class="title">公司名称：</div>
+		</div>	
+		<div>
+			<select style="float:left;margin-right:1.5%;" name="num[pid]" class="provinceid">
+				<option value="10">江苏省</option>
+				<!-- <option value="">请选择省</option>
+				<{foreach from=$parr item=pv}>
+				<option value="<{$pv.ProvinceID}>" <{if $pv.ProvinceID==$vo.pid}>selected<{/if}> ><{$pv.ProvinceName}></option>
+				<{/foreach}> -->
+			</select>
+			<select style="float:left;margin-right:1.5%;" name="num[cid]" class="cityid">
+			<option value="78">苏州市</option>
+			</select>
+			<select style="width:33%;float:right;" name="num[did]" class="areaid">
+				<option value="">请选择区</option>
+				<{foreach from=$darr item=dv}>
+				<option value="<{$dv.DistrictID}>" <{if $dv.DistrictID==$vo.did}>selected<{/if}> ><{$dv.DistrictName}></option>
+				<{/foreach}>
+			</select>
+			<div class="clear"></div>		
+		</div>
+		<div class="input_group">
+			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细地址" />
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:6em;" type="text" title="公司电话" name="str[tel]" value="<{$vo.tel}>"/>
+			<div class="title">公司电话：</div>
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:7em;" type="text" title="联系人姓名" name="str[contact_name]" value="<{$vo.contact_name}>"/>
+			<div class="title">联系人姓名：</div>
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:7em;" type="text" title="联系人职位" name="str[contact_post]" value="<{$vo.contact_post}>"/>
+			<div class="title">联系人职位：</div>
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:7em;" type="text" title="联系人手机" name="str[contact_phone]" value="<{$vo.contact_phone}>"/>
+			<div class="title">联系人手机：</div>
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:6em;" type="text" title="公司法人" name="str[legal_person]" value="<{$vo.legal_person}>"/>
+			<div class="title">公司法人：</div>
+		</div>
+		<div class="input_group checkVal">
+			<input style="text-indent:6em;" type="text" title="注册资金" name="str[reg_money]" value="<{$vo.reg_money}>"/>
+			<div class="title">注册资金：</div>
+		</div>
+		<div class="input_group checkVal">
+			<select name="str[company_type]" style="text-indent:6em;width:99%;padding-left:0;">
+				<option value="民营" <{if $vo.company_type=='民营'}>selected<{/if}> >民营</option>
+				<option value="国企" <{if $vo.company_type=='国企'}>selected<{/if}> >国企</option>
+				<option value="股份制" <{if $vo.company_type=='股份制'}>selected<{/if}> >股份制</option>
+				<option value="外商独资" <{if $vo.company_type=='外商独资'}>selected<{/if}> >外商独资</option>
+				<option value="上市公司" <{if $vo.company_type=='上市公司'}>selected<{/if}> >上市公司</option>
+				<option value="国家机关" <{if $vo.company_type=='国家机关'}>selected<{/if}> >国家机关</option>
+				<option value="其他" <{if $vo.company_type=='其他'}>selected<{/if}> >其他</option>
+			</select>
+			<div class="title">企业性质：</div>
+		</div>
+		<div class="input_group checkVal">
+			<select name="num[industry_id]" style="text-indent:6em;width:99%;padding-left:0;">
+				<{foreach from=$indArr item=v}>
+				<option value="<{$v.id}>" <{if $vo.industry_id==$v.id}>selected<{/if}> ><{$v.name}></option>
+				<{/foreach}>
+			</select>
+			<div class="title">所属行业：</div>
+		</div>
+		<div class="input_group">
+			<textarea style="text-indent:6em;padding:5px;" name="str[introduce]"><{$vo.introduce}></textarea>
+			<div class="title" style="top:1.5em;">公司介绍：</div>
+		</div>
+	</div>
+	</form>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>	
+</div><{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	if($('input[name="str[nickname]"]').val()==''){
+		alert("请填写公司名");return;
+	}
+	if($('.provinceid').val()=='' || $('.cityid').val()=='' || $('.areaid').val()==''){
+		alert("请选择省市区");return;
+	}
+	if(isNumber($('input[name="str[address]"]').val())){
+		alert("请填写正确的详细地址");return;
+	}
+	var checkVal_len=$('.checkVal').length;
+	for(var i=0;i<checkVal_len;i++){
+		if($('.checkVal input').eq(i).val()==''){
+			alert("请填写"+$('.checkVal input').eq(i).attr('title'));return;
+		}
+	}
+	$.post('index.php?m=user&a=user_add_company',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('保存成功');
+			window.location.href='index.php?m=user&a=user_index';
+		}else if(res=='err'){
+			alert('保存失败');
+		}
+	});
+}
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+//验证数字
+function isNumber(s){  
+	var patrn=/^[0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+<!-- 城市级联开始 -->
+function pselect(obj){
+	$(".cityid option").remove();
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:$(obj).val()},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			str+="<option value=''>请选择</option>";
+			for(var i=0;i<data.length;i++){
+				str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+			}
+			$(".cityid").append(str);
+		}
+	});
+}
+function cselect(obj){
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:$(obj).val()},
+		dataType:"json",
+		success:function(dataa){
+			var stra="";
+			stra+="<option value=''>请选择</option>";
+			for(var i=0;i<dataa.length;i++){
+				stra+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+			}
+			$(".areaid").append(stra);
+		}
+	});
+}
+			
+//修改时加载城市和区域信息
+if(0 && '<{$vo.id}>'){
+	var pid='<{$vo.pid}>';
+	var cid='<{$vo.cid}>';
+	var did='<{$vo.did}>';
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:pid},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				if(data[i].CityID==cid){
+					str+="<option value=\""+data[i].CityID+"\" selected >"+data[i].CityName+"</option>";
+				}else{
+					str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+				}
+			}
+			$(".cityid").append(str);
+		}
+	});
+
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:cid},
+		dataType:"json",
+		success:function(dataa){
+			var str="";
+			for(var i=0;i<dataa.length;i++){
+				if(dataa[i].DistrictID==did){
+					str+="<option value=\""+dataa[i].DistrictID+"\" selected >"+dataa[i].DistrictName+"</option>";
+				}else{
+					str+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+				}
+			}
+			$(".areaid").append(str);
+		}
+	})
+}
+<!-- 城市级联结束 -->
+</script>
+</body>
+</html>

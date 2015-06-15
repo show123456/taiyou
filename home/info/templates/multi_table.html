@@ -1,0 +1,43 @@
+<table class="table table-library">
+    <thead>
+        <tr>
+            <th class="t1">关键词</th>
+            <th class="t2">条数</th>
+            <th class="t3">推送量</th>
+            <th class="t4">状态 </th>
+            <th class="t5">操作 </th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr>
+            <td colspan="5">
+            
+            </td>
+        </tr>
+    <{if $infolist}>
+	
+		
+			<{foreach item="row" from=$infolist}>
+			<tr>
+				<td><strong class="c-red"><{$row.keyword}></strong></td>
+				<td><{$row.multi_num}></td>
+				<td><{$row.push_num}></td>
+				<td><{if $row.state==1}><div style='color:#009A07'>开放中</div><{else}>已关闭<{/if}></td>
+				
+				<td>
+					<a href="/home/info/<{$type}>.php?id=<{$row.id}>&type=<{$type}>" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
+					<a href="/home/info/<{$type}>.php?id=<{$row.id}>&act=del&type=<{$type}>" title="删除"><i class="glyphicon glyphicon-trash"></i></a>
+				</td>
+			</tr>
+			<{/foreach}>
+		
+    <{else}>
+        <tr>
+            <td colspan="5">
+                <p class="c-gray wrap-null"> 暂无内容！点击右上角<span class="c-green">【+】号</span>新建内容吧！ </p>
+            </td>
+        </tr>
+    <{/if}>
+    </tbody>
+</table>

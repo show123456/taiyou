@@ -1,0 +1,61 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+	#out_btn{color:#428bca;font-weight:bold;text-decoration:none;}
+	.sendDiv img{width:20px;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div' style="padding-top:0;border-bottom:1px solid #DBDBDB">
+					<span id='msg_span' style='float:left;line-height:35px;font-weight:bold;color:red;'>发送消息时，请勿关闭页面。关闭页面即中断发送。</span>
+					</div>
+					<div class="list-table" style="padding:10px;font-size:15px;">
+						已发送<span id="yfs" style="color:#62ab62;font-weight:bold;">0</span>人，余<span id="sy" style="color:red;font-weight:bold;"><{$listcount}></span>人。。。
+					</div>
+					<div id="info_from" style="visibility:hidden;">
+						<{foreach from=$list item=v}>
+							<span><{$v.fromuser}></span>
+						<{/foreach}>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- loading动画开始 -->
+<div id="loading" style="position:fixed;z-index:881213;display:block;width:100%;height:100px;top:0;"><img src="images/loading.gif" style="display:block;margin:200px 550px;" /></div>
+<!-- loading动画结束 -->
+<script type="text/javascript">
+set_title_name('发送提醒消息');
+set_menu_cur('menu_41', 'cur omega');
+$(function(){
+	var bodyWidth = document.documentElement.clientWidth;
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+	var total_num=parseInt('<{$listcount}>');
+	var yfs_num=0;
+	var sy_num=0;
+	var time_clock;
+	time_clock=setInterval(function(){
+		var fromuser=$('#info_from span').eq(0).text();
+		$.get('send_wx_msg.php?a=send&tid=<{$smarty.get.tid}>&fromuser='+fromuser);
+		$('#info_from span').eq(0).remove();
+		sy_num=parseInt($('#info_from span').length);
+		yfs_num=total_num-sy_num;
+		$('#yfs').text(yfs_num);
+		$('#sy').text(sy_num);
+		if(sy_num == 0){
+			clearInterval(time_clock);
+			$('#loading').hide();
+		}
+	},800);
+})
+</script>

@@ -1,0 +1,212 @@
+<div class=" main-content">
+    <div class="inner">
+        <div class="alert alert-success alert-dismissable fz12px alertfc">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p>1. <span class="c-red">订阅号</span>一天只可以群发一条信息，<span class="c-red">服务号</span>一月只可以群发一条信息，消息可以是文字、图文、多图文、视频、音乐等内容。</p>
+            <p>2. <span class="c-red">认证后的服务号</span>可直接同步微信关注用户和互动消息。</p>
+        </div>
+
+        <nav class="navbar navbar-default user-navbar" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="navbar-brand" href="#"><i class="icons icons-wechat"></i> 微信消息</span>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">					
+					<{if $val}>
+						<li><a href="interact.php">48小时内消息</a>
+							<{if $nums > 0}>
+								<span class="badge"><{$nums}></span>
+							<{else}>	
+								<span class="badge"></span>
+							<{/if}>
+						</li>
+                        <li  class="active"><a href="interact.php?act=history">历史消息</a></li>
+					<{else}>
+						<li class="active"><a href="interact.php?act=recently">48小时内消息</a>
+						<{if $nums > 0}>
+								<span class="badge"><{$nums}></span>
+						<{else}>	
+								<span class="badge"></span>
+						<{/if}>
+						</li>
+                        <li><a href="interact.php?act=history">历史消息</a></li>
+					
+					<{/if}>
+                    </ul>
+                    <form class="navbar-form navbar-right nav-search" role="search" id='search_form' action='/home/member/interact.php' method='post'>
+                        <div class="form-group">
+                            <i class="glyphicon glyphicon-search"></i>
+                            <input type="text" class="form-control" name='search' placeholder="消息内容">
+                        </div>
+                        <button type="submit" id='sub' onclick="search()" class="btn btn-link">搜</button>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="wrap-reply clearfix">
+            <table class="table user-table table-msg table-bordered">
+                <thead>
+                    <tr>
+                        <th class="t1">发送消息会员及内容</th>
+                        <th class="t2">时间</th>
+                        <th class="t4">操作</th>
+                    </tr>
+                </thead>
+                <{if $list}>
+                <tbody>
+                <{foreach item="row" key="key" from=$list}>
+                    <tr>
+                        <td>
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object"  style="width: 64px; height: 64px;" src="/upload/member/<{$row.photo_path|default:'demault_head.jpg'}>">
+                                </a>
+                                <div class="media-body">
+                                    <div style="font-weight:bold;"><{$row.nickname|default:'未命名'}> <a href="" class="a-edit"><i class="glyphicon glyphicon-edit"></i></a></div>
+                                    <p style="color:#666;">
+									<{if $row.msg_content=='subscribe'}>
+									<span style='color:green;'>关注帐号</span>
+									<{elseif $row.msg_content=='unsubscribe'}>
+									<span style='color:red;'>取消关注</span>
+									<{else}>
+									<{$row.msg_content}>
+									<{/if}>
+									</p>
+									<div id="p<{$row.id}>">
+										<{if $row.reply_list}>
+										<span id='m<{$row.id}>' style='color:red'>回复：</span><br/><{$row.reply_list}>
+										<{else}>
+										<span id='m<{$row.id}>' style='color:red'></span><br/>
+										<{/if}>
+									</div>
+                                </div>
+								
+								
+								
+                            </div>
+
+                        </td>
+                        <td><{$row.create_time}></td>
+                        <td><a class="btn btn-success btn-reply" href="#" data-id="<{$row.id}>">回复</a></td>
+                    </tr>
+                <{/foreach}>
+				<tr><td><div style="page"><{$pagerhtml}></div></td></tr>
+                </tbody>
+                <{/if}> 
+            </table>
+
+            <div class="layer-quick-reply" style="display:none;">
+                <form id="reply-form" action="/home/member/interact_ajax.php" method="post">
+	                <div class="pull-left">
+	                    <p>  快速回复： </p>
+	                    <a href="#" id='demo'onclick="$(this).next().toggle(get_expression());return false" ><i class="icons icons-emoji"></i></a>
+						<div name="face_box"  class="emoticons_frame" id='xianshiqu' style="display: none;z-index: 2;bottom:152px">
+
+						</div>
+	                </div>
+	                <div class="content">
+	                    <textarea id="reply_list" class='expres_text' name="reply_list" cols="30" rows="10"></textarea>
+	                    <input type="hidden" id="id" name="id" value=""/>
+	                    <input type="hidden" name="act" value="reply"/>
+	                    <input type="submit" value="发送" class="btn btn-success" />
+	                    <span class="text-count">还可以输入<span class="max-count" max="140"></span>字</span>
+	                    <div class="pull-right a-hide"><a href="javascript:return false" class="closediv">收起</a></div>
+	                </div>
+	
+	                <span class="arrow up"></span>
+                </form>
+            </div>
+			
+			<!--  -->
+	
+			<!--  -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    set_title_name('微信接口配置');
+    set_menu_cur('menu_22','cur');
+
+	function search(){
+		$('#search_form').submit();
+	}
+    $(function(){
+		//回复按钮绑定事件
+    	$('.btn-reply').click(function(){
+    		$('#reply_list').val('');
+    		$('#id').val($(this).attr('data-id'));
+    	    $('.layer-quick-reply').css({'top':$(this).offset().top-181+'px'}).show();
+			return false;
+    	});	
+    	$('.closediv').click(function(){ $('.layer-quick-reply').hide(); });
+    	$('#reply-form').submit(function(){
+			$.ajax({
+					type: "POST",
+					url:"/home/member/interact_ajax.php",
+					data:$('#reply-form').serialize(),
+					async: false,
+					error: function(request) {
+						alert("Connection error");
+					},
+					success: function(res) {
+
+						id= $('#id').val();
+						$('#p'+id).html("<span id=m"+id+" style='color:red'>回复：</span><br/>"+res);
+						$('.layer-quick-reply').hide();
+					}
+			});
+            return false;
+    	});
+    
+	
+	
+	
+	});
+	
+	//定时获取新信息
+	setInterval('getNewMessage()',10000);
+	setTimeout('is_read()',100);
+	//获取新消息
+	function getNewMessage(){
+		$.ajax({
+                type: "POST",
+                url:"/home/member/interact_ajax.php",
+                data:{
+					'act':'new'
+				},
+                async: false,
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(res) {
+					if(res>0){
+						$('.badge').html(res);
+					}else{
+						$('.badge').html('');
+					}
+				}
+			});
+	}
+	
+	//将当前信息设置为已读
+	function is_read(){
+		$.ajax({
+                type: "POST",
+                url:"/home/member/interact_ajax.php",
+                data:{
+					'act':'isread'
+				},
+                async: false,
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(res) {	
+				}
+		});
+	}
+	
+</script>

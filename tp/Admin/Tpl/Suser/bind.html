@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	#userList{width:800px;min-height:150px;margin-left:90px;}
+	#userList label{min-width:55px;width:auto;}
+	#userList label input{vertical-align:middle;}
+</style>
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/select-ui.min.js"></script>
+<script language="JavaScript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(e) {
+		$(".select1").uedSelect({
+			width : 345
+		});
+		$(".select2").uedSelect({
+			width : 167
+		});
+		$(".select3").uedSelect({
+			width : 100
+		});
+	});
+</script>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">绑定讲师</a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('bind')}>" id="memberform">
+		<input type="hidden" name='id' value="<{$model['id']}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>经纪人名<b></b></label>
+					<input type="text" name="" value="<{$model['name']}>" class="dfinput yaheifont" readonly style="border:0" />
+				</li>
+				<li>
+					<label>讲师列表<b></b></label>
+					<div id="userList">
+					<foreach name='userArr' item='vo'>
+					<if condition="!in_array($vo['id'],$noBindRow)">
+						<label><input type="checkbox" name="bind_user[]" value="<{$vo.id}>" <{:in_array($vo['id'],$bindRow) ? 'checked' : ''}> /><{$vo.name}></label>
+					</if>
+					</foreach>
+					</div>
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="绑&nbsp;&nbsp;&nbsp;定" onclick="save(this);return false"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返&nbsp;&nbsp;&nbsp;回" onclick="history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<!-- 文本编辑器开始 -->
+<!-- <link rel="stylesheet" href="__PUBLIC__/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/lang/zh_CN.js"></script> -->
+<script>
+	/*var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('.richarea', {
+			allowFileManager : true
+		});
+	});*/
+</script>
+<!-- 文本编辑器结束 -->
+<script type="text/javascript">
+$("#usual1 ul").idTabs();
+$('.tablelist tbody tr:odd').addClass('odd');
+
+function save(obj){
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

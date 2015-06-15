@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人资料</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<body style="background-color:#F6F6F6;">
+<div class="main">	
+    <div class="personal_top" >
+		<div class="personal_img">
+		<img src="<{if $headPic}><{$headPic}><{else}>images/people.png<{/if}>" style="border:none;" />
+		</div>
+		<p><{if $userRow.type==3}>客服-<{/if}><{$vo.nickname|default:'匿名'}></p>
+	</div>
+	<form action="" id="meminfo">
+	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
+	<input type="hidden" id="picInput" name="str[pic]" value="<{$vo.pic}>" />
+	<div class="tabs_info">
+		<!-- <{if $userRow.is_v==1}><img class="vip" src="images/vip.gif"/><{/if}> -->
+		<div class="input_group">
+			<input style="text-indent:4em;" type="text" name="str[nickname]" value="<{$vo.nickname}>" placeholder="请输入真实姓名，保证费用顺利结算" />
+			<div class="title">姓名：</div>
+		</div>
+		<div class="input_group">
+			<input style="text-indent:4em;" type="text" name="str[nicheng]" value="<{$vo.nicheng}>"/>
+			<div class="title">昵称：</div>
+		</div>
+		<div class="input_group" style="margin-top:10px;">
+			<input type="radio" name="num[sex]" value="1" <{if $vo.sex==1 || $vo.sex==''}>checked<{/if}> ><label>男</label>
+			<input type="radio" name="num[sex]" value="2" <{if $vo.sex==2}>checked<{/if}> ><label>女</label>
+		</div>
+		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">现居住地：</div>
+		<div>
+			<select style="float:left;margin-right:1.5%;" name="num[pid]" class="provinceid">
+				<option value="10">江苏省</option>
+				<!-- <option value="">请选择省</option>
+				<{foreach from=$parr item=pv}>
+				<option value="<{$pv.ProvinceID}>" <{if $pv.ProvinceID==$vo.pid}>selected<{/if}> ><{$pv.ProvinceName}></option>
+				<{/foreach}> -->
+			</select>
+			<select style="float:left;margin-right:1.5%;" name="num[cid]" class="cityid">
+			<option value="78">苏州市</option>
+			</select>
+			<select style="width:33%;float:right;" name="num[did]" class="areaid">
+				<option value="">请选择区</option>
+				<{foreach from=$darr item=dv}>
+				<option value="<{$dv.DistrictID}>" <{if $dv.DistrictID==$vo.did}>selected<{/if}> ><{$dv.DistrictName}></option>
+				<{/foreach}>
+			</select>
+			<div class="clear"></div>		
+		</div>
+		<div class="input_group">
+			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细地址" />
+		</div>
+		<{if $userRow.type==1}>
+		<div class="input_group">
+			<input style="text-indent:7em;" type="text" name="str[cardnum]" value="<{$vo.cardnum}>" />
+			<div class="title">身份证号码：</div>
+		</div>
+		<div class="input_group" id="cardPic">
+			<img class="upload_pic" src="<{if $vo.pic}>/data/image_c/<{$vo.pic}><{else}>images/upload.gif<{/if}>" />
+		</div>
+		<{if $vo.recommend_phone==''}>
+		<!-- <div class="input_group">
+			<input style="text-indent:9em;" type="text" name="recommend_phone" value=""/>
+			<div class="title">推荐人手机账号：</div>
+		</div> -->
+		<{/if}>
+		<{/if}>
+	</div>
+	</form>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>	
+</div><{include file="footer.html"}>
+<!-- 上传照片 -->
+<div style="visibility:hidden;">
+	<iframe name='img-frame' id="img-frame" style="visibility:hidden;height:10px"></iframe>
+	<form id="img-form" action="upload_img.php" encType="multipart/form-data" method="post" target="img-frame">
+		<!-- <input type="hidden" name="id" value="<{$vo.id}>" /> -->
+		<input type="file" name="imgfile" value="" id="img-file" onchange="changeValImg()"/>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#cardPic img").click(function(){
+		$('#img-file').click();
+	});
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+    	try{
+			var result = $.parseJSON(html);
+			if(result.success==1){
+				setTimeout(function(){
+					$('#loading').hide();
+				},1500)
+				$(".upload_pic").attr('src',"/data/image_c/"+result.data.path);
+				$("#picInput").val(result.data.path);
+			}else{
+				setTimeout(function(){
+					$('#loading').hide();
+				},1500)
+				alert("照片太大或其他错误");
+			}
+    	}catch(e){}
+    });
+})
+function changeValImg(){
+	$('#loading').show();
+	$('#img-form').submit();
+}
+function save(){
+	if($('input[name="str[nickname]"]').val()==''){
+		alert("请填写姓名");return;
+	}
+	if($('input[name="str[nicheng]"]').val()==''){
+		alert("请填写昵称");return;
+	}
+	if($('.provinceid').val()=='' || $('.cityid').val()=='' || $('.areaid').val()==''){
+		alert("请选择省市区");return;
+	}
+	if(isNumber($('input[name="str[address]"]').val())){
+		alert("请填写正确的详细地址");return;
+	}
+	var card_len=parseInt($('input[name="str[cardnum]"]').val().length);
+	if(card_len==15 || card_len==18){}else{
+		alert("请填写正确的身份证号");return;
+	}
+	/*if($('input[name="str[pic]"]').val()==''){
+		alert("请上传身份证正面照片");return;
+	}*/
+	$.post('index.php?m=user&a=user_add_personal',$('#meminfo').serialize(),function(res){
+		if(jQuery.trim(res)){
+			alert('保存成功');
+			window.location.href='index.php?m=user&a=user_index';
+		}else{
+			alert('保存失败');
+		}
+	});
+}
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+//验证数字
+function isNumber(s){  
+	var patrn=/^[0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+<!-- 城市级联开始 -->
+function pselect(obj){
+	$(".cityid option").remove();
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:$(obj).val()},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			str+="<option value=''>请选择</option>";
+			for(var i=0;i<data.length;i++){
+				str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+			}
+			$(".cityid").append(str);
+		}
+	});
+}
+function cselect(obj){
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:$(obj).val()},
+		dataType:"json",
+		success:function(dataa){
+			var stra="";
+			stra+="<option value=''>请选择</option>";
+			for(var i=0;i<dataa.length;i++){
+				stra+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+			}
+			$(".areaid").append(stra);
+		}
+	});
+}
+			
+//修改时加载城市和区域信息
+if(0 && '<{$vo.id}>'){
+	var pid='<{$vo.pid}>';
+	var cid='<{$vo.cid}>';
+	var did='<{$vo.did}>';
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:pid},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				if(data[i].CityID==cid){
+					str+="<option value=\""+data[i].CityID+"\" selected >"+data[i].CityName+"</option>";
+				}else{
+					str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+				}
+			}
+			$(".cityid").append(str);
+		}
+	});
+
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:cid},
+		dataType:"json",
+		success:function(dataa){
+			var str="";
+			for(var i=0;i<dataa.length;i++){
+				if(dataa[i].DistrictID==did){
+					str+="<option value=\""+dataa[i].DistrictID+"\" selected >"+dataa[i].DistrictName+"</option>";
+				}else{
+					str+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+				}
+			}
+			$(".areaid").append(str);
+		}
+	})
+}
+<!-- 城市级联结束 -->
+</script>
+</body>
+</html>

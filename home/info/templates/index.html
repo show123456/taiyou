@@ -1,0 +1,49 @@
+<div class=" main-content">
+    <div class="inner">
+        <ul class="tab clearfix">
+            <li <{if $type=='text'}>class="cur"<{/if}>><a href="/home/info/index.php?type=text">文字</a></li>
+            <li <{if $type=='single'}>class="cur"<{/if}>><a href="/home/info/index.php?type=single">单图文</a></li>
+            <li <{if $type=='multi'}>class="cur"<{/if}>><a href="/home/info/index.php?type=multi">多图文</a></li>
+            <li <{if $type=='pic'}>class="cur"<{/if}>><a href="/home/info/index.php?type=pic"></a></li>
+            <li <{if $type=='music'}>class="cur"<{/if}>><a href="/home/info/index.php?type=music"></a></li>
+            <li <{if $type=='video'}>class="cur"<{/if}>><a href="/home/info/index.php?type=video"></a></li>
+            <li <{if $type=='lbs'}>class="cur"<{/if}>><a href="/home/info/index.php?type=lbs"></a></li>
+            <li class="search"><input type="search" class="form-control" placeholder="消息内容" /> <input class="icons icons-search" type="submit" /></li>
+            <li class="omega">
+               <div class="dropdown infotype">
+                   <a id="drop6" role="button" data-toggle="dropdown" href="/home/info/<{$type}>.php"><i class="icons icons-plus"></i></a>
+                   <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop6" style="margin:0px;">
+                       <li><a href="/home/info/text.php?type=text">文字</a></li>
+                       <li><a href="/home/info/single.php?type=single">单图文</a></li>
+                       <li><a href="/home/info/multi.php?type=multi">多图文</a></li>
+                       <li><a href="/home/info/music.php?type=music">音乐</a></li>
+                       <li><a href="/home/info/video.php?type=video">视频</a></li>
+                       <li><a href="/home/info/lbs.php?type=lbs">LBS</a></li>
+                   </ul>
+               </div>
+            </li>
+        </ul>
+       <!--  <{if $type=="text"}>
+            <{include file="$ROOT_PATH/home/info/templates/text_table.html"}>
+        <{else if $type=="single"}>
+            <{include file="$ROOT_PATH/home/info/templates/single_table.html"}>
+        <{/if}>
+ -->
+	<{include file="$ROOT_PATH/home/info/templates/$typeyhtml.html"}>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script>
+    set_title_name('关键词回复设置');
+    set_menu_cur('menu_14','cur');
+    $(function(){
+    	$('.infotype').hover(
+    	    function(){$('#menu3').show();},
+    	    function(){$('#menu3').hide();}
+    	);
+    	$('a[title="删除"]').click(function(){
+    		if(!confirm('确定删除吗?')) return false;
+    		return true;
+    	});
+    });
+</script>

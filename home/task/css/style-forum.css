@@ -1,0 +1,105 @@
+/*论坛------>*/
+.card_manage{
+	margin:10px;
+}
+.card-default-text {
+    display: block;
+    width: 70%;
+    height: 150px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #FFF;
+    background-image: none;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+.card{
+	margin-top:5px;
+}
+.card a{
+    font-family: "Microsoft YaHei","黑体","宋体";
+    font-size: 14px;
+    background: none repeat scroll 0% 0% #F6F6F6;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    padding: 3px 8px;
+	color: #686868;
+	text-decoration:none;
+}
+.dele a{
+    font-family: "Microsoft YaHei","黑体","宋体";
+    font-size: 14px;
+    background: none repeat scroll 0% 0% #F6F6F6;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    padding: 3px 8px;
+}
+.weiforum_user{ 
+	font-size:14px; 
+	height:36px; 
+	line-height:36px; 
+	padding:10px; 
+	padding-top:0; 
+	padding-bottom:0px; 
+	color:#666; 
+	border-bottom:1px solid #f0f0f0; 
+	background:#fff; 
+    background-image: -moz-linear-gradient(top, #ffffff, #ffffff); /* Firefox */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #ffffff)); /* Saf4+, Chrome */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType='0'); /* IE*/
+    -moz-border-radius:3px; 
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	}
+.btngray {
+    padding: 3px 8px;
+    border: 1px solid #E5E5E5;
+    cursor: pointer;
+    background: none repeat scroll 0% 0% #EDEDED;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 12px;
+    font-family: "Microsoft YaHei","黑体","宋体";
+}
+.weiforum_user span a{ font-size:14px; margin-left:5px; line-height:20px;}
+.weiforum_title{ padding:10px; padding-bottom:0; color:#8cc382; font-weight:bold; font-size:16px;}
+.weiforum_time{ font-size:12px; color:#888888; padding:10px;}
+.weiforum_time span{ float:right;}
+.weiforum_content{ padding:10px; padding-top:0; color:#515151; font-size:14px; line-height:26px;}
+.yhhf{ padding-left:10px; border-bottom:1px solid #F0F0F0; line-height:34px; font-size:14px; color:#666; background:#fbfbfb; }
+.yhhf img{vertical-align:middle; float:left; margin-top:5px;}
+.weiforum_replyuser{ line-height:30px; border-bottom:1px dashed #e8e8e8; padding-left:10px;  padding-right:10px; color:#ec5801;}
+.weiforum_reply{ font-size:12px; line-height:22px;color:#666; padding-bottom:0px;}
+.weiforum_date{font-size:10px; color:#CCC; text-align:right;}
+.weiforum_reply a{ color:#666;}
+.weiforum_reptop{ float:left; width:100%;}
+.weiforum_reptop b{float:left; font-size:14px;}
+.weiforum_reptop span{ float:right; font-size:12px; color:#CCC;}
+.weiforum_reptop a{color:#999; outline:none; text-decoration:none;}
+
+.luweiinput,.cardbtn{
+	padding: 2px 8px;
+    font-family: "Microsoft YaHei","黑体","宋体";
+    border-radius: 3px;
+    color:#686868;
+    background: none repeat scroll 0% 0% #EDEDED;
+    font-size: 12px;
+    text-decoration: none;
+    margin-right: 6px;
+	border: 1px solid #DDD;
+}
+
+/*管理端回复区域*/
+.wei_forum_reply{ padding-left:10px;}
+.wei_forum_reply h3{ color:#090; line-height:30px; font-size:14px; }
+.wei_forum_reply_text{ border:1px solid #CCC;border-radius:3px; font-size:12px; color:#666; height:120px;width:80%; }
+.wei_forum_reply_right{font-size:14px; line-height:35px;}
+
+/*<------论坛*/
+
+.title-left{}
+

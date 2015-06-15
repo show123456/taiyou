@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的金库</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" /> <!-- apple devices fullscreen -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<style type="text/css">
+.xjk_tp{padding:25px 0;background-color:#FF6632; box-shadow:0px 0px 2px #888888;}
+.xjk_tp_p2 {
+    text-align:center;
+    color:#fff;
+	margin: 0;
+	font-size: 2em;
+}
+
+.xjk_tp_p2_sp1 {
+	margin: 0;
+	font-size: 1.5em;
+}
+
+.xjk_tp_p2_sp2 {
+	font-size: 0.5em;
+}
+.tabs_info {
+width: 75%;
+margin: 0 2%;
+}
+.xjk_tp_p1{height:50px;line-height:50px;color:#fff;font-size:1.5em;text-align:center;}
+.xjk_tp_btm_p1_sp1{height:30px;line-height:30px;padding:0 2%;font-size:14px;}
+.xjk_tp_btm_p1_sp2{color:#FF6632;font-size:25px;padding:10px 2%;}
+.bd_btn{position:absolute; width:19%;height:42px;line-height:42px;color:#fff;background-color:#FF6632;border-radius:5px; text-align:center;right:2%; bottom:1px;}
+
+#cz_input,#tx_input{text-indent:0.5em;width:75%;margin:0 2%;display:block;float:left;}
+.chongzhi,.tixian{float:left;width:19%;height:42px;line-height:42px;color:#fff;background-color:#FF6632;
+  border-radius:5px;text-align:center;}
+</style>
+<body>
+<form action="" id='meminfo'>
+<div class="main">	
+	<div class="xjk_tp">
+		<div class="xjk_tp_p1">今天收入</div>
+		<div class="xjk_tp_p2"><span class="xjk_tp_p2_sp1"><{$totalmoney|default:0}></span> <span class="xjk_tp_p2_sp2">元</span></div>
+	</div>
+	<div style="background-color:#fff;">
+		<div class="xjk_tp_btm_p1_sp1">余额：</div>
+		<div class="xjk_tp_btm_p1_sp2"><span style='inline-block;border:2px solid #01B4EC;border-radius:5px;padding-left:10px;padding-right:10px;'><{$userRow.money|default:0}>.00</span></div>
+	</div>
+	<div>
+		<input id="cz_input" type="text" name="money" value="" placeholder="请输入金额(数值型，单位元)" />
+		<div class="chongzhi" onclick="chongzhi()">充值</div>
+	</div>
+	<div style="clear:both;"></div>
+	<div style="position:relative;width:100%;">
+		<div class="tabs_info">
+			<div style="margin-top:15px;font-size:14px;">绑定银行卡：</div>
+			<div class="input_group">
+				<input style="text-indent:5em;" type="text" name="str[bank_name]" value="<{$userRow.bank_name}>" placeholder="银行名称" />
+				<div class="title">银行名称</div>
+			</div>	
+			<div class="input_group">
+				<input style="text-indent:5em;" type="text" name="str[bank_card]" value="<{$userRow.bank_card}>" placeholder="请输入卡号" />
+				<div class="title">银行卡号</div>
+			</div>
+		</div>
+		<div class="bd_btn" onclick="save()">绑定</div>
+	</div>
+	<div style="height:25px;"></div>
+	<div>
+		<input id="tx_input" type="text" name="money" value="" placeholder="请输入金额(数值型，单位元)" />
+		<div class="tixian" onclick="tixian()">提现</div>
+	</div>
+	<div style="height:10px;clear:both;"></div>
+	<div style="font-size:14px;color:#666;text-align:center;">申请提现成功后，将在24小时内转入你的绑定银行账户</div>
+</div>
+</form>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function tixian(){
+	if($('input[name="str[bank_card]"]').val().length<10){
+		alert("请先绑定银行卡");return;
+	}
+	var tx_money=$('#tx_input').val();
+	if(!isNumber(tx_money) || tx_money<10){
+		alert('提现金额应不小于10');
+		return;
+	}
+	var user_money=<{$userRow.money|default:0}>;
+	if(tx_money > user_money){
+		alert('余额不足');
+		return;
+	}
+	if(confirm('确定要提现吗？')){
+		$.post('index.php?m=user&a=tx',{fee:tx_money},function(res){
+			res=jQuery.trim(res);
+			if(res=='suc'){
+				window.location.reload();
+			}else if(res=='err'){
+				alert('提现失败');
+			}
+		})
+	}
+}
+function save(){
+	if($('input[name="str[bank_name]"]').val()==''){
+		alert("请填写银行名称");return;
+	}
+	if($('input[name="str[bank_card]"]').val().length<10){
+		alert("请填写正确的银行卡号");return;
+	}
+	$.post('index.php?m=user&a=add_bank',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('绑定成功');
+			window.location.href="index.php?m=user&a=user_index";
+		}else if(res=='err'){
+			alert('绑定失败');
+		}
+	});
+}
+//充值
+function chongzhi(){
+	var cz_money=$('#cz_input').val();
+	if(!isNumber(cz_money)){
+		alert('请填写大于1的整数');
+		return;
+	}
+	$.post('index.php?m=money&a=cz',{money:cz_money},function(res){
+		res=jQuery.trim(res);
+		if(res){
+			if(res=='err'){
+				alert('充值失败');
+			}else{
+				window.location.href="./czpay/js_api_call.php?oid="+res;
+			}
+		}
+	});
+}
+//验证为正整数
+function isNumber(s){  
+	var patrn=/^[1-9][0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body> 
+</html>

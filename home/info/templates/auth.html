@@ -1,0 +1,64 @@
+<div class=" main-content">
+    <div class="inner">
+        <div class="alert alert-success alert-dismissable fz12px alertfc">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p>1、<span class="c-red">订阅号通过微信认证</span>可使用自定义菜单。</p>
+			<p>2、服务号可直接使用自定义菜单，通过<span class="c-red">微信认证的服务号</span>可使用高级接口。</p>
+			<p>3、授权配置信息：登陆公众平台，进入高级功能 -> 开发者模式 -> 申请接口的<span class="c-red"Appid和AppSecret</span>，然后填入下面表单中。</p>
+        </div>
+
+        <div class="infor">
+
+            <p><strong>绑定微信公众平台，授权配置：</strong></p>
+            <form class="form-horizontal user-form form-api" id='for_m' role="form">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Appid：</label>
+                    <div class="col-sm-8">
+                        <input type="text" name='app_id' class="form-control input-large" value="<{$value_array.0}>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">AppSecret：</label>
+                    <div class="col-sm-8">
+                        <input type="text" name='app_Secret' class="form-control input-large" value="<{$value_array.1}>" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                        <input type="hidden" name="save" value="1">
+                        <button type="button" class="btn btn-large btn-success" onclick="saveform(event);">提交保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    set_title_name('微信接口配置');
+    set_menu_cur('menu_16','cur omega');
+	
+	//提交保存
+	function saveform(evt){
+
+		$.ajax({
+			type: "POST",
+			url:"/home/info/menu_ajax_auth.php",
+			data:$('#for_m').serialize(),// 你的formid
+			async: false,
+			error: function(request) {
+				alert("Connection error");
+			},
+			success: function(result){
+			
+				if(result=='success'){
+					note_info('保存成功!','success',evt);
+				}else{
+					note_info('错误原因:'+result,'warn',evt);
+				}
+			}
+		})
+	}
+</script>

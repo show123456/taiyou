@@ -1,0 +1,150 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+	#out_btn{color:#428bca;font-weight:bold;text-decoration:none;}
+	
+	.replyDiv{position:fixed;z-index:1999;width:1200px;padding:1px;top:0;display:none;}
+	.replyBox{border:1px solid #BCE1B4;width:250px;height:140px;margin:0 auto;background-color:#fff;border-radius:5px;}
+	.replyBox h3{background-color:#5CB85C;color:#fff;margin:0;font-size:16px;height:30px;line-height:30px;font-family:"Microsoft YaHei","黑体","宋体";}
+	.replyBox div{margin:10px;}
+	.replyBox textarea{width:230px;height:60px;border-radius:5px;}
+	.replyBox input[type='button']{padding:3px 10px;font-family:"Microsoft YaHei","黑体","宋体";}
+	.replyBox b{display:block;float:right;cursor:pointer;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<div>
+							<button style="float:right;"><a href="exceldemo.php?tid=<{$vo.id}>" target='_blank' id='out_btn'>导出到excel</a></button>
+						</div>
+						<!-- <div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入标题" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" title="搜索" type="submit">
+							</form>
+						</div> -->
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">ID-姓名</th>
+										<th class="enable">性别</th>
+										<th class="enable">手机号</th>
+										<th class="enable">薪酬(元)</th>
+										<th class="enable">距离</th>
+										<th class="enable">发消息</th>
+										<th class="enable">报名状态</th>
+										<th class="enable">签到状态</th>
+										<th class="enable">是否结算</th>
+										<th class="enable">报名时间</th>
+										<!-- <th name="Operate" class="enable">操作</th> -->
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v" key='k'}>
+									<tr>
+										<td><div><{$v.xuhao}>-<{$v.nickname}></div></td>
+										<td><div><{if $v.sex==1}>男<{else}>女<{/if}></div></td>
+										<td><div><{$v.username}></div></td>
+										<td><div><{$v.fact_money}></div></td>
+										<td><div><{$v.distance}></div></td>
+										<td><div style='color:#62ab62;font-weight:bold;cursor:pointer;' onclick="replyMsg(this,<{$v.uid}>)" data-name="<{$v.nickname}>">发送</div></td>
+										<td><div>
+											<{if $v.is_valid==0}>未审核
+											<{elseif $v.is_valid==1}>有效报名
+											<{else}>无效报名<{/if}>
+										</div></td>
+										<td><div>
+											<{if $v.is_qd==0}>未审核
+											<{elseif $v.is_qd==1}>已签到
+											<{else}>未签到<{/if}>
+										</div></td>
+										<td><div>
+											<{if $v.is_js==0}>未审核
+											<{elseif $v.is_js==1}>允许结算
+											<{else}>拒绝结算<{/if}>
+										</div></td>
+										<td><div><{$v.addtime}></div></td>
+										<!-- <td>
+											<div class="btn-operate">
+											<a href="#" onclick="delRow(event,'<{$v.id}>')">删除</a>
+											</div>
+										</td> -->
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 回复框 -->
+<div class="replyDiv">
+	<div class='replyBox'>
+		<h3>
+			&nbsp;发送给<span>陈冰</span>
+			<b onclick="$('.replyDiv').hide();">×&nbsp;</b>
+		</h3>
+		<div>
+			<textarea name="" id="replyContent"></textarea><br />
+			<input type="hidden" name="talk_id" id="talk_id" value="" />
+			<input type="button" class="btn btn-large btn-success" onclick="sendMsg(event)" value="发送" />
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('<{$vo.title}>-兼职用户');
+set_menu_cur('menu_41', 'cur omega');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"task.php",
+			data:{id:id,a:'del_sign'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+
+function replyMsg(obj,uid){
+	var manname=$(obj).attr('data-name');
+	$('.replyBox span').text(manname);
+	$('#talk_id').val(uid);
+	$('.replyDiv').slideDown();
+}
+function sendMsg(ev){
+	var replyContent=$('#replyContent').val();
+	var talk_id=$('#talk_id').val();
+	$.post('task.php',{a:'reply',uid:talk_id,content:replyContent},function(){
+		note_info('已发送','success',ev);
+		setTimeout(function(){
+			$('.replyDiv').hide();
+		},3000)
+	});
+}
+</script>

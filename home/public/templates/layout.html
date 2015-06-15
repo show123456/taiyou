@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="<{$WEB_DOMAIN}>/home/public/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="<{$WEB_DOMAIN}>/home/public/css/default.css" />
+<style type="text/css">
+	*,input,textarea,button{font-family:"Microsoft YaHei","微软雅黑",STXihei,"华文细黑",serif;}
+</style>
+<script type='text/javascript' src='<{$WEB_DOMAIN}>/home/public/js/jquery-1.11.0.min.js'></script>
+<script type='text/javascript' src='<{$WEB_DOMAIN}>/home/public/js/common.js'></script>
+<title>云凡客管理平台</title>
+</head>
+<body>
+    <div class="main-container clearfix">
+		<{include file="$ROOT_PATH/home/public/templates/main_menu.html"}>
+        <{include file="$ROOT_PATH/home/$_TPL_"}>
+		<div class="clearfix"></div>
+        <footer class="main-footer">
+		Copyright &copy; 2013-2015 All Rights Reserved. <!-- 苏ICP备09098830号 Tel：0512-65965129 Fax:0512-65924988 Email:service@yunfanke.com -->
+		</footer>
+    </div>
+	<script type='text/javascript'>
+	(function(){
+	    var menu = $('.main-menu'), content = $('.main-content');
+	    menu.height() > content.height() ? (content.css({'min-height':menu.height() +'px'})) : (menu.css({'min-height':content.height() + 'px'}) )
+	})();
+	$(function(){
+		$('.menu li').click(function(){
+			$(this).parent().find('ul').css('display','none');
+			$(this).find('ul').css('display','');
+		});
+	});
+	</script>
+</body>
+</html>

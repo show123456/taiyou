@@ -1,0 +1,241 @@
+<script type='text/javascript' src='<{$WEB_DOMAIN}>/includes/highcharts/js/highcharts.js'></script>
+<div class="main-content">
+	<div class="inner">
+		<div class="data-info">
+			<div class="consumer-info">
+				<div class="cate-message">
+					<ul>
+						<li class="select"><a href="">消息分析</a></li>							
+					</ul>
+				</div>
+				<div class="target">
+					<div class="i-item">
+						<h3 class="k-title">关键指标</h3>
+						<ul>
+							<li>
+								<div>
+									<div class="k-thick">今天消息发送人数</div>
+									<div class="k-thick"><{$count.today_sendmember|default:0}></div>
+									<div>昨日：<span><{$count.yestoday_sendmember|default:0}></span></div>
+								</div>
+							</li>
+							<div style="height:60px;background-color:#DBDBDB;width:1px;float:left;"></div>
+							<li>
+								<div>
+									<div class="k-thick">今天消息发送次数</div>
+									<div class="k-thick"><{$count.today_sendnum|default:0}></div>
+									<div>昨日：<span><{$count.yestoday_sendnum|default:0}></span></div>
+								</div>
+							</li>
+							<div style="height:60px;background-color:#DBDBDB;width:1px;float:left;"></div>
+							<li>
+								<div>
+									<div class="k-thick">今天人均发送次数</div>
+									<div class="k-thick"><{$count.today_pernum|default:0}></div>
+									<div>昨日：<span><{$count.yestoday_pernum|default:0}></span></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				
+				</div>
+				<div class="detail-target">
+					<div class="detail-message">
+						<div class="sub_menu">
+							<span class="sub-title">关键指标详解</span>
+							<ul>
+								<li class="select" id="datamenu1"><a href="#" onclick="change_chart(1);return false;">消息发送人数</a></li>
+								<li id="datamenu2"><a href="#" onclick="change_chart(2);return false;">消息发送次数</a></li>
+								<li id="datamenu3"><a href="#" onclick="change_chart(3);return false;">人均发送次数</a></li>
+							</ul>
+						</div>
+						<div class="tool-date">
+							<div class="setup" style="text-align:right;">
+								<select class="textarea" id="year" name='year'>
+								<option value="">2014年</option>
+								<option value="">2013年</option>
+								</select>
+								<select class="textarea" id="month" name='month'>
+								<option value="01">1月</option>
+								<option value="02">2月</option>
+								<option value="03">3月</option>
+								<option value="04">4月</option>
+								<option value="05">5月</option>
+								<option value="06">6月</option>
+								<option value="07">7月</option>
+								<option value="08">8月</option>
+								<option value="09">9月</option>
+								<option value="10">10月</option>
+								<option value="11">11月</option>
+								<option value="12">12月</option>
+								</select>
+								<div class="btn btn-success btn-large" style="margin-right:10px;margin-top:-8px;" onclick='mysubmit(event)'>确定</div>
+							</div>
+						</div>
+					</div>
+					<div class="content">
+						<div>
+							<h4 class="tread-title">趋势图&nbsp;&nbsp;<span style="font-size:12px;color:#428BCA;">最近30天</span></h4>
+							<div class="trend-chart">
+								<div id="container1" style="width: 720px; height: 255px; margin: 0 auto"></div>
+							</div>
+						</div>
+						<div class="sub_content" style="border-bottom:1px solid #D8D8D8;">
+							<h4 class="tread-title">消息发送次数分布图</h4>
+							<div class="list-table" style="margin:0px 10px 10px; border:1px solid #D8D8D8;">
+								<div class="wrapper">
+									<table class="stable">
+										<colgroup span="3">
+											<col class="CountInterval">
+											<col class="MsgUser">
+											<col style="width: 50%;" class="Percent">
+										</colgroup>
+										<thead>
+											<tr>
+											<th name="CountInterval" class="">消息发送次数</th>
+											<th name="MsgUser" class="">消息发送人数</th>
+											<th name="Percent" class="">占比</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+											<td><div>1-5次</div></td>
+											<td><div>136(94.44%)</div></td>
+											<td><div><span><div class="date-progress"><div style="width:95.44%; background:#289F4B" class="date-progress-bar"></div></div></span></div></td>
+											</tr>
+											<tr>
+											<td><div>6-10次</div></td>
+											<td><div>7(4.86%)</div></td>
+											<td><div><span><div class="date-progress"><div style="width:5.86%; background:#289F4B" class="date-progress-bar"></div></div></span></div></td>
+											</tr>
+											<tr>
+											<td><div>10次以上</div></td>
+											<td><div>1(0.69%)</div></td>
+											<td><div><span><div class="date-progress"><div style="width:1.69%; background:#289F4B" class="date-progress-bar"></div></div></span></div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						
+						</div>
+						<div>
+							<h4 class="tread-title">详细数据</h4>
+							<span class="more_menu">
+								<a href="#">导出CSV</a>
+							</span>
+							<div class="list-table">
+								<div class="wrapper">
+									<table class="stable">
+										<colgroup span="4">
+											<col class="RefDate">
+											<col class="MsgUser">
+											<col class="MsgCount">
+											<col class="MsgPerUser">
+										</colgroup>
+										<thead>
+											<tr>
+											<th name="RefDate" class="hover enable">时间</th>
+											<th name="MsgUser" class="hover enable row_hover">消息发送人数</th>
+											<th name="MsgCount" class="hover enable">消息发送次数</th>
+											<th name="MsgPerUser" class="hover enable">人均发送次数</th>
+											</tr>
+										</thead>
+										<tbody>
+											<{foreach item="detail" from=$detail}>
+											<tr>
+											<td><div><{$detail.count_date}></div></td>
+											<td class="row_hover"><div><{$detail.member}></div></td>
+											<td><div><{$detail.num}></div></td>
+											<td><div><{$detail.pernum}></div></td>
+											</tr>
+											<{/foreach}>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script>
+set_title_name('数据分析');
+set_menu_cur('menu_23','cur omega');
+var label=new Array(<{$chart_data.label}>);
+var data1=new Array(<{$chart_data.value1}>);
+var data2=new Array(<{$chart_data.value2}>);
+var data3=new Array(<{$chart_data.value3}>);
+function change_chart(num){
+	$("#datamenu1").attr("class","");
+	$("#datamenu2").attr("class","");
+	$("#datamenu3").attr("class","");
+	$("#datamenu"+num).attr("class","select");
+	create_chart(label,'data'+num);
+}
+function create_chart(labelvalue,datavalue){
+	var chart;
+	chart = new Highcharts.Chart({
+	chart: {
+		renderTo: 'container1',
+		type: 'line',
+		marginRight: 15,
+		marginBottom: 30
+	},
+	title: {
+		text: '',
+		x: -20 //center
+	},
+	subtitle: {
+		text: '',
+		x: -20
+	},
+	xAxis: {
+		categories: eval(labelvalue)
+	},
+	yAxis: {
+		title: {
+		text: ''
+		},
+		plotLines: [{
+			value: 0,
+			width: 1,
+			color: '#808080'
+		}]
+	},
+	tooltip: {
+		formatter: function() {
+		return '<b>'+ this.series.name +'</b><br/>'+
+			this.y +'次';
+		}
+	},
+	legend: {
+		layout: 'vertical',
+		align: 'right',
+		verticalAlign: 'top',
+		x: -10,
+		y: 100,
+		borderWidth: 0
+	},
+	plotOptions: {
+		series: {
+		showInLegend: false
+		}
+	},
+	series: [{
+		name: '数量',
+		data: eval(datavalue)
+		}],
+	colors: ['#489100', '#E6E6E6']
+	});
+}
+$(function(){
+	$(document).ready(function() {
+		create_chart(label,data1);
+	});
+});
+</script>

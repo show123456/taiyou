@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="<{$WEB_DOMAIN}>/home/public/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="<{$WEB_DOMAIN}>/home/public/css/default.css" />
+    <title>信息库列表 - <{$DEFAULT_TITLE}></title>
+</head>
+<body>
+    <div class="main-container clearfix">
+		<{include file="$ROOT_PATH/home/public/templates/header.html"}>
+		<{include file="$ROOT_PATH/home/public/templates/main_menu.html"}>
+
+        <div class=" main-content">
+            <div class="inner">
+                <ul class="tab clearfix">
+                    <li class="cur"><a href="">文字</a></li>
+                    <li><a href="">单图</a></li>
+                    <li><a href="">多图</a></li>
+                    <li><a href="">列表</a></li>
+                    <li><a href="">音乐</a></li>
+                    <li><a href="">视频</a></li>
+                    <li><a href="">LBS</a></li>
+                    <li class="search"><input type="search" class="form-control" placeholder="消息内容" /> <input class="icons icons-search" type="submit" /></li>
+                    <li class="omega"><a href=""><i class="icons icons-plus"></i></a></li>
+                </ul>
+                <table class="table table-library">
+                    <thead>
+                        <tr>
+                            <th class="t1">绑定规则词</th>
+                            <th class="t2">回复内容</th>
+                            <th class="t3">推送量</th>
+                            <th class="t4">操作 </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <p class="c-gray wrap-null">
+                                暂无内容！点击右上角<span class="c-green">【+】号</span>新建内容吧！
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <{include file="$ROOT_PATH/home/public/templates/footer.html"}>
+    </div>
+	<script type='text/javascript' src='$ROOT_PATH/home/public/js/jquery-1.11.0.min.js'></script>
+	<script type='text/javascript' src='$ROOT_PATH/home/public/js/init.js'></script>
+</body>
+</html>

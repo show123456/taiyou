@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片分享详情</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+<style type="text/css">
+.discuss .w_discuss{float:right;margin-right:4%;color:#666;font-weight:normal;}
+.discuss .w_discuss span{color:#01b4ec;margin-right:3px;}
+.discuss .discuss_btn{width:100px;height:35px;line-height:35px;color:#fff;border-radius: 5px;background-color: #01B4EC; text-align:center;float:right;margin-bottom:5px;margin-right:2%;}
+
+#atName{font-size:14px;color:#888;padding-left:5px;display:none;}
+</style>
+</head>
+<body style="background-color:#eeeeee;">
+<div class="main">  
+	<div class="banner"><img src="../data/image_c/<{$vo.pic}>"/></div>
+	<div class="pic_info">
+	<{$vo.introduce}>
+	</div>
+	<div class="record">
+		<div style='float:left;font-size:13px;'>发布人：<{$vo.name}></div>
+		<span onclick="eggClick(this)"><{$vo.enum}></span>
+		<p onclick="flowerClick(this)"><{$vo.fnum}></p>		
+		<div class="clear"></div>
+	</div>
+	<div class="discuss">
+		<div class="title">评论
+			<div class="w_discuss" id="replyOs"><span class="fa fa-pencil-square" ></span><b style="font-weight:normal;">我要评论</b></div>
+		</div>
+		<div class="discuss_list" id="reply_box" style="display:none;">
+			<span id='atName' data-maninfo=''>@匿名</span>
+			<textarea style="width:96%;margin:10px 2%;" placeholder="评论内容" id="reply_content"></textarea>	
+			<div class="discuss_btn" onclick="doReply()">评论</div>
+			<div class="clear"></div>
+		</div>
+		<{if $replyList}>
+		<{foreach from=$replyList item=v}>
+		<div class="discuss_list" id="discuss_list<{$v.id}>">
+			<div class="user_icon"><img src="<{$v.head_pic|default:'images/user_icon.gif'}>"/></div>
+			<div class="discuss_info">
+				<div class="user_title"><p><{$v.name}><{if $v.tomanname}> @ <{$v.tomanname}><{/if}></p>
+				<!-- <span><{$v.addtime}></span> -->
+				<{if $userRow.id==1}>
+					<span style="color:#01B4EC;" data-name="<{$v.name}>" onclick="replyMsg(this,'<{$v.fromuser}>___<{$v.name}>')">回复</span>
+					<span style="color:#01B4EC;margin-right:20px;" onclick="delMsg(this,'<{$v.id}>')">删除</span>
+				<{/if}>
+				<div class="clear"></div></div>
+				<div class="info_detail"><{$v.content}></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<{/foreach}>
+		<div class="register_end" id="doReplyPage" data-page="1" style="height:35px;line-height:35px;font-size:16px;width:90%;margin:8px auto;">更多评论</div>
+		<{/if}>
+	</div>
+	<div class="blank_15"></div>		
+</div><{include file="footer.html"}>
+<script type="text/javascript">
+$(document).ready(function(){
+	//评论分页
+	$('#doReplyPage').click(function(){
+		var pageNum=parseInt($(this).attr('data-page'))+1;
+		$(this).attr('data-page',pageNum);
+		$.get('index.php?m=pic&a=ajax_reply&p='+pageNum+'&pid=<{$vo.id}>',function(res){
+			if(res){
+				if(res=='err'){
+					$('#doReplyPage').text('没有更多了:)');
+				}else{
+					var goodsStr='';
+					$.each(res,function(i,item){
+						goodsStr+='<div class="discuss_list" id="discuss_list'+item.id+'">';
+						goodsStr+='<div class="user_icon"><img src="'+item.head_pic+'"/></div><div class="discuss_info"><div class="user_title">';
+						goodsStr+='<p>'+item.name;
+						if(item.tomanname){
+							goodsStr+='@'+item.tomanname;
+						}
+						goodsStr+='</p>';
+						if('<{$userRow.id}>'=='1'){
+							goodsStr+='<span style="color:#01B4EC;" data-name="'+item.name+'" onclick=\'replyMsg(this,"';
+							goodsStr+=item.uid+'___'+item.name;
+							goodsStr+='")\'>回复</span><span style="color:#01B4EC;margin-right:20px;" onclick="delMsg(this,'+item.id+')">删除</span>';
+						}
+						goodsStr+='<div class="clear"></div></div><div class="info_detail">'+item.content+'</div></div><div class="clear"></div></div>';
+					})
+					$('#doReplyPage').before(goodsStr);
+				}
+			}
+		},'json');
+	});
+	//开放关闭评论
+	$("#replyOs").toggle(
+		function(){
+			$("#replyOs b").text('关闭');
+			$("#reply_box").show();
+		},
+		function(){
+			$("#replyOs b").text('我要评论');
+			$("#reply_box").hide();
+		}
+	);
+})
+//发表评论
+function doReply(){
+	var reply_content=$('#reply_content').val();
+	var reply_at=$('#atName').attr('data-maninfo');
+	if(reply_content==''){
+		alert('评论内容不能为空');return;
+	}
+	$.get('index.php?m=pic&a=reply&pid='+'<{$vo.id}>'+'&content='+reply_content+'&at='+reply_at,function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('评论成功！');
+			$('#reply_content').val('');
+			window.location.href="index.php?m=pic&a=detail&id=<{$vo.id}>";
+		}else if(res=='err'){
+			alert('评论失败！');
+		}
+	})
+}
+//鲜花
+function flowerClick(obj){
+	var flowerNum=parseInt($(obj).text())+1;
+	$.get('index.php?m=pic&a=flower&pid=<{$vo.id}>',function(res){
+		res=jQuery.trim(res);
+		if(res=='suc') $(obj).text(flowerNum);
+	})
+}
+//鸡蛋
+function eggClick(obj){
+	var eggNum=parseInt($(obj).text())+1;
+	$.get('index.php?m=pic&a=egg&pid=<{$vo.id}>',function(res){
+		res=jQuery.trim(res);
+		if(res=='suc') $(obj).text(eggNum);
+	})
+}
+//管理员点击回复
+function replyMsg(obj,maninfo){
+	var manname=$(obj).attr('data-name');
+	$('#atName').text('@'+manname).show();
+	$('#atName').attr('data-maninfo',maninfo);
+	$("#replyOs b").text('关闭');
+	$("#reply_box").show();
+}
+//管理员删除回复
+function delMsg(obj,id){
+	if(confirm('确定要删除吗？')){
+		$.get('index.php?m=pic&a=del_reply&id='+id,function(){
+			$('#discuss_list'+id).remove();
+		})
+	}
+}
+</script>
+</body>
+</html>

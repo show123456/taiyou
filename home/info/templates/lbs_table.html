@@ -1,0 +1,91 @@
+<table class="table table-library">
+    <thead>
+        <tr>
+ 
+            <th class="t1">位置名称</th>
+            <th class="t2">图片</th>
+            <th class="t3">推送量</th>
+            <th class="t4">状态</th>
+            <th class="t5">操作 </th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr>
+            <td colspan="5">
+                <div class="tag pull-left" style="float:left">
+				<{if $cates}>
+                <{foreach item="cate" from=$cates}>
+                    <button class="btn btn-info btn-xs " onclick='window.location.href="/home/info/index.php?cate_id=<{$cate.id}>&type=<{$type}>"'><{$cate.cate_name}></button>
+                <{/foreach}>
+				<{/if}>
+
+                </div>
+                 <div class="pull-right">
+					<div style="float:left;">
+					
+					
+						<form action='/home/info/insert_cate.php' method='post' style="display:none;" id='f_m'>
+							<input type='text' class="textarea" name='cate_name'>
+							<input type='hidden' value="<{$type}>" name='info_type'>
+							<button type='button' class="btn btn-sm btn-success" onclick="save_cate(event)" >添加</button>
+						</form>
+						
+						
+					</div>
+					<a onclick="insertCate()"><img src="/home/public/img/add.jpg"></a>
+				</div>
+            </td>
+        </tr>
+    <{if $infolist}>
+	
+			<{foreach item="row" from=$infolist}>
+			<tr>
+				<td><strong class='c-red'><{$row.location_name}></strong></td>
+				<td><img src="/data/image_c/<{$row.location_pic}>" width='79' height='50'></td>
+				<td><{$row.push_num}></td>
+				<td><{if $row.state==1}><div style='color:#009A07'>开放中</div><{else}>已关闭<{/if}></td>
+				<td>
+					<a href="/home/info/<{$type}>.php?id=<{$row.id}>&type=<{$type}>" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
+					<a href="/home/info/<{$type}>.php?id=<{$row.id}>&act=del&type=<{$type}>" title="删除"><i class="glyphicon glyphicon-trash"></i></a>
+				</td>
+			</tr>
+			<{/foreach}>
+		
+    <{else}>
+        <tr>
+            <td colspan="5">
+                <p class="c-gray wrap-null"> 暂无内容！点击右上角<span class="c-green">【+】号</span>新建内容吧！ </p>
+            </td>
+        </tr>
+    <{/if}>
+    </tbody>
+</table>
+<script type="text/javascript">
+function insertCate(){
+	$('#f_m').show();
+}
+
+function save_cate(event){
+	$.ajax({
+             type: "POST",
+             url: "/home/info/insert_cate.php",
+             data: $('#f_m').serialize(),//{username:$("#username").val(), content:$("#content").val()},
+             dataType: "json",
+             success: function(res){
+				success: function(res){
+				if(typeof(res)=='object'){
+					note_info('保存成功！','success',event);			
+					$('#div_p').append("<button class='btn btn-info btn-xs'style='margin-left:1px' onclick='window.location.href=\"/home/info/index.php?cate_id="+res.id+"&type=<{$type}>\"'>"+res.cate_name+"</button>");
+					$('#f_m').hide();
+					$('#a').show();
+				}
+				if(res=='1'){
+					note_info('此分类已存在','warn',event);
+					return false;
+				}
+             }	
+
+         });
+}
+</script>

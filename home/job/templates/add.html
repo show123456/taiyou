@@ -1,0 +1,143 @@
+<link rel="stylesheet" type="text/css" href="../public/css/sub-manage.css" media="all" />
+<style type="text/css">
+.cc_title_h4{border:1px solid #C9E4C3;height:35px;background-color:#E8FFE2;padding-left:25px;border-radius:4px;}
+.fg-upload span{color:#777;height:34px;line-height:34px}
+.input_span_extra{height:35px;line-height:35px;color:red;}
+.shop_sort .shop_sort_title{width:12%;}
+</style>
+<div class="main-content" style="min-height:1000px;height:auto;"><div class='inner'>
+<div class="manage-apply"><div class="apply-content"><div class="manage-menu">
+<div class="msg_editer"><div class="sub-list"><div class="shop_sort_box">
+	<form id="memberform">
+		<input type="hidden" name='a' value='add'/>
+		<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+		<input type="hidden" id="info_pic" name="info[pic]" value="<{$vo.pic}>" />
+		<h4 class='cc_title_h4'>任务发布</h4>
+		<div class="shop_sort">
+			<div class="shop_sort_title">
+				<h4>标题：</h4>
+			</div>
+			<div class="shop_sort_set">
+				<input class="shop_sort_text" name="str[title]" value="<{$vo.title}>" type="text">
+			</div>
+		</div>
+		<div class="shop_sort">
+			<div class="shop_sort_title">
+				<h4>金额：</h4>
+			</div>
+			<div class="shop_sort_set">
+				<input class="shop_sort_text" name="num[fee]" value="<{$vo.fee}>" type="text"><span class='input_span_extra'>&nbsp;元</span>
+			</div>
+		</div>
+		<div class="shop_sort">
+			<div class="shop_sort_title"><h4>LOGO：</h4></div>
+			<div class="shop_sort_set">				  
+				<div class="form-group">
+				<div class="fg-upload" onclick="$('#img-file').click()">
+					<input id="local-image" type="text" class="form-control shop_sort_text" value='' style="padding-left:70px;" />
+					<a href="javascript:void(0);" class="btn-upload"><i class="icons icons-upload"></i>上传</a>
+					<span>&nbsp;&nbsp;&nbsp;(建议尺寸:90px*75px)</span>
+				</div>
+				</div>
+				<div id="logo_image" class="editer_img cover" style="display:<{if $vo.pic}><{else}>none<{/if}>">
+				<img id="logo_url" src="../../data/image_c/<{$vo.pic}>" width="100" />
+				<span>
+					<a href="javascript:void(0);" id="logo_delete" onclick="dele_pic(event);return false">删除</a>
+				</span>
+			</div>
+			</div>
+		</div>
+		<div class="shop_sort">
+			<div class="shop_sort_title">
+				<h4>内容：</h4>
+			</div>
+			<div class="shop_sort_set">
+				<textarea id="goods_intro" name="str[content]" style="width:550px;height:150px;"><{$vo.content}></textarea>
+			</div>
+		</div>
+		<div class="shop_sort" style="margin-top:10px;">
+			<div class="shop_sort_title">
+				<h4>推送消息链接：</h4>
+			</div>
+			<div class="shop_sort_set">
+				<input class="shop_sort_text" name="str[msg]" value="<{$vo.msg}>" type="text">
+			</div>
+		</div>
+		<div class="shop_sort">
+			<div class="shop_sort_title">
+				<h4>序号：</h4>
+			</div>
+			<div class="shop_sort_set">
+				<input maxlength="30" class="shop_sort_text" name="num[ordernum]" value="<{$vo.ordernum|default:0}>" type="text" style="width:45px" /><span class="input_span_extra">&nbsp;&nbsp;注：序号越大，位置越靠前</span>
+			</div>
+		</div>
+		<div class="shop_sort" style="margin-top:10px;">
+			<div class="shop_sort_title">
+				<h4></h4>
+			</div>
+			<div class="shop_sort_set" style="margin-bottom:10px;">
+				<button onclick="save(event);return false" type='button' class="btngreen30" id="adddo">
+					完成
+				</button>&nbsp;&nbsp;
+				<button onclick="window.history.go(-1)" class="btngray30" type='button' id="adddo2">返回</button>
+			</div>
+			<div class="clr"></div>
+		</div>
+	</form>
+</div></div></div></div></div></div></div></div>
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript" src="/includes/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/includes/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+set_menu_cur('menu_11_1', 'cur');
+//初始化编辑器
+$(function(){
+	UE.getEditor('goods_intro');
+});
+function save(event){
+	$.ajax({
+		url:"index.php",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res) {
+			if(res){
+				note_info('保存成功','success',event);
+				setTimeout("window.location.href='index.php'",300);
+			}else{
+				note_info('保存失败','warn',event);
+			}
+		}
+	});
+}
+//删除图片
+function dele_pic(event){
+	note_info("只有点击保存才能真正删除图片哦",'success',event);
+	$('#logo_image').hide();
+	$('#info_pic').val('');
+}
+$(document).ready(function(){
+	//图片处理
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+    	try{
+    	    var result = $.parseJSON(html);
+    	    if(result.success==1){
+    	    	$('#info_pic').val(result.data.path);
+				$('.cover').html('<img src="../../data/image_c/'+result.data.path+'" width="100"/><span><a href="javascript:void(0);" id="logo_delete" onclick="dele_pic(event);return false">删除</a></span>');
+				$('.cover').show();
+    	    }
+    	}catch(e){}
+    });
+    $('#img-file').change(function(){
+    	$('#local-image').val($(this).val());
+    });
+})
+</script>

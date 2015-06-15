@@ -1,0 +1,140 @@
+<script type="text/javascript" src="/includes/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/includes/ueditor/ueditor.all.js"></script>
+<div class=" main-content">
+    <div class="inner">
+        <div class="lib-edit">
+            <div class="header">
+                <a href="/home/info/index.php?type=video"><i class="icons icons-back"></i> 视频内容编辑</a>
+            </div>
+            <div class="content">
+                <div class="preview">
+                    <div class="cell">
+                        <div class="lib-title">
+                            <span  style="font-size:14px;"><{if $infoRow.video_name}><{$infoRow.video_name}><{else}>视频名<{/if}> </span>
+                            <p><{$today}></p>
+                        </div>
+                        <div class="cover">
+                            <{if $infoRow.video_pic}>
+                            <img src="/data/image_c/<{$infoRow.video_pic}>" style="width:246px;height:136px;"/>
+                            <{else}>
+                            <div class="img-default"> 封面图片 </div>
+                            <{/if}>
+                        </div>
+                    </div>
+                </div><div class="editor">
+				
+                    <form id="text-form" method="post" action="/home/info/video.php">
+					
+					
+					<div class="cell">
+                        <div class="form-rule" role="form">
+                            <div class="form-group">
+                                <label>关键词<strong class="c-red">*</strong> <span class="c-gray">（PS:多个规则对应一条内容用逗号分隔。如：help ,帮助）</span></label>
+                                <input name="keyword" type="text" class="form-control" value="<{$infoRow.keyword}>">
+                            </div>
+                        </div>
+                    </div>
+					
+					<div class="cell cell-dark">
+                        <div class="form-rule form-rule-add" role="form">
+                            <div class="form-group">
+                                <label>类别<span class="c-gray"></span></label>
+                                <select name="cate_id" class="form-control">
+                                    
+                                    <{foreach item="row" from=$cates}>
+                                    <option value="<{$row.id}>"><{$row.cate_name}></option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+							<div class="form-group">
+                                <label>视频名<strong class="c-red">*</strong> </label>
+                                <input name="video_name" type="text" class="form-control" value="<{$infoRow.video_name}>">
+                            </div>
+							<div class="form-group">
+								<label>封面 <span class="c-gray">(大图片建议尺寸：720像素*400像素)</span></label>
+								<div class="fg-upload" onclick="$('#img-file').click()">
+									<input id="local-image" type="text" readonly class="form-control" value='' style="padding-left:70px;">
+									<a href="javascript:void(0);" class="btn-upload"><i class="icons icons-upload"></i>上传</a>
+								</div>
+							</div>
+							<div class="form-group">
+                                <label>简介<strong class="c-red">*</strong> </label>
+								<textarea id="video_desc" name="video_desc" ><{$infoRow.video_desc}></textarea>
+                            </div>
+							<div class="form-group">
+                                <label>链接地址<strong class="c-red">*</strong> </label>
+                                <input name="video_url" type="text" class="form-control" value="<{$infoRow.video_url}>">
+                            </div>
+							<div class="form-group">
+                                <label>状态<span class="c-gray"></span></label>
+                                <br/>
+                                <input type="radio" name="state" <{if $infoRow.state==1}>checked<{/if}> value='1'> 开放&nbsp;&nbsp;
+                                <input type="radio" name="state"<{if $infoRow.state==2}>checked<{/if}>  value='2'> 关闭
+                            </div>
+                        </div>
+                    </div>
+					
+                    <div class="opt">
+                        <input type="hidden" name="id" value="<{$infoRow.id}>"/>
+						<input type="hidden" name="video_pic" id="info_pic" value="<{$infoRow.video_pic}>"/>
+                        <input type="submit" class="btn btn-large btn-success" value="完成">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- iframe upload -->
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript">
+    set_title_name('源资料库-视频');
+    set_menu_cur('menu_16','cur super');
+    $(function(){
+		var uea = UE.getEditor('video_desc');
+        $('#text-form').submit(function(){
+            $.post($(this).attr('action'),$(this).serializeArray(),function(msg){
+                try{
+                    var obj = $.parseJSON(msg);
+                    if(obj.success==1){ window.location.href='/home/info/index.php?type=video';}else{
+                        var evt = {clientX:$('input[type="submit"]').offset().left,clientY:$('input[type="submit"]').offset().top-420};
+                    	note_info(obj.msg,'warn',evt);
+                    }
+                }catch(e){}
+            });
+            return false;
+        });
+		
+		$('select[name=state]').val("<{$infoRow.state}>");
+		$('select[name=cate_id]').val("<{$infoRow.cate_id}>");
+		var SelectArr = $("select")
+		  for (var i = 0; i < SelectArr.length; i++) {
+		  SelectArr[i].options[0].selected = true; 
+		  }
+  
+    });
+	
+	    $('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+    	
+    	try{
+    	    var result	= $.parseJSON(html);
+    	    if(result.success==1){
+    	    	$('#info_pic').val(result.data.path);
+    	    	$('.cover').html('<img src="/data/image_c/'+result.data.path+'" style="width:246px;height:136px;"/>');
+    	    }else{
+    	    	alert(result.msg);
+    	    	//note_info(result.msg, 'warn', $('#local-image'));
+    	    }
+    	}catch(e){ }
+    });
+    $('#img-file').change(function(){
+    	$('#local-image').val($(this).val());
+    });
+</script>

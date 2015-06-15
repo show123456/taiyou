@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>修改密码</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+<style type="text/css">
+#phone{width:50%;float:left;}
+.tabs_info .get_num{letter-spacing:0;font-size:16px;}
+.tabs_info .code_gray{background-color:#aaa;border:1px solid #bbb;}
+</style>
+</head>
+<body>
+<div class="main">
+	<div class="banner"><img src="images/editp.jpg"/></div>
+	<form action="" id="memInfo">
+	<input type="hidden" name="a" value="do" />
+	<div class="tabs_info">
+		<div>
+			<input type="text" name="username" value="" placeholder="请输入您的手机号码" id="phone"/>
+			<div class="get_num" onclick="get_mobile_code()" data-getStatus='0' style="width:40%;">获取验证码</div>
+			<div class="clear"></div>
+		</div>
+		<input type="text" name="code" placeholder="请输入验证码"/>
+		<input type="password" name="pass" placeholder="密码(6-15位字母数字组合)"/>
+		<input type="password" name="repass" placeholder="请再次输入密码"/>
+		<div class="register_end" onclick="save()">保存</div>
+	</div>
+	</form>
+</div>
+<script type="text/javascript">
+function save(){
+	if($('input[name="username"]').val()==''){
+		alert("请填写手机号");return;
+	}
+	if($('input[name="code"]').val()==''){
+		alert("请填写验证码");return;
+	}
+	
+	if(!isPasswd($('input[name="pass"]').val())){
+		alert("请填写正确格式的密码");return;
+	}
+	if($('input[name="pass"]').val()!=$('input[name="repass"]').val()){
+		alert("两次密码输入不一致");return;
+	}
+	$.post("editp.php",$("#memInfo").serialize(),function(res){
+		if(res){
+			if(res=='codeerr'){
+				alert("手机验证码错误");
+			}else{
+				alert("恭喜您，修改成功");
+				window.location.href="index.php?m=user&a=user_index";
+			}
+		}else{
+			alert("修改失败");
+		}
+	});
+}
+var getCodeTime;
+//获取手机验证码
+function get_mobile_code(){
+	//防止重复点击
+	if($(".get_num").attr('data-getStatus')=='1') return;
+	$(".get_num").attr('data-getStatus','1');
+	
+	$.post('sms.php', {mobile:jQuery.trim($('#phone').val()),send_code:<{$send_code}>}, function(msg){
+		msg=jQuery.trim(msg);
+		/*if(msg=='suc'){
+			getCode();return;
+		}else if(msg=='err'){
+			alert("短信不足或其他错误");
+			$(".get_num").attr('data-getStatus','0');
+			return;
+		}*/
+		getCode();
+	});
+};
+function getCode(){
+	$(".get_num").addClass('code_gray');
+	$(".get_num").html('<span>60</span>秒后重新获取');
+	getCodeTimeDec();
+}
+//倒计时
+function getCodeTimeDec(){
+	getCodeTime=setInterval(function(){
+		var timeNum=$(".get_num span").text();
+		timeNum=parseInt(timeNum)-1;
+		$(".get_num span").text(timeNum);
+		if(timeNum<1){
+			clearInterval(getCodeTime);
+			getCodeTime=null;
+			$(".get_num").removeClass('code_gray');
+			$(".get_num").attr('data-getStatus','0');
+			$(".get_num").html('获取验证码');
+		}
+	},1000);
+}
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+//验证密码
+function isPasswd(s){  
+	var patrn=/^[0-9a-zA-Z]{6,15}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body>
+</html>

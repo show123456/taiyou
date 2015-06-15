@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/select-ui.min.js"></script>
+<script language="JavaScript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(e) {
+		$(".select1").uedSelect({
+			width : 345
+		});
+		$(".select2").uedSelect({
+			width : 167
+		});
+		$(".select3").uedSelect({
+			width : 100
+		});
+	});
+</script>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">经纪人<{:$model['id'] ? '修改' : '新增'}></a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('add')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$model['id']}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>账号名<b>*</b></label>
+					<input type="text" name="username" value="<{$model['username']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>密码<b>*</b></label>
+					<input type="password" name="pass" value="" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>再次输入密码<b>*</b></label>
+					<input type="password" name="pass1" value="" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保&nbsp;&nbsp;&nbsp;存" onclick="save(this);return false"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返&nbsp;&nbsp;&nbsp;回" onclick="history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<!-- 文本编辑器开始 -->
+<!-- <link rel="stylesheet" href="__PUBLIC__/kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/kindeditor/lang/zh_CN.js"></script> -->
+<script>
+	/*var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('.richarea', {
+			allowFileManager : true
+		});
+	});*/
+</script>
+<!-- 文本编辑器结束 -->
+<script type="text/javascript">
+$("#usual1 ul").idTabs();
+$('.tablelist tbody tr:odd').addClass('odd');
+
+function save(obj){
+	if($("input[name='info[username]']").val()==''){
+		alert_tip('账号名不能为空');
+		return;
+	}
+	if($("input[name='pass']").val()==''){
+		alert_tip('密码不能为空');
+		return;
+	}
+	if($("input[name='pass']").val()!=$("input[name='pass1']").val()){
+		alert_tip('两次密码输入不一致');
+		return;
+	}
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<link rel="stylesheet" type="text/css" href="../public/css/sub-manage.css" media="all" />
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="../public/css/calendar.css" />
+<script type='text/javascript' src='../public/js/calendar.js'></script>
+<!-- 日期插件结束 -->
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.cc_title_h4{border:1px solid #C9E4C3;height:35px;background-color:#E8FFE2;padding-left:25px;border-radius:4px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+	#ssqDiv select{width:auto;margin-right:10px;}
+</style>
+<div class="main-content" style="min-height:1000px;height:auto;">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class="msg_editer">
+						<div class="sub-list">
+							<div class="shop_sort_box">
+								<form id="memberform">
+									<input type="hidden" name='a' value='taskadd'/>
+									<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+									<h4 class='cc_title_h4'>平台发布兼职</h4>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>职位标题：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[title]" value="<{$vo.title}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>薪资：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="num[money]" value="<{$vo.money}>" type="text"><b style="height:34px;line-height:34px">&nbsp;元</b>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>结算方式：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<select name="num[pay_type]" class="shop_sort_text">
+										<option value="1" <{if $vo.pay_type==1}>selected<{/if}> >现金日结</option>
+										<option value="2" <{if $vo.pay_type==2}>selected<{/if}> >转账日结</option>
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>性别要求：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<select name="num[sex]" class="shop_sort_text">
+										<option value="3" <{if $vo.sex==3}>selected<{/if}> >男女不限</option>
+										<option value="1" <{if $vo.sex==1}>selected<{/if}> >男</option>
+										<option value="2" <{if $vo.sex==2}>selected<{/if}> >女</option>
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>报名截止日期</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" id="start_time" onclick="return showCalendar('start_time','y-mm-dd');" name="str[start_time]" value="<{$vo.start_time}>" type="text">&nbsp;&nbsp;
+									<select class="shop_sort_text" style="width:100px;" name="str[start_hour]">
+										<{foreach from=$hourArr item=v}>
+										<option value="<{$v}>" <{if (!$vo.start_hour && $v=='12:00') || $v==$vo.start_hour}>selected<{/if}> ><{$v}></option>
+										<{/foreach}>
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>工作时间：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" id="work_date" onclick="return showCalendar('work_date','y-mm-dd');" name="work_date" value="<{$vo.work_date}>" type="text">
+									
+									<select class="shop_sort_text" style="width:100px;" name="work_hour">
+									<{foreach from=$hourArr item=v key=k}>
+									<option value="<{$v}>" <{if $v==$vo.work_hour}>selected<{/if}> ><{$v}></option>
+									<{/foreach}>
+									</select>
+									<span class="shop_sort_text" style="width:10px;border:0;">-</span>
+									<select class="shop_sort_text" style="width:100px;" name="work_hour_end">
+									<{foreach from=$hourArr item=v key=k}>
+									<option value="<{$v}>" <{if (!$vo.work_hour_end && $v=='12:00') || $v==$vo.work_hour_end}>selected<{/if}> ><{$v}></option>
+									<{/foreach}>
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>省市区：</h4>
+								</div>
+								<div class="shop_sort_set" id="ssqDiv">									
+									<select name="num[pid]" class="shop_sort_text provinceid" onchange="pselect(this)">
+										<option value="">请选择省</option>
+										<{foreach from=$parr item=pv}>
+										<option value="<{$pv.ProvinceID}>" <{if $pv.ProvinceID==$vo.pid}>selected<{/if}> ><{$pv.ProvinceName}></option>
+										<{/foreach}>
+									</select>
+									<select name="num[cid]" class="shop_sort_text cityid" onchange="cselect(this)">
+									</select>
+									<select name="num[did]" class="shop_sort_text areaid">
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>工作地点：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[address]" value="<{$vo.address}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>坐标位置：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="maplocation" value="<{if  $vo.longitude}><{$vo.longitude}>,<{$vo.latitude}><{/if}>" type="text">&nbsp;&nbsp;
+									<b style="height:34px;line-height:34px">
+									<a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">查询坐标，请点这里</a></b>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>申请职位费</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[sq_fee]" value="<{$vo.sq_fee|default:0}>" type="number" />
+									<b style="height:34px;line-height:34px">&nbsp;元（默认0代表无需在线支付）</b>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>招聘人数：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="num[num]" value="<{$vo.num}>" type="number">
+									<b style="height:34px;line-height:34px">&nbsp;人</b>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>集合地点：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[jihe_address]" value="<{$vo.jihe_address}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>集合时间：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" id="jihe_date" onclick="return showCalendar('jihe_date','y-mm-dd');" name="jihe_date" value="<{$vo.jihe_date}>" type="text">
+									<input class="shop_sort_text" name="jihe_hour" value="<{$vo.jihe_hour}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>企业名称：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[company_name]" value="<{$vo.company_name}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>职位要求：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea name="str[yaoqiu]" class="shop_sort_text" style="width:400px;height:150px;"><{$vo.yaoqiu}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>工作内容：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea name="str[introduce]" class="shop_sort_text" style="width:400px;height:150px;"><{$vo.introduce}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>注意事项：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea name="str[attention]" class="shop_sort_text" style="width:400px;height:150px;"><{$vo.attention}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>是否紧急：</h4>
+								</div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									<input type="radio" name="info[is_recommend]" id="optionsRadios2" value="0" <{if $vo.is_recommend==0}>checked<{/if}> > 
+									<label for="optionsRadios2">否&nbsp;&nbsp;</label>
+									<input type="radio" name="info[is_recommend]" id="optionsRadios1" value="1" <{if $vo.is_recommend==1}>checked<{/if}> > <label for="optionsRadios1">是</label>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>审核通过：</h4>
+								</div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									<input type="radio" name="info[sh_status]" id="sh_status2" value="0" <{if $vo.sh_status==0}>checked<{/if}> > 
+									<label for="sh_status2">否&nbsp;&nbsp;</label>
+									<input type="radio" name="info[sh_status]" id="sh_status1" value="1" <{if $vo.sh_status==1}>checked<{/if}> > <label for="sh_status1">是</label>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>是否关闭：</h4>
+								</div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									<input type="radio" name="info[is_shut]" id="is_shut2" value="0" <{if $vo.is_shut==0}>checked<{/if}> > 
+									<label for="is_shut2">否&nbsp;&nbsp;</label>
+									<input type="radio" name="info[is_shut]" id="is_shut1" value="1" <{if $vo.is_shut==1}>checked<{/if}> > <label for="is_shut1">是</label>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('职位管理');
+set_menu_cur('menu_41', 'cur omega');
+function save(event){
+	if($("input[name='maplocation']").val()==''){
+		alert('请填写坐标位置');return;
+	}
+	$.ajax({
+		url:"task.php",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res) {
+			if(res){
+				note_info('保存成功','success',event);
+				setTimeout("window.location.href='task.php'",300);
+			}else{
+				note_info('保存失败','warn',event);
+			}
+		}
+	});
+}
+<!-- 城市级联开始 -->
+function pselect(obj){
+	$(".cityid option").remove();
+	$(".areaid option").remove();
+	$.ajax({
+		url:"task.php?a=get_citys",
+		type:"get",
+		data:{pid:$(obj).val()},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			str+="<option value=''>请选择</option>";
+			for(var i=0;i<data.length;i++){
+				str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+			}
+			$(".cityid").append(str);
+		}
+	});
+}
+function cselect(obj){
+	$(".areaid option").remove();
+	$.ajax({
+		url:"task.php?a=get_districts",
+		type:"get",
+		data:{cid:$(obj).val()},
+		dataType:"json",
+		success:function(dataa){
+			var stra="";
+			stra+="<option value=''>请选择</option>";
+			for(var i=0;i<dataa.length;i++){
+				stra+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+			}
+			$(".areaid").append(stra);
+		}
+	});
+}
+//修改时加载城市和区域信息
+if('<{$vo.id}>'){
+	var pid='<{$vo.pid}>';
+	var cid='<{$vo.cid}>';
+	var did='<{$vo.did}>';
+	$.ajax({
+		url:"task.php?a=get_citys",
+		type:"get",
+		data:{pid:pid},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				if(data[i].CityID==cid){
+					str+="<option value=\""+data[i].CityID+"\" selected >"+data[i].CityName+"</option>";
+				}else{
+					str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+				}
+			}
+			$(".cityid").append(str);
+		}
+	});
+
+	$.ajax({
+		url:"task.php?a=get_districts",
+		type:"get",
+		data:{cid:cid},
+		dataType:"json",
+		success:function(dataa){
+			var str="";
+			for(var i=0;i<dataa.length;i++){
+				if(dataa[i].DistrictID==did){
+					str+="<option value=\""+dataa[i].DistrictID+"\" selected >"+dataa[i].DistrictName+"</option>";
+				}else{
+					str+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+				}
+			}
+			$(".areaid").append(str);
+		}
+	})
+}
+<!-- 城市级联结束 -->
+</script>

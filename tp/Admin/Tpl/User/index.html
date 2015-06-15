@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+</head>
+<body>
+<!-- <div class="place">
+	<span>位置：</span>
+	<ul class="placeul">
+		<li><a href="#">首页</a></li>
+		<li><a href="#">讲师审批</a></li>
+	</ul>
+</div> -->
+<div class="rightinfo">
+	<div class="tools">
+		<ul class="toolbar">
+			<li class="click"><span><img src="__PUBLIC__/admin/images/t05.png" /></span>审核列表</li>
+			<!-- <li class="click"><span><img src="__PUBLIC__/admin/images/t02.png" /></span>修改</li>
+			<li><span><img src="__PUBLIC__/admin/images/t03.png" /></span>del/删除</li>
+			<li><span><img src="__PUBLIC__/admin/images/t04.png" /></span>统计</li> -->
+		</ul>
+		<!-- <ul class="toolbar1">
+			<li><span><img src="__PUBLIC__/admin/images/t05.png" /></span>设置</li>
+		</ul> -->
+	</div>
+	<table class="imgtable">
+		<thead>
+			<tr>
+				<th>名字</th>
+				<th>手机号</th>
+				<th>详细信息</th>
+				<th>添加时间</th>
+				<th>审批状态</th>
+				<th style="width:100px;">通过审批</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name='list[data]' item='vo'>
+			<tr style="height:40px;">
+				<td><{$vo.name}></td>
+				<td><{$vo.phone}></td>
+				<td><a href="<{:U('see',array('id'=>$vo['id']))}>" target='_blank'>查看</a></td>
+				<td><{$vo.addtime}></td>
+				<{:$vo['state_show']==1 ? '<td class="c069">已通过</td>' : '<td class="c888">未通过</td>'}>
+				<td>
+					<a onclick="changeState('<{:U("changeState",array("state_show"=>"1","id"=>$vo["id"]))}>','1',this)" >是</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a onclick="changeState('<{:U("changeState",array("state_show"=>"2","id"=>$vo["id"]))}>','2',this)" >否</a>
+				</td>
+			</tr>
+			</foreach>
+		</tbody>
+	</table>
+	<div class="pagin">
+		<ul class="paginList">
+			<{$list['page']}>
+		</ul>
+	</div>
+</div>	
+<script type="text/javascript">
+$('.imgtable tbody tr:odd').addClass('odd');
+function delRow(str){
+	if(confirm('Sure to delete?/确定要删除吗？')) window.location.href=str;
+}
+
+//修改状态
+function changeState(u,s,obj){
+	if(confirm('确定要执行此操作吗？')){
+		$.get(u,function(res){
+			if(res==1){
+				if(s=='1'){
+					$(obj).parent().prev().removeClass().addClass('c069').text('已通过');
+				}else{
+					$(obj).parent().prev().removeClass().addClass('c888').text('未通过');
+				}
+				alert_tip('操作成功');
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

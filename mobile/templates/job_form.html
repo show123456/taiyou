@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>任务提报</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<style type="text/css">
+.register_end{height:35px;line-height:35px;font-size:16px;width:90%;}
+select,input{color:#555;}
+.job_info .info_list p{float:none;color:#666;font-weight:normal;}
+</style>
+<body style="background-color:#eeeeee;">
+<div class="main">
+	<div class="job_detail">
+		<div class="item_list" style="padding:15px 0 10px 0;">
+			<div class="list_title">
+				<div class="job_title" style="font-size:16px;"><{$vo.title}></div>
+			</div>
+			<div class="clear" style="height:5px;"></div>
+		</div>
+	</div>
+	<div style="background-color:#f6f6f6;">
+	<form id="meminfo" onsubmit="return false;">
+	<input type="hidden" name="num[jid]" value="<{$vo.id}>"/>
+	<div style="margin-left:5px;height:40px;line-height:40px;margin-bottom:-20px;font-size:18px;font-weight:bold;color:#ff7101;">任务提报:</div>
+	<div class="tabs_info">
+		<div class="input_group">
+			<input style="text-indent:6em;" type="text" name="str[name]" value="<{$vo.name}>" placeholder="请输入真实姓名" />
+			<div class="title">司机姓名：</div>
+		</div>
+		<div class="input_group">
+			<input style="text-indent:6em;" type="text" name="str[phone]" value="<{$vo.phone}>" placeholder="请输入正确号码" />
+			<div class="title">司机电话：</div>
+		</div>
+		<div class="input_group">
+			<input style="text-indent:6em;" type="text" name="str[carnum]" value="<{$vo.carnum}>" placeholder="请输入正确车牌号" />
+			<div class="title">车牌号：</div>
+		</div>
+		<div class="input_group">
+			<select style="width:99%;" name="str[license]">
+				<option value="0">请选择驾照类型</option>
+				<option value="A1">A1</option>
+				<option value="A2">A2</option>
+				<option value="A3">A3</option>
+				<option value="B1">B1</option>
+				<option value="B2">B2</option>
+			</select>
+		</div>
+		<div class="input_group" style="margin-top:10px;">
+			<input type="checkbox" name="num[is_jsz]" value="1" id="check1" /><label for="check1">驾驶证</label>
+			&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" name="num[is_clz]" value="1" id="check2" /><label for="check2">车辆照片</label>
+		</div>
+	</div>
+	</form>
+	<div style="height:10px;"></div>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">提交保存</div></a>
+	</div>
+</div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	if($('input[name="str[name]"]').val()==''){
+		alert("请填写司机姓名");return;
+	}
+	if(!isMobil($('input[name="str[phone]"]').val())){
+		alert("请填写正确的手机号码");return;
+	}
+	if($('input[name="str[carnum]"]').val()==''){
+		alert("请填写车牌号");return;
+	}
+	if($('select[name="str[license]"]').val()=='0'){
+		alert("请选择驾照类型");return;
+	}
+	$('#loading').show();
+	$.post('index.php?m=job&a=signadd',$('#meminfo').serialize(),function(res){
+		$('#loading').hide();
+		res=$.trim(res);
+		if(res=='cf'){
+			alert('请勿重复提交');
+		}else if(res=='suc'){
+			alert('保存成功');
+			window.location.href='index.php?m=job&a=index&user=1';
+		}else{
+			alert('保存失败');
+		}
+	});
+}
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body>
+</html>

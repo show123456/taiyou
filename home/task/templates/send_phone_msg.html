@@ -1,0 +1,86 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+	#out_btn{color:#428bca;font-weight:bold;text-decoration:none;}
+	.sendDiv img{width:20px;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+					<span id='msg_span' style='float:left;line-height:35px;font-weight:bold;color:red;'>短信发送时，请勿关闭页面。关闭页面即中断发送。</span>
+						<!-- <div>
+							<button style="float:right;"><a href="exceldemo.php?tid=<{$vo.id}>" target='_blank' id='out_btn'>导出到excel</a></button>
+						</div>
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入标题" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" title="搜索" type="submit">
+							</form>
+						</div> -->
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">序号</th>
+										<th class="enable">姓名</th>
+										<th class="enable">手机号</th>
+										<th class="enable">发送状态</th>
+									</tr>
+								</thead>
+								<tbody id='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v" key='k'}>
+									<tr>
+										<td class='xuhao'><{$v.xuhao}></td>
+										<td class='nickname'><{$v.nickname}></td>
+										<td class='phone'><{$v.username}></td>
+										<!-- <td><div class='sendDiv'><img src="images/loading.gif" /></div></td> -->
+										<td class='sendDiv'>等待中</td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('通过报名用户');
+set_menu_cur('menu_41', 'cur omega');
+$(function(){
+	$("#postTbody tr").eq(0).children('.sendDiv').html("<img src='images/loading.gif' />");
+	$("#postTbody tr").eq(1).children('.sendDiv').html("<img src='images/loading.gif' />");
+	var send_xuhao=1;
+	var send_name='';
+	var send_phone='';
+	var sen_time_fun='';
+	sen_time_fun=setInterval(function(){
+		if($("#postTbody tr").length<1){
+			clearInterval(sen_time_fun);
+			$('#msg_span').text('发送完毕');
+			return;
+		}
+		send_name=$("#postTbody tr").eq(0).children('.nickname').text();
+		send_phone=jQuery.trim($("#postTbody tr").eq(0).children('.phone').text());
+		$.get("send_phone_msg.php?a=send&tid=<{$tid}>&name="+send_name+"&phone="+send_phone,function(){
+			$("#postTbody tr").eq(0).remove();
+			$("#postTbody tr").eq(0).children('.sendDiv').html("<img src='images/loading.gif' />");
+			$("#postTbody tr").eq(1).children('.sendDiv').html("<img src='images/loading.gif' />");
+		})
+	},1100);
+})
+</script>

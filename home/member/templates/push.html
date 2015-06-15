@@ -1,0 +1,75 @@
+<div class=" main-content">
+    <div class="inner">
+        <div class="alert alert-success alert-dismissable fz12px alertfc">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p>1. <span class="c-red">订阅号</span>一天只可以群发1条信息，<span class="c-red">服务号</span>一月只可以群发4条信息，消息可以是文字、图文、多图文、视频、音乐等内容。</p>
+            <p>2. <span class="c-red">认证后的服务号</span>可直接同步微信关注用户和互动消息。</p>
+        </div>
+
+        <nav class="navbar navbar-default user-navbar" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <span class="navbar-brand" href="#"><i class="icons icons-wechat"></i> 会员列表</span>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form class="navbar-form navbar-right nav-search" role="search">
+                        <div class="form-group">
+                            <i class="glyphicon glyphicon-search"></i>
+                            <input type="text" class="form-control" placeholder="消息内容">
+                        </div>
+                        <button type="submit" class="btn btn-link">搜</button>
+                    </form>
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="wrap-reply clearfix">
+            <table class="table user-table table-member table-striped">
+                <thead>
+                    <tr>
+                        <th class="t1">用户信息</th>
+                        <th class="t2">互动量</th>
+                        <th class="t3">积分额 <i class="glyphicon glyphicon-arrow-down"></i></th>
+                        <th class="t4">关注日期</th>
+                        <th class="t5">取消日期</th>
+                        <th class="t6">状态 <i class="glyphicon glyphicon-sort"></i> </th>
+                        <th class="t7">操作</th>
+                    </tr>
+                </thead>
+                <{if $memberlist}>
+                <tbody>
+                <{foreach item="row" from=$memberlist}>
+                    <tr>
+                        <td>
+                            <img class="media-object"  style="width: 64px; height: 64px;">
+                            <p><{$row.nickname}></p>
+                        </td>
+                        <td>--</td>
+                        <td>-- <a href=""><i class="icons icons-cog"></i></a></td>
+                        <td><{$row.subscribe_time}></td>
+                        <td><{$row.unsubscribe_time}></td>
+                        <td><span class="c-green"><{$row.status}></span></td>
+                        <td>
+                            <a href=""> <i class="icons icons-memberInfo"></i></a>
+                            <a href=""> <i class="icons icons-talk"></i></a>
+                        </td>
+
+                    </tr>
+                <{/foreach}>
+
+                </tbody>
+                <{/if}>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    set_title_name('微信接口配置');
+    set_menu_cur('menu_21','cur');
+</script>

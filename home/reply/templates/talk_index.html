@@ -1,0 +1,132 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" />
+<style type="text/css">
+	.btn-operate a, .stable tbody a {cursor:pointer;font-size:14px;color:#5CB85C;margin:0;}
+	.replyDiv{position:fixed;z-index:1999;width:1200px;padding:1px;top:0;display:none;}
+	.replyBox{border:1px solid #BCE1B4;width:250px;height:140px;margin:0 auto;background-color:#fff;border-radius:5px;}
+	.replyBox h3{background-color:#5CB85C;color:#fff;margin:0;font-size:16px;height:30px;line-height:30px;}
+	.replyBox div{margin:10px;}
+	.replyBox textarea{width:230px;height:60px;border-radius:5px;}
+	.replyBox input[type='button']{padding:3px 10px;font-family:"Microsoft YaHei","黑体","宋体";}
+	.replyBox b{display:block;float:right;cursor:pointer;}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li <{if $smarty.get.typenum==1}>class="select"<{/if}> ><a href="talk.php?typenum=1">职位评论</a></li>
+						<li <{if $smarty.get.typenum==2}>class="select"<{/if}> ><a href="talk.php?typenum=2">图片评论</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<div class="title-left">
+							<h4><{$cateName}>列表</h4>
+						</div>
+						<!-- <div class="title-right" style="top:8px;">
+							<form method="get" action="">
+								<input type="hidden" name='p' value="<{$smarty.get.p|default:1}>"/>
+								<input name="keywords" class="textarea" placeholder="请输入名称" type="text" value="<{$smarty.get.keywords}>" />
+								<input value="搜索" class="btn btn-large btn-success" title="搜索" type="submit" style="margin-top:-7px;padding:3px 10px;" />
+								<a href='/home/app/hptshop/talk.php?a=add'>
+									<input value="添加<{$cateName}>" class="btn btn-large btn-success" type="button" style="margin-top:-7px;padding:3px 10px;" />
+								</a>
+							</form>
+						</div> -->
+					</div>
+					<div class="list-table">
+						<div class="wrapper">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th name="Sort" class="enable">说话人@接收人</th>
+										<{if $smarty.get.typenum==1}>
+										<th name="Name" class="enable" style='width:200px'>职位标题</th>
+										<{/if}>
+										<th name="Name" class="enable" style='width:250px'>内容</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.name}>
+										<{if $v.tomanname}> @ <{$v.tomanname}><{/if}>
+										</div></td>
+										<{if $smarty.get.typenum==1}>
+										<td style='white-space:normal;width:200px'><div><{$v.title}></div></td>
+										<{/if}>
+										<td style='white-space:normal;width:250px'><div><{$v.content}></div></td>
+										<td>
+											<{if ($smarty.get.typenum==1 && $v.uid!=1) || ($smarty.get.typenum==2 && $v.fromuser!=1)}>
+											<div class="btn-operate">
+											<a href="javascript:void(0);" onclick="replyMsg(this,<{$v.id}>)" data-name="<{$v.name}>">回复</a>
+											<a> | </a>
+											<{/if}>
+											<a href="javascript:void(0);" onclick="delRow(event,'<{$v.id}>')">删除</a>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 回复框 -->
+<div class="replyDiv">
+	<div class='replyBox'>
+		<h3>
+			&nbsp;回复<span>陈冰</span>
+			<b onclick="$('.replyDiv').hide();">×&nbsp;</b>
+		</h3>
+		<div>
+			<textarea name="" id="replyContent"></textarea><br />
+			<input type="hidden" name="talk_id" id="talk_id" value="" />
+			<input type="button" class="btn btn-large btn-success" onclick="sendMsg()" value="发送" />
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('<{$cateName}>管理');
+set_menu_cur('menu_10_1', 'cur omega');
+function delRow(event,id){
+	if(confirm("确定要删除吗?")){
+		$.ajax({
+			url:"talk.php",
+			data:{id:id,a:'del',typenum:'<{$smarty.get.typenum}>'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}
+			}
+		});
+	}
+}
+
+function replyMsg(obj,id){
+	var manname=$(obj).attr('data-name');
+	$('.replyBox span').text(manname);
+	$('#talk_id').val(id);
+	$('.replyDiv').slideDown();
+}
+function sendMsg(){
+	var replyContent=$('#replyContent').val();
+	var talk_id=$('#talk_id').val();
+	$.post('talk.php',{a:'reply',id:talk_id,content:replyContent,typenum:'<{$smarty.get.typenum}>'},function(){
+		window.location.reload();
+	});
+}
+</script>

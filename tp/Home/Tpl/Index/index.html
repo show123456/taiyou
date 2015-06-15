@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<include file="Public:header" />
+<style type="text/css">
+.date_input{width:21%;padding-left:1%;height:56px;line-height:56px;display:block;float:left;margin:0 1%;
+	font-size:18px;color:#aaa;border:1px solid #E5E6E6;}
+</style>
+<div class="idx5052bnr">
+    <div class="bnr">
+        <div class="bigpic">
+			<foreach name="slidelist" item="v">
+            <a href="<{$v.link}>">
+                <img src="<{$v.pic}>" alt=""/>
+                <div>
+                    <li><b>·</b> <{$v.des1}> </li>
+                    <li><b>·</b> <{$v.des2}> </li>
+                    <li><b>·</b> <{$v.des3}> </li>
+                </div>
+            </a>
+			</foreach>
+        </div>
+        <div class="btn"></div>
+        <div class="pre_nxt">
+            <a href="javascript:;" class="prv">上一个</a>
+            <a href="javascript:;" class="nxt">下一个</a>
+        </div>
+    </div>
+</div>
+
+<div class="idx5052quik">
+    <div class="con">
+        <div class="idx5052quik_li">
+            <a href="javascript:void(0)"><img src="__PUBLIC__/home/images/stp1img.png" alt=""/></a>
+            <a href="javascript:void(0)">
+                <p class="tit">STEP1</p>
+                <p class="txt">
+                    Discover our<br/>
+                    furnished<br/>
+                    apartments
+                </p>
+            </a>
+        </div>
+        <div class="idx5052quik_li">
+            <a href="javascript:;"><img src="__PUBLIC__/home/images/stp2img.png" alt=""/></a>
+            <a href="javascript:;">
+                <p class="tit">STEP2</p>
+                <p class="txt">
+                    Choose one of<br/>
+                    the rooms<br/>
+                    available
+                </p>
+            </a>
+        </div>
+        <div class="idx5052quik_li">
+            <a href="javascript:;"><img src="__PUBLIC__/home/images/stp3img.png" alt=""/></a>
+            <a href="javascript:;">
+                <p class="tit">STEP3</p>
+                <p class="txt">
+                    Book the<br/>
+                    room through<br/>
+                    PayPal or Alipay
+                </p>
+            </a>
+        </div>
+        <div class="idx5052quik_li">
+            <a href="javascript:;"><img src="__PUBLIC__/home/images/stp4img.png" alt=""/></a>
+            <a href="javascript:;">
+                <p class="tit">STEP4</p>
+                <p class="txt">
+                    Sign the<br/>
+                    contract and<br/>
+                    get the key
+                </p>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="idx5052search">
+    <div class="con">
+        <form action="">
+            <div class="idx5052search_l" style="line-height:0;">
+                <select name="" id="">
+                    <option value="">Downtown</option>
+					<foreach name="downtownlist" item="v">
+					<option value="<{$v.id}>"><{$v.name}></option>
+					</foreach>
+                </select>
+                <select name="" id="">
+                    <option value="">University</option>
+					<foreach name="unilist" item="v">
+					<option value="<{$v.id}>"><{$v.name}></option>
+					</foreach>
+                </select>
+                <select name="" id="">
+                    <option value="">Rent</option>
+                    <option value="1">0~1500</option>
+                    <option value="1">1500~2000</option>
+                    <option value="1">2500~3000</option>
+                    <option value="1">3000~4000</option>
+                    <option value="1">4000~5000</option>
+                    <option value="1">5000~</option>
+                </select>
+				<input type="" class="date_input date_picker" placeholder="Date" />
+            </div>
+            <div class="idx5052search_r">
+                <input type="submit" value="Search"/>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="idx5052img">
+    <div class="con">
+        <div class="idx5052img_li1">
+            <a href="<{:U('Index/list',array('did'=>'1'))}>">
+                <img src="<{$dt_home_list[0]['pic']}>" alt=""/>
+                <p><{$dt_home_list[0]['name']}></p>
+            </a>
+            <a href="<{:U('Index/list',array('did'=>'2'))}>">
+                <img src="<{$dt_home_list[1]['pic']}>" alt=""/>
+                <p><{$dt_home_list[1]['name']}></p>
+            </a>
+            <a href="<{:U('Index/list',array('did'=>'3'))}>">
+                <img src="<{$dt_home_list[2]['pic']}>" alt=""/>
+                <p><{$dt_home_list[2]['name']}></p>
+            </a>
+        </div>
+        <div class="idx5052img_li2">
+            <a href="<{:U('Index/list',array('did'=>'4'))}>" class="idx5052img_li2_1">
+                <img src="<{$dt_home_list[3]['pic']}>" alt=""/>
+                <p><{$dt_home_list[3]['name']}></p>
+            </a>
+            <a href="<{:U('Index/list',array('did'=>'5'))}>" class="idx5052img_li2_2">
+                <img src="<{$dt_home_list[4]['pic']}>" alt=""/>
+                <p><{$dt_home_list[4]['name']}></p>
+            </a>
+        </div>
+        <div class="idx5052img_li1">
+            <a href="<{:U('Index/list',array('did'=>'6'))}>">
+                <img src="<{$dt_home_list[5]['pic']}>" alt=""/>
+                <p><{$dt_home_list[5]['name']}></p>
+            </a>
+            <a href="<{:U('Index/list',array('did'=>'7'))}>">
+                <img src="<{$dt_home_list[6]['pic']}>" alt=""/>
+                <p><{$dt_home_list[6]['name']}></p>
+            </a>
+            <a href="<{:U('Index/list',array('did'=>'8'))}>">
+                <img src="<{$dt_home_list[7]['pic']}>" alt=""/>
+                <p><{$dt_home_list[7]['name']}></p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="idx5052_fix">
+    <a href="javascript:void(0)"><img src="__PUBLIC__/home/images/idx_edit.png" alt=""/></a>
+    <a href="javascript:;" class="tototop"><img src="__PUBLIC__/home/images/idx_gotop.png" alt=""/></a>
+</div>
+<include file="Public:footer" />
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:0;}
+.date_selector .year_name{margin-left:0;}
+.date_selector{width:220px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</body>
+</html>

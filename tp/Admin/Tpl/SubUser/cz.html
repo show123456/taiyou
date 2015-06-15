@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+	.forminfo li label{width:160px;}
+</style>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">用户充值</a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('cz')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[uid]' value="<{$vo['id']}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>姓名<b></b></label>
+					<span style='height:34px;line-height:34px;display:inline'><{$vo['nickname']}></span>
+				</li>
+				<li>
+					<label>手机号<b></b></label>
+					<span style='height:34px;line-height:34px;display:inline'><{$vo['username']}></span>
+				</li>
+				<li>
+					<label>充值金额<b></b></label>
+					<input type="text" name="info[money]" value="" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>备注<b></b></label>
+					<input type="text" name="info[desc]" value="" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返回" onclick="window.history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	if(!isNumber($('input[name="info[money]"]').val())){
+		alert_tip("充值金额必须为正整数");return;
+	}
+	$('#memberform').submit();
+}
+//验证为正整数
+function isNumber(s){  
+	var patrn=/^[1-9][0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body>
+</html>

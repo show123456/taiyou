@@ -1,0 +1,83 @@
+<div class="main-content">
+    <div class="inner">
+	<div class="manage-apply">
+	<div class="apply-content">
+	<div class="manage-menu">
+    <form id="account-form" method="post" action="#" onsubmit='return false;'>
+        <div class="account-info">
+			<div class="list-accounts">
+				<div class="basis-list">
+					<h4 style='margin-top:0px'>用户修改:</h4><a name="set"></a>
+					<div class="form-group">
+						<div class="col-sm-4 input-field-name">
+						<label class="control-label">用户类别:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="num[groupnum]" class="form-control input-large" style="height:36px">
+								<option value="0">-请选择-</option>
+								<option value="2" <{if $vo.groupnum==2}>selected<{/if}>>管理员</option>
+								<option value="3" <{if $vo.groupnum==3}>selected<{/if}>>事务所</option>
+								<option value="4" <{if $vo.groupnum==4}>selected<{/if}>>注会师</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4 input-field-name">
+						<label class="control-label">登录名:</label>
+						</div>
+						<div class="col-sm-8">
+							<input name="str[name]" class="form-control input-large" value="<{$vo.name}>" type="text">
+						</div>
+					</div>
+					<div class="opt" style='padding-left:175px;'>
+						<input type="hidden" name='a' value='edit'/>
+						<input type="hidden" name='num[id]' value='<{$vo.id}>'/>
+						<input type="reset" class="btn btn-large cc_btn" onclick='javascript:history.go(-1)' value="返回" />&nbsp;&nbsp;
+						<input type="submit" class="btn btn-large btn-success" onclick='formSubmit(event)' value="确认" />
+					</div>
+				</div>
+			</div>
+		</div>
+    </form>
+	</div>
+	</div>
+	</div>
+	</div>
+</div>
+<style type="text/css">
+	.cc_btn{background-color:#777;color:#fff}
+	.input-large{width:250px}
+	.input-field-name{text-align:right;height:30px;line-height:30px;}
+</style>
+<script type="text/javascript">
+    set_title_name('账户管理');
+    set_menu_cur('menu_12','cur super');
+	function formSubmit(event){
+		if($("select[name='num[groupnum]']").val()==0){
+			note_info('请选择用户类别','warn',event);return;
+		}
+		if($("input[name='str[name]']").val()==''){
+			note_info('请填写登录名','warn',event);return;
+		}
+		//保存
+		$.ajax({
+			url:"/home/suser/index.php",
+			data:$('#account-form').serializeArray(),
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					if(res=='have'){
+						note_info('该登录名已被使用！','warn',event);
+					}else{
+						note_info('保存成功！','success',event);
+						setTimeout("window.location.href='/home/suser/index.php'",300);
+					}
+				}else{
+					note_info('保存失败！','warn',event);
+				}
+			}
+		});
+	}
+</script>

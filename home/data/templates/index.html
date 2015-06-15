@@ -1,0 +1,228 @@
+<script type='text/javascript' src='<{$WEB_DOMAIN}>/includes/highcharts/js/highcharts.js'></script>
+<div class=" main-content">
+    <div class="inner">
+        <div class="today-status">
+            <h3><i class="icons icons-user"></i>今日互动及关注情况</h3>
+
+            <div class="view v1">
+                <p>
+                <em>﹀</em> <span class="num"><{$count.today_message|default:'0'}></span>
+                </p>
+                <div class="intro">
+                    <i class="icons icons-l-talk"></i>
+                    互动消息
+                </div>
+            </div>
+            <div class="view v2">
+                <p>
+                <em>＋</em> <span class="num"><{$count.today_carenum|default:'0'}></span>
+                </p>
+
+                <div class="intro">
+                    <i class="icons icons-l-add"></i>
+                    新增关注人数
+                </div>
+            </div>
+            <div class="view v3">
+                <p>
+                <em>－</em> <span class="num"><{$count.today_uncarenum|default:'0'}></span>
+                </p>
+                <div class="intro">
+                    <i class="icons icons-l-cancel"></i>
+                    取消关注人数
+                </div>
+            </div>
+
+            <a href="" class="a-set"><i class="glyphicon glyphicon-cog"></i></a>
+        </div>
+
+        <!-- <div class="more-info">
+            <div class="cell">
+                <div class="m-title">
+                    <div class="pull-right">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </div>
+                    <i class="icons icons-keyword"></i>
+                    互动关键字Top 10<span style="color:#A2D0FF"> 近1月</span>
+                </div>
+                <div class="m-content">
+                    <ul class="l">
+                        <li><span class="pull-right"><strong><{$topmessage[0].count_num}></strong>次</span><span class="c-red">①</span> <{$topmessage[0].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[1].count_num}></strong>次</span><span class="c-red">②</span> <{$topmessage[1].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[2].count_num}></strong>次</span><span class="c-red">③</span> <{$topmessage[2].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[3].count_num}></strong>次</span>④ <{$topmessage[3].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[4].count_num}></strong>次</span>⑤ <{$topmessage[4].msg_content}> </li>
+                    </ul>
+                    <ul class="r">
+                        <li><span class="pull-right"><strong><{$topmessage[5].count_num}></strong>次</span>⑥ <{$topmessage[5].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[6].count_num}></strong>次</span>⑦ <{$topmessage[6].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[7].count_num}></strong>次</span>⑧ <{$topmessage[7].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[8].count_num}></strong>次</span>⑨ <{$topmessage[8].msg_content}></li>
+                        <li><span class="pull-right"><strong><{$topmessage[9].count_num}></strong>次</span>⑩ <{$topmessage[9].msg_content}></li>
+                    </ul>
+                </div>
+            </div><div class="cell" style="border-left:0;">
+                <div class="m-title">
+                    <i class="icons icons-status"></i>
+                    系统检测
+                </div>
+                <div class="m-content">
+                    <ul class="t">
+                        <li>关注自动回复  <a class="c-green" href="/home/info/follow.php">去设置></a> </li>
+                        <li>无匹配回复  <a class="c-red" href="/home/info/follow.php">去设置></a> </li>
+                        <li>底部菜单      <a class="c-red" href="/home/info/menu.php">去设置></a> </li>
+                    </ul>
+                    <ul class="b">
+                        <li>文字：<a href="/home/info/index.php?type=text"><strong class="c-red"><{$infocount.1|default:'0'}></strong>条</a></li>
+                        <li>单图：<a href="/home/info/index.php?type=single"><strong class="c-red"><{$infocount.2|default:'0'}></strong>条</a></li>
+                        <li>多图：<a href="/home/info/index.php?type=multi"><strong class="c-red"><{$infocount.3|default:'0'}></strong>条</a></li>
+                        <li>图片：<a href="/home/info/index.php?type=pic"><strong class="c-red"><{$infocount.pic|default:'0'}></strong>张</a></li>
+                        <li>音乐：<a href="/home/info/index.php?type=music"><strong class="c-red"><{$infocount.music|default:'0'}></strong>首</a></li>
+                        <li>视频：<a href="/home/info/index.php?type=video"><strong class="c-red"><{$infocount.video|default:'0'}></strong>个</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div> -->
+
+
+        <div class="data-chart">
+            <div class="btn-toolbar pull-right" role="toolbar">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn btn-default btn-success">绿色新增</button>
+                    <button type="button" class="btn btn-default">灰色取消</button>
+                </div>
+            </div>
+            <h3><i class="icons icons-chart"></i> 最近30天用户关注趋势图 <span><a class="c-green" href="">详细数据</a></span></h3>
+			<div id="container1" style="width: 730px; height: 260px; margin: 0 auto"></div>
+
+        </div>
+
+        <div class="data-chart">
+            <h3><i class="icons icons-chart"></i> 最近30天互动量趋势图 <span><a class="c-green" href="">详细数据</a></span></h3>
+			<div id="container2" style="width: 730px; height: 260px; margin: 0 auto"></div>
+        </div>
+
+
+
+    </div>
+</div>
+<script>
+set_title_name('数据分析');
+set_menu_cur('menu_21','cur omega');
+$(function(){
+		var chart;
+		$(document).ready(function() {
+		    chart = new Highcharts.Chart({
+			chart: {
+			    renderTo: 'container1',
+			    type: 'line',
+			    marginRight: 15,
+			    marginBottom: 30
+			},
+			title: {
+			    text: '',
+			    x: -20 //center
+			},
+			subtitle: {
+			    text: '',
+			    x: -20
+			},
+			xAxis: {
+			    categories: [<{$chart_data1.label}>]
+			},
+			yAxis: {
+			    title: {
+				text: ''
+			    },
+			    plotLines: [{
+				    value: 0,
+				    width: 1,
+				    color: '#808080'
+				}]
+			},
+			tooltip: {
+			    formatter: function() {
+				return '<b>'+ this.series.name +'</b><br/>'+
+				    this.y +'次';
+			    }
+			},
+			legend: {
+			    layout: 'vertical',
+			    align: 'right',
+			    verticalAlign: 'top',
+			    x: -10,
+			    y: 100,
+			    borderWidth: 0
+			},
+			plotOptions: {
+			    series: {
+				showInLegend: false
+			    }
+			},
+			series: [{
+				name: '关注量',
+				data: [<{$chart_data1.value}>]
+			    }, {
+                name: '取消量',
+                data: [<{$chart_data1b.value}>]
+            }],
+			colors: ['#489100', '#E6E6E6']
+		    });
+
+		    chart = new Highcharts.Chart({
+			chart: {
+			    renderTo: 'container2',
+			    type: 'line',
+			    marginRight: 15,
+			    marginBottom: 30
+			},
+			title: {
+			    text: '',
+			    x: -20 //center
+			},
+			subtitle: {
+			    text: '',
+			    x: -20
+			},
+			xAxis: {
+			    categories: [<{$chart_data1.label}>]
+			},
+			yAxis: {
+			    title: {
+				text: ''
+			    },
+			    plotLines: [{
+				    value: 0,
+				    width: 1,
+				    color: '#808080'
+				}]
+			},
+			tooltip: {
+			    formatter: function() {
+				return '<b>'+ this.series.name +'</b><br/>'+
+				    this.y +'次';
+			    }
+			},
+			legend: {
+			    layout: 'vertical',
+			    align: 'right',
+			    verticalAlign: 'top',
+			    x: -10,
+			    y: 100,
+			    borderWidth: 0
+			},
+			plotOptions: {
+			    series: {
+				showInLegend: false
+			    }
+			},
+			series: [{
+				name: '互动量',
+				data: [<{$chart_data1c.value}>]
+			    }]
+		    });
+
+		});
+	    });
+</script>

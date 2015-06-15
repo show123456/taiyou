@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>主要内容区main</title>
+<link href="__PUBLIC__/admin/css/css.css" type="text/css" rel="stylesheet" />
+<link href="__PUBLIC__/admin/css/main.css" type="text/css" rel="stylesheet" />
+<link rel="shortcut icon" href="__PUBLIC__/admin/images/main/favicon.ico" />
+<link href="__PUBLIC__/admin/add.css" type="text/css" rel="stylesheet" />
+<script language="JavaScript" src="__PUBLIC__/admin/js/cc-alert.js"></script>
+</head>
+<body>
+<!--main_top-->
+<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+  <tr>
+    <td width="99%" align="left" valign="top">您的位置：修改密码</td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" id="addinfo">
+    <a href="javascript:history.go(-1)" target="mainFrame" onFocus="this.blur()" class="add">返回上一级</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+    <form method="post" action="<{:U('editp')}>" enctype="multipart/form-data">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">原密码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for"><input type="password" name="pass0" value="" class="text-word"></td>
+	  </tr>
+	  <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">新密码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for"><input type="password" name="pass1" value="" class="text-word"></td>
+	  </tr>
+	  <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">再次输入：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for"><input type="password" name="pass2" value="" class="text-word"></td>
+	  </tr>
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">&nbsp;</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for"><input name="" type="submit" value="提交" class="text-but">
+        <input name="" type="reset" value="重置" class="text-but"></td>
+      </tr>
+    </table>
+    </form>
+    </td>
+    </tr>
+</table>
+</body>
+</html>

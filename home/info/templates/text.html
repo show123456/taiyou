@@ -1,0 +1,91 @@
+<div class=" main-content">
+    <div class="inner">
+        <div class="lib-edit">
+            <div class="header">
+                <a href="/home/info/index.php"><i class="icons icons-back"></i> 文本内容编辑</a>
+            </div>
+            <div class="content">
+                <div class="preview">
+                    <div class="cell">
+                        <div class="lib-title" style="font-size:14px;border-bottom:1px dotted #cccccc;">
+                            效果：
+                        </div>
+                        <div class="cover">
+                            <img src="<{$WEB_DOMAIN}>/home/public/img/single-example.png" alt="" />
+                        </div>
+                    </div>
+                </div><div class="editor">
+                    <form id="text-form" method="post" action="/home/info/text.php">
+					<div class="cell">
+                        <div class="form-rule" role="form">
+                            <div class="form-group">
+                                <label>关键词<strong class="c-red">*</strong><span class="c-gray">（PS:多个规则对应一条内容用逗号分隔。如：help ,帮助）</span></label>
+                                <input name="keyword" type="text" class="form-control" value="<{$infoRow.keyword}>">
+                            </div>
+                        </div>
+                    </div>
+					
+                    <div class="cell cell-dark">
+                        <div class="form-rule form-rule-add" role="form">
+                            <div class="form-group">
+                                <label>类别<strong class="c-red">*</strong><span class="c-gray"></span></label>
+                                <select name="cate_id" class="form-control">
+                                    
+                                    <{foreach item="row" from=$cates}>
+                                    <option value="<{$row.id}>"><{$row.cate_name}></option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+							<div class="form-group">
+                                <label>回复内容</label>
+                                <textarea name="info_intro" class="form-control"cols="20" rows="10"><{$infoRow.info_intro}></textarea>
+                                <div class="reply-sub">
+                                    <a href=""><i class="icons icons-emoji"></i></a>
+                                    <span class="c-gray">还可以输入<span class="max-count" max="140">140</span>字</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div class="cell cell-dark">
+                        <div class="form-rule" role="form">
+                            <div class="form-group">
+                                <label>状态<span class="c-gray"></span></label>
+                                <br/>
+                                <input type="radio" name="state" <{if $infoRow.state!='2'}>checked<{/if}> value='1'> 开放&nbsp;&nbsp; 
+                                <input type="radio" name="state"<{if $infoRow.state=='2'}>checked<{/if}>  value='2'> 关闭
+                            </div>
+                        </div>
+                    </div>
+                    <div class="opt">
+                        <input type="hidden" name="id" value="<{$infoRow.id}>"/>
+                        <input type="submit" class="btn btn-large btn-success" value="完成">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    set_title_name('源资料库-文字');
+    set_menu_cur('menu_16','cur super');
+    $(function(){
+        $('#text-form').submit(function(){
+            $.post($(this).attr('action'),$(this).serializeArray(),function(msg){
+                try{
+                    var obj = $.parseJSON(msg);
+                    if(obj.success==1){ window.location.href='/home/info/index.php';}else{
+                        var evt = {clientX:$('input[type="submit"]').offset().left,clientY:$('input[type="submit"]').offset().top-180};
+                    	note_info(obj.msg,'warn',evt);
+                    }
+                }catch(e){}
+            });
+            return false;
+        });
+		var SelectArr = $("select");
+		for (var i = 0; i < SelectArr.length; i++) {
+		  SelectArr[i].options[0].selected = true; 
+		  }
+    });
+</script>

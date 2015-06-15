@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">商圈<{:$vo['id'] ? '修改' : '新增'}></a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('add')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$vo['id']|default=''}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>picture/图片<b></b></label>
+					<input type="file" name="pic" class="yaheifont" onchange="$('.picShow').hide();">
+				</li>
+				<notempty name="vo.pic">
+				<li class="picShow">
+					<label>&nbsp;<b></b></label>
+					<span style=''><img src="<{$vo['pic']}>" style="width:150px;" /></span>
+				</li>
+				</notempty>
+				<li>
+					<label>name/名称<b></b></label>
+					<input type="text" name="info[name]" value="<{$vo['name']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="save/保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="back/返回" onclick="window.history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	if($("input[name='info[name]']").val()==''){
+		alert_tip('名称不能为空');return;
+	}
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

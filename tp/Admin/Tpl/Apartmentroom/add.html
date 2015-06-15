@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+	.forminfo li label{width:150px;}
+</style>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script> 
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">bedroom<{:$vo['id'] ? '-edit' : '-add'}></a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('add')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$vo['id']|default=''}>"/>
+		<input type="hidden" name='info[aid]' value="<{$Think.get.aid}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>Per Month Rent<b>*</b></label>
+					<input type="text" name="info[room_fee]" value="<{$vo['room_fee']}>" class="dfinput yaheifont">
+					<span style='display:inline'>yuan</span>
+				</li>
+				<li>
+					<label>room size<b>*</b></label>
+					<input type="text" name="info[room_size]" value="<{$vo['room_size']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>bed size<b>*</b></label>
+					<input type="text" name="info[bed_size]" value="<{$vo['bed_size']}>" class="dfinput yaheifont">
+					<span style='display:inline'>㎡</span>
+				</li>
+				<li>
+					<label>available from/起租时间<b>*</b></label>
+					<input type="text" name="info[start_time]" value="<{$vo['start_time']}>" class="dfinput yaheifont date_picker">
+				</li>
+				<li>
+					<label>windows in the room?<b>*</b></label>
+					<i style="height:34px;line-height:34px;color:#111;">
+					<input type="radio" name="info[is_window]" value="1" <if condition="$vo['is_window'] eq 1">checked</if> style="vertical-align:middle;" />Yes&nbsp;&nbsp;
+					<input type="radio" name="info[is_window]" value="0" <if condition="$vo['is_window'] eq 0">checked</if> style="vertical-align:middle;" />No
+					</i>
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="save/保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="back/返回" onclick="window.history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	if($("input[name='info[room_fee]']").val()==''){
+		alert_tip("rent can't be empty");
+		return;
+	}
+	if($("input[name='info[room_size]']").val()==''){
+		alert_tip("room size can't be empty");
+		return;
+	}
+	if($("input[name='info[bed_size]']").val()==''){
+		alert_tip("bed size can't be empty");
+		return;
+	}
+	if($("input[name='info[start_time]']").val()==''){
+		alert_tip("available from can't be empty");
+		return;
+	}
+	$('#memberform').submit();
+}
+</script>
+</body>
+</html>

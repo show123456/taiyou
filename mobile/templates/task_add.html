@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>发布职位</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<body style="background-color:#eeeeee;">
+<form action="" id="meminfo">
+<{if $vo.id && !$smarty.get.zaifa}><input type="hidden" name='num[id]' value='<{$vo.id}>' /><{/if}>
+<{if $smarty.get.zaifa}>
+	<input type="hidden" name='num[sh_status]' value='1' />
+	<input type="hidden" name='num[is_shut]' value='0' />
+<{/if}>
+<div class="main">
+	<div class="form_content">
+		<div class="tabs_info">
+			<input type="text" name="str[title]" value="<{$vo.title}>" placeholder="请输入职位标题"/>
+			<div>
+				<div class="rmb" style="width:100%;">
+					<input type="text" name="num[money]" value="<{$vo.money}>" placeholder="请输入职位薪酬" />
+					<div class="rmb_icon">元</div>
+				</div>
+			</div>
+			<select name="num[pay_type]" style="width:100%">
+				<option value="1" <{if $vo.pay_type==1}>selected<{/if}> >现金日结</option>
+				<option value="2" <{if $vo.pay_type==2}>selected<{/if}> >转账日结</option>
+			</select>
+			<div style='clear:both;'></div>
+			<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">性别要求：</div>
+			<select name="num[sex]" style="width:100%">
+				<option value="3" <{if $vo.sex==3}>selected<{/if}> >男女不限</option>
+				<option value="1" <{if $vo.sex==1}>selected<{/if}> >男</option>
+				<option value="2" <{if $vo.sex==2}>selected<{/if}> >女</option>
+			</select>
+			<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">报名截止时间：</div>
+			<div>
+				<div class="rmb" style="width:60%;">
+					<input type="date" name="str[start_time]" value="<{$vo.start_time}>" placeholder="请点击报名截止日期" />
+				</div>
+				<div class="rmb" style="width:30%;margin-left:10px;">
+					<select style="width:100%;height:40px;" name="str[start_hour]">
+					<{foreach from=$hourArr item=v}>
+					<option value="<{$v}>" <{if (!$vo.start_hour && $v=='12:00') || $v==$vo.start_hour}>selected<{/if}> ><{$v}></option>
+					<{/foreach}>
+					</select>
+				</div>
+			</div>
+			<div style='clear:both;'></div>
+			<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">工作时间：</div>
+			<div>
+				<div class="rmb" style="width:40%;">
+					<input type="date" name="work_date" value="<{$vo.work_date}>" placeholder="请点击工作日期" />
+				</div>
+				<div class="rmb" style="width:25%;margin-left:10px;">
+					<select style="width:100%;height:40px;" name="work_hour">
+					<{foreach from=$hourArr item=v key=k}>
+					<option value="<{$v}>" <{if $v==$vo.work_hour}>selected<{/if}> ><{$v}></option>
+					<{/foreach}>
+					</select>
+				</div>
+				<div class="rmb" style="width:3%;margin-top:25px;">-</div>
+				<div class="rmb" style="width:25%;">
+					<select style="width:100%;height:40px;" name="work_hour_end">
+					<{foreach from=$hourArr item=v key=k}>
+					<option <{if (!$vo.work_hour_end && $v=='12:00') || $v==$vo.work_hour_end}>selected<{/if}> value="<{$v}>"><{$v}></option>
+					<{/foreach}>
+					</select>
+				</div>
+			</div>
+			<div style='clear:both;'></div>
+			<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">集合时间：</div>
+			<div>
+				<div class="rmb" style="width:60%;">
+					<input type="date" name="jihe_date" value="<{$vo.jihe_date}>" placeholder="请点击集合日期" />
+				</div>
+				<div class="rmb" style="width:30%;margin-left:10px;">
+					<input type="text" name="jihe_hour" value="<{$vo.jihe_hour}>" placeholder="具体集合时间" />
+				</div>
+			</div>
+			<input type="text" name="str[jihe_address]" value="<{$vo.jihe_address}>" placeholder="请输入集合地点"/>
+			<div>
+			<select style="float:left;margin-right:1.5%;" name="num[pid]" class="provinceid">
+				<option value="10">江苏省</option>
+				<!-- <option value="">请选择省</option>
+				<{foreach from=$parr item=pv}>
+				<option value="<{$pv.ProvinceID}>" <{if $pv.ProvinceID==$vo.pid}>selected<{/if}> ><{$pv.ProvinceName}></option>
+				<{/foreach}> -->
+			</select>
+			<select style="float:left;margin-right:1.5%;" name="num[cid]" class="cityid">
+			<option value="78">苏州市</option>
+			</select>
+			<select style="width:33%;float:right;" name="num[did]" class="areaid">
+				<option value="">请选择区</option>
+				<{foreach from=$darr item=dv}>
+				<option value="<{$dv.DistrictID}>" <{if $dv.DistrictID==$vo.did}>selected<{/if}> ><{$dv.DistrictName}></option>
+				<{/foreach}>
+			</select>		
+			</div>
+			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请输入具体工作地点" />
+			<input type="text" name="num[num]" value="<{$vo.num}>" placeholder="请输入招聘人数（数值）"/>
+			<div style='clear:both;'></div>
+			<{if $userRow.id==1}>
+			<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">职位申请费(数值型,单位元):</div>
+			<input type="text" name="num[sq_fee]" value="<{$vo.sq_fee|default:0}>" placeholder="请输入职位申请费" />
+			<{/if}>
+			<textarea name="str[yaoqiu]" placeholder="请输入职位要求"><{$vo.yaoqiu}></textarea>
+			<textarea name="str[introduce]" placeholder="请输入工作内容"><{$vo.introduce}></textarea>
+			<textarea name="str[attention]" placeholder="请输入注意事项"><{$vo.attention}></textarea>
+		</div>
+		<div class="blank_15"></div>
+	</div>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">
+	<{if $vo.id && !$smarty.get.zaifa}>
+		修改
+	<{elseif $smarty.get.zaifa}>
+		发布
+	<{else}>
+		提交审核
+	<{/if}>	
+	</div></a>
+</div>
+</form>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	if($('.provinceid').val()=='' || $('.cityid').val()=='' || $('.areaid').val()==''){
+		alert("请选择省市区");return;
+	}
+	var inputObj=$('input');
+	var inputLen=inputObj.length;
+	var n_attr;
+	for(var i=0;i<inputLen;i++){
+		if(inputObj.eq(i).attr('name')!='num[sq_fee]' && inputObj.eq(i).val()==''){
+			n_attr=inputObj.eq(i).attr('placeholder');
+			alert(n_attr);return;
+		}
+	}
+	var textObj=$('textarea');
+	var textLen=textObj.length;
+	for(var i=0;i<textLen;i++){
+		if(textObj.eq(i).val()==''){
+			n_attr=textObj.eq(i).attr('placeholder');
+			alert(n_attr);return;
+		}
+	}
+	if(!isNumber($('input[name="num[money]"]').val())){
+		alert("请填写正确格式的职位薪酬");return;
+	}
+	if(!isNumber($('input[name="num[num]"]').val())){
+		alert("请填写正确格式的招聘人数");return;
+	}
+	$.post('index.php?m=task&a=add',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			if('<{$smarty.get.zaifa}>'=='1'){
+				alert('发布成功');
+				window.location.href='index.php?m=task_company&a=subindex';
+			}else if('<{$vo.id}>'){
+				alert('修改成功');
+				window.history.go(-1);
+			}else{
+				alert('已保存，请耐心等待审核');
+				window.location.href='index.php?m=task_company&a=subindex';
+			}
+		}else if(res=='err'){
+			alert('保存失败');
+		}
+	});
+}
+//验证为正整数
+function isNumber(s){  
+	var patrn=/^[1-9][0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+<!-- 城市级联开始 -->
+function pselect(obj){
+	$(".cityid option").remove();
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:$(obj).val()},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			str+="<option value=''>请选择</option>";
+			for(var i=0;i<data.length;i++){
+				str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+			}
+			$(".cityid").append(str);
+		}
+	});
+}
+function cselect(obj){
+	$(".areaid option").remove();
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:$(obj).val()},
+		dataType:"json",
+		success:function(dataa){
+			var stra="";
+			stra+="<option value=''>请选择</option>";
+			for(var i=0;i<dataa.length;i++){
+				stra+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+			}
+			$(".areaid").append(stra);
+		}
+	});
+}
+//修改时加载城市和区域信息
+if(0 && '<{$vo.id}>'){
+	var pid='<{$vo.pid}>';
+	var cid='<{$vo.cid}>';
+	var did='<{$vo.did}>';
+	$.ajax({
+		url:"index.php?m=user&a=get_citys",
+		type:"get",
+		data:{pid:pid},
+		dataType:"json",
+		success:function(data){
+			var str="";
+			for(var i=0;i<data.length;i++){
+				if(data[i].CityID==cid){
+					str+="<option value=\""+data[i].CityID+"\" selected >"+data[i].CityName+"</option>";
+				}else{
+					str+="<option value=\""+data[i].CityID+"\">"+data[i].CityName+"</option>";
+				}
+			}
+			$(".cityid").append(str);
+		}
+	});
+
+	$.ajax({
+		url:"index.php?m=user&a=get_districts",
+		type:"get",
+		data:{cid:cid},
+		dataType:"json",
+		success:function(dataa){
+			var str="";
+			for(var i=0;i<dataa.length;i++){
+				if(dataa[i].DistrictID==did){
+					str+="<option value=\""+dataa[i].DistrictID+"\" selected >"+dataa[i].DistrictName+"</option>";
+				}else{
+					str+="<option value=\""+dataa[i].DistrictID+"\">"+dataa[i].DistrictName+"</option>";
+				}
+			}
+			$(".areaid").append(str);
+		}
+	})
+}
+<!-- 城市级联结束 -->
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?php /* Smarty version 2.6.19, created on 2015-06-12 13:06:18
+         compiled from D:%5Cwamp%5Cwww%5C/home/suser/templates/login.html */ ?>
+<div class="inner">
+    <!-- <h3><img src="<?php echo $this->_tpl_vars['WEB_DOMAIN']; ?>
+/home/public/img/title-login.png" alt="微沟通互动平台管理系统-会员登录" /></h3> -->
+    <h3 style="font-family:'Microsoft Yahei','微软雅黑';color:#5CB85C;letter-spacing:0.2em;">云凡客管理后台</h3>
+	    <div class="form-inline form-login" role="form">
+	        <div class="form-group">
+	            <label class="sr-only">帐号：</label>
+	            <i class="glyphicon glyphicon-user"></i>
+	            <input type="text" class="form-control"  placeholder="输入帐号" name="name" value=''>
+	        </div>
+	        <div class="form-group">
+	            <label class="sr-only">密码：</label>
+	            <i class="glyphicon glyphicon-lock"></i>
+	            <input type="password" class="form-control"  placeholder="输入密码" name="pass" value=''>
+	        </div>
+	        <div class="form-group">
+	            <input type="submit" class="btn btn-success" id="queryButton" onclick='formSubmit(event)' value="登录">
+	        </div>
+	    </div>
+		<input type="hidden" name='a' value='doLogin' />
+    <!-- <p class="link-more"><a class="c-red" href="reg.php"><b>注册体验</b></a>  |  <a class="c-green" href="">忘记密码</a></p> -->
+</div>
+<script type="text/javascript">
+function formSubmit(event){
+	$.post("/home/suser/index.php",{a:'doLogin',name:$("input[name='name']").val(),pass:$("input[name='pass']").val()},function(res){
+		if(res){
+			note_info('登录成功！','success',event);
+			setTimeout("window.location.href='../user/index.php?type=1'",300);return;
+		}else{
+			note_info('用户名或密码错误！','warn',event);
+		}
+	});
+}
+$(function(){
+	$("input[name='pass']").keypress(function(event){
+		if(event.keyCode=='13'){
+			$('#queryButton').click();
+		}
+	});
+}); 
+</script>

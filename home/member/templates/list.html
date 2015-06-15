@@ -1,0 +1,106 @@
+<div class=" main-content">
+    <div class="inner">
+        <div class="alert alert-success alert-dismissable fz12px alertfc">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p>1. <span class="c-red">订阅号</span>一天只可以群发一条信息，<span class="c-red">服务号</span>一月只可以群发一条信息，消息可以是文字、图文、多图文、视频、音乐等内容。</p>
+            <p>2. <span class="c-red">认证后的服务号</span>可直接同步微信关注用户和互动消息。</p>
+        </div>
+
+        <nav class="navbar navbar-default user-navbar" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <span class="navbar-brand" href="#"><i class="icons icons-wechat"></i> 会员列表</span>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form class="navbar-form navbar-right nav-search" role="search">
+                        <div class="form-group">
+                            <i class="glyphicon glyphicon-search"></i>
+                            <input type="text" class="form-control" placeholder="消息内容">
+                        </div>
+                        <button type="submit" class="btn btn-link">搜</button>
+                    </form>
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="wrap-reply clearfix">
+            <table class="table user-table table-member table-striped">
+                <thead>
+                    <tr>
+                        <th class="t1">用户信息</th>
+                        <th class="t2">互动量</th>
+                        <th class="t3" onclick="window.location.href='<{$haveCentUri}>'">积分额 <i class="glyphicon glyphicon-arrow-down"></i></th>
+                        <th class="t4">关注日期</th>
+                        <th class="t5">取消日期</th>
+                        <th class="t6" onclick="window.location.href='<{$statusUri}>'">状态 <i class="glyphicon glyphicon-sort"></i> </th>
+                        <th class="t7">操作</th>
+                    </tr>
+                </thead>
+                <{if $memberlist}>
+                <tbody>
+                <{foreach item="row" from=$memberlist}>
+                    <tr>
+                        <td>
+                            <div style="text-align:center;"><img class="media-object"  style="width: 64px; height: 64px;" src="/upload/member/<{$row.photo_path|default:'demault_head.jpg'}>">
+                            <p><{$row.nickname|default:'未命名'}></p>
+							</div>
+                        </td>
+                        <td><{$row.sendmsg_num}></td>
+                        <td id="m<{$row.id}>"><span><{$row.have_cent}></span><a href="#"><i onclick='edits("<{$row.have_cent}>","<{$row.id}>");return false;'	class="icons icons-cog"  ></i></a></td>
+                        <td><{$row.subscribe_time}></td>
+                        <td><{$row.unsubscribe_time}></td>
+                        <td><{$row.status}></td>
+                        <td>
+                            <p><a href="member_action.php?fromuser=<{$row.fromuser}>"> 行为分析>></a></p>
+                            <p><a href="talk.php"> 用户对话>></a></p>
+                        </td>
+
+                    </tr>
+                <{/foreach}>
+
+                </tbody>
+                <{/if}>
+            </table>
+			<div class="page-list" style="margin-top:30px;">
+							<{$pagerhtml}>
+					</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    set_title_name('会员列表');
+    set_menu_cur('menu_23','cur omega');
+	
+	function edits(q,rid){
+		old_value =q;
+		old_node = $("#m"+rid).html();
+		$("#m"+rid).html("<div><input name='rval' type='text'style='width:45px;height:23px'  name='' value="+q+"></div>");
+		$('input[name=rval]').select();
+		//alert('ok')
+		$("#m"+rid).change(function(event){
+			
+				$.ajax({
+				type: "POST",
+				url:"/home/member/list.php",
+				data:{
+					'act':'upda',
+					'id' :rid,
+					'have_cent':$('input[name=rval]').val()
+				},
+				async: true,
+				error: function(request) {
+					alert("Connection error");
+				},
+				success: function(res) {
+					$("#m"+rid).html(old_node);
+					$("#m"+rid).find('span').html(res);
+					//note_info('修改成功','success',event);
+				}
+			});
+			
+		})
+	}
+</script>

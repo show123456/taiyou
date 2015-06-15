@@ -1,0 +1,226 @@
+<script type='text/javascript' src='<{$WEB_DOMAIN}>/includes/highcharts/js/highcharts.js'></script>
+<div class=" main-content">
+	<div class="inner">
+		<div class="customer-action">
+			<div class="customer-info">
+				用户行为
+			</div>
+			<div class="customer-details" >
+				<div class="c-item">
+					<div class="c-title">
+						<div style="float:left;">用户信息</div>
+						<div style="float:right;">当前状态：
+							<{if $list.status==1}>
+							<span style="color:green;">正常</span>
+							<{else}>
+							<span style="color:green;">关闭</span>
+							<{/if}>
+						</div>
+					</div>
+					<div class="c-info">
+						<ul>
+							<li>用户名：<span><{$list.nickname|default:'未填写'}></span></li>
+							<li>联系电话：<span><{$list.contact_tel|default:'未填写'}></span></li>
+							<li>联系地址：<span><{$list.contact_address|default:'未填写'}></span></li>
+						</ul>
+					</div>
+					<div>
+						<ul>
+							<li>互动量：<span class="c-red"><{$list.sendmsg_num|default:'暂无互动'}></span></li>
+							<li>积分额：<span class="c-red"><{$list.have_cent}></span></li>
+							<li>关注日期：<span><{$list.subscribe_time|date_format:'%Y-%m-%d %H:%M:%S'}></span></li>
+							<{if $list.unsubscribe_time}>
+							<li>取消日期：<span><{$list.unsubscribe_time|date_format:'%Y-%m-%d %H:%M:%S'}></span></li>
+							<{else}>
+							<li>取消日期：<span>未取消</span></li>
+							<{/if}>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			<div class="detail-target">
+				<div class="content">	
+					<div>
+						<h4 class="tread-title">互动走势图</h4>
+						<span class="more_menu" style="display:inline-table;">
+							<form method="post" name="formsearch" action="/home/member/member_action.php?fromuser=<{$fromuser}>" method="post">
+							
+							<select id="year" name='year' class="textarea" >
+								<option value="1">选择年份</option>
+								<option value=2014>2014 年</option>
+								<option value=2013>2013 年</option>
+							</select>
+							<select id="month" name='month' class="textarea" >
+								<option value="13">选择月份</option>
+								<option value="01">1 月</option>
+								<option value="02">2 月</option>
+								<option value="03">3 月</option>
+								<option value="04">4 月</option>
+								<option value="05">5 月</option>
+								<option value="06">6 月</option>
+								<option value="07">7 月</option>
+								<option value="08">8 月</option>
+								<option value="09">9 月</option>
+								<option value="10">10 月</option>
+								<option value="11">11 月</option>
+								<option value="12">12 月</option>
+							</select>
+							<button type='button' class="btn btn-large btn-success" onclick='mysubmit(event)' style="margin-top:-5px;">查询</button>
+							</form>
+						</span>
+		<div class="data-chart">
+            <h3><i class="icons icons-chart"></i> 
+			<{if $yea && $mon}>
+				<{$yea}>年<{$mon}>月互动量趋势图
+			<{else}>
+				最近30天互动量趋势图
+			<{/if}>
+			<span><a class="c-green" href="">详细数据</a></span></h3>
+			<div id="container2" style="width: 700px; height: 260px; margin: 0 auto"></div>
+        </div>
+					</div>
+					<div>
+						<h4 class="tread-title">最新互动记录</h4>
+						<div class="trend-chart">
+							<div class="sub_content" style="margin:0 10px 10px; border:1px solid #D8D8D8;">
+								<div class="wrapper">
+									<table class="stable">
+										<colgroup span="2">
+											<col class="Keyword">
+											<col class="RefDate">
+										</colgroup>
+										<thead>
+											<tr>
+											<th name="Keyword" class="">关键字</th>
+											<th name="RefDate" class="hover enable">日期</th>
+											</tr>
+										</thead>
+										<tbody>
+											<{if $Interactive_recording}>
+												<{foreach item="row" from=$Interactive_recording}>
+													<tr>
+														<td><div><{$row.msg_content|truncate:60}></div></td>
+														<td><div><{$row.create_date}></div></td>
+													</tr>
+												<{/foreach}>
+											<{else}>
+											<tr>
+												<td><div>暂无互动信息</div></td>			
+											</tr>
+											<{/if}>
+										</tbody>
+									</table>
+								<!-- 	<div class="date-page">
+										<div class="page">
+										<a href="#" class="first">第一页</a>
+										<strong href="#" class="current">1</strong>
+										<a href="#">2</a>
+										<a href="#">3</a>
+										<a href="#">4</a>
+										<a href="#">5</a>
+										<span class="dot">...</span>
+										<a href="#">9</a>
+										<a href="#" class="next">下一页</a>
+										</div>
+									</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    set_title_name('会员列表-用户行为');
+    set_menu_cur('menu_23','cur omega');
+	
+	//表单提交
+	function mysubmit(event){
+		//note_info('年份不能为空',warn,event);
+		if($('#year').val()==1){
+			//alert('ok')
+			note_info('年份不能为空','warn',event);
+			return false;
+		}else if($('#month').val()==13){
+			note_info('月份不能为空','warn',event);
+			return false;
+		}
+		
+		$('form[name=formsearch]').submit();
+	}
+	$(function(){
+	
+		//$('#year').val("<{$yea}>");
+		//$('#month').val("<{$mon}>");
+		
+		$('#year').val("1");
+		$('#month').val("13");
+		if("<{$yea}>".length==4){
+			$('#year').val("<{$yea}>");
+			$('#month').val("<{$mon}>");
+		}
+		var chart;
+		$(document).ready(function() {
+
+		    chart = new Highcharts.Chart({
+			chart: {
+			    renderTo: 'container2',
+			    type: 'line',
+			    marginRight: 15,
+			    marginBottom: 30
+			},
+			title: {
+			    text: '',
+			    x: -20 //center
+			},
+			subtitle: {
+			    text: '',
+			    x: -20
+			},
+			xAxis: {
+			    categories: [<{$chart_data1.label}>]
+			},
+			yAxis: {
+			    title: {
+				text: ''
+			    },
+			    plotLines: [{
+				    value: 0,
+				    width: 1,
+				    color: '#808080'
+				}]
+			},
+			tooltip: {
+			    formatter: function() {
+				return '<b>'+ this.series.name +'</b><br/>'+
+				    this.y +'次';
+			    }
+			},
+			legend: {
+			    layout: 'vertical',
+			    align: 'right',
+			    verticalAlign: 'top',
+			    x: -10,
+			    y: 100,
+			    borderWidth: 0
+			},
+			plotOptions: {
+			    series: {
+				showInLegend: false
+			    }
+			},
+			series: [{
+				name: '互动量',
+				data: [<{$chart_data1c.value}>]
+			    }]
+		    });
+
+		});
+	});
+
+</script>

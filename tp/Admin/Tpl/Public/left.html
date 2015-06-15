@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理系统</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript">
+$(function(){	
+	//导航切换
+	$(".menuson li").click(function(){
+		$(".menuson li.active").removeClass("active");
+		$(this).addClass("active");
+	});
+	$('.title').click(function(){
+		var $ul = $(this).next('ul');
+		$('dd').find('ul').slideUp();
+		if($ul.is(':visible')){
+			$(this).next('ul').slideUp();
+		}else{
+			$(this).next('ul').slideDown();
+		}
+	});
+})	
+</script>
+</head>
+<body style="background:#f0f9fd;">
+	<div class="lefttop"><span></span>功能菜单</div>
+    <dl class="leftmenu">
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico01.png" /></span>财务模块
+			</div>
+			<ul class="menuson">
+				<li class="active"><cite></cite>
+					<a href="<{:U('SubUser/person_index')}>" target="rightFrame">个人用户</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('SubMoneyLog/index')}>" target="rightFrame">金额日志</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('Recharge/index')}>" target="rightFrame">系统充值</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('SubMoneyLog/zzrj')}>" target="rightFrame">转账日结</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('Downtown/index')}>" target="rightFrame">Downtown/商圈</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('Slide/index')}>" target="rightFrame">Slide/首页幻灯片</a>
+				</li>
+			</ul>
+		</dd>
+    </dl>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<style type="text/css">
+	*{font-family:"Microsoft YaHei","黑体","宋体";}
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+	
+	.sendBtn{padding:1px 2px;border:1px solid #4DA300;cursor:pointer;width:85px;
+	background:none repeat scroll 0% 0% #53B000;border-radius:3px;color:#FFF;margin:0 auto}
+	
+	.kfTypeDiv span{cursor:pointer;}
+	.kfSpan{color:#ccc;}
+	.isKf{color:#428bca;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<div>
+							<button style="float:right;" onclick="javascript:location.href='task.php?a=taskadd'">发布兼职</button>
+						</div>
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入标题" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" title="搜索" type="submit">
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">标题</th>
+										<th class="enable">报名数</th>
+										<th class="enable">浏览量</th>
+										<th class="enable">是否关闭</th>
+										<th class="enable">添加时间</th>
+										<th class="enable">向兼职用户</th>
+										<th class="enable">向报名用户</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr data-bc='#fff'>
+										<td><div><{if $v.uid==1}>(平台)<{else}><span style='color:red'>(企业)</span><{/if}><{$v.title}></div></td>
+										<td><div><{$v.countnum}></div></td>
+										<td><div><{$v.see_num}></div></td>
+										<td><div class="kfTypeDiv">
+											<span class="kfSpan <{if $v.is_shut==1}>isKf<{/if}>" data-status='1' data-id='<{$v.id}>'>关闭</span> | 
+											<span class="kfSpan <{if $v.is_shut==0}>isKf<{/if}>" data-status='0' data-id='<{$v.id}>'>开放</span>
+										</div></td>
+										<td><div><{$v.addtime}></div></td>
+										<td><div class='sendBtn' <{if $v.sh_status==0}>onclick="note_info('该职位还未通过审核','warn',event);"<{/if}> >
+										<a <{if $v.sh_status==1}>href="send_wx_msg.php?tid=<{$v.id}>" target="_blank"<{/if}> style="color:#fff;">发送提醒消息</a>
+										</div></td>
+										<td style='padding:10px 0;'>
+											<div class='sendBtn' style='width:60px;'><a style='color:#fff;' target='_blank' href="send_phone_msg.php?tid=<{$v.id}>">发送短信</a></div>
+										</td>
+										<td>
+											<div class="btn-operate">
+											<a href="bbs_manage.php?id=<{$v.id}>">查看评论</a> | 
+											<a target='_blank' href="index.php?m=task_company&a=sign_mid&tid=<{$v.id}>">报名管理</a> | 
+											<a href="task.php?a=sign&tid=<{$v.id}>">兼职人员</a> | 
+											<a href="task.php?a=<{if $v.uid==1}>taskadd<{else}>add<{/if}>&id=<{$v.id}>">修改</a> | 
+											<a href="#" onclick="delRow(event,'<{$v.id}>')">删除</a>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('职位管理');
+set_menu_cur('menu_41', 'cur omega');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"task.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+function sendMsg(id,status,event){
+	if(status=='0'){
+		note_info('该职位还未通过审核','warn',event);return;
+	}
+	note_info('消息提醒发送中，请勿关闭页面','success',event);
+	$.get('task.php?a=send_msg&tid='+id);
+}
+
+$(document).ready(function(){
+	$('.kfTypeDiv span').click(function(){
+		if(confirm('确定要执行此操作吗？')){
+			var kf_type=$(this).attr('data-status');
+			var open_act_id=$(this).attr('data-id');
+			$.get('task.php',{a:'kf',id:open_act_id,type:kf_type},function(res){
+				if(res){
+					window.location.reload();
+				}
+			})
+		}
+	})
+	
+	$('.postTbody tr').click(
+		function(){
+			var backCol=$(this).attr('data-bc');
+			if(backCol=='#fff'){
+				$(this).attr('data-bc','#ddd');
+				$(this).css({backgroundColor:'#ddd'});
+			}else{
+				$(this).attr('data-bc','#fff');
+				$(this).css({backgroundColor:'#fff'});
+			}
+		}
+	)
+})
+</script>

@@ -1,0 +1,107 @@
+<style type="text/css">
+	li{cursor:pointer;}
+	.redactbtn{border-color:#bbb;}
+	.enable,.sub-set-title ul li a{font-size:14px;}
+	.serch_middle_div{height:35px;padding:5px;}
+	.page-list{margin-top:15px;float: right;margin-right:20px;}
+	.page-list a,.page-list span{margin-right:5px;}
+	#out_btn{color:#428bca;font-weight:bold;text-decoration:none;}
+	
+	.kfTypeDiv span{cursor:pointer;}
+	.kfSpan{color:#ccc;}
+	.isKf{color:#428bca;}
+</style>
+<div class="main-content">
+	<div class='inner'>
+		<div class="manage-apply">
+			<div class="apply-content">
+				<div class="manage-menu">
+					<div class='serch_middle_div'>
+						<div>
+							<button style="float:right;" onclick="window.location.reload();">刷新</button>
+							<button style="float:right;margin-right:5px;"><a href="exceldemo.php" target='_blank' id='out_btn'>导出到excel</a></button>
+						</div>
+						<div class="pull-right" style="margin-right:8px">
+							<form method="get" action="">
+								<input name="keywords" class="keywords" placeholder="输入姓名" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+								<input value="搜索" id="search" class="" title="搜索" type="submit">
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper" style="width:100%;">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th name="Theme" class="hover enable">姓名</th>
+										<th name="Theme" class="hover enable">手机号</th>
+										<th name="Theme" class="hover enable">银行卡</th>
+										<th name="Theme" class="hover enable">金额(元)</th>
+										<th name="Theme" class="hover enable">支付状态</th>
+										<th name="Theme" class="hover enable">时间</th>
+										<th name="Theme" class="hover enable">导出到excel</th>
+									</tr>
+								</thead>
+								<tbody class='postTbody'>
+									<!------------列表开始------------>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.nickname}></div></td>
+										<td><div><{$v.username}></div></td>
+										<td><div><{$v.bank_name}>-<{$v.bank_card}></div></td>
+										<td><div><{$v.money}></div></td>
+										<td><div class="kfTypeDiv">
+											<span class="kfSpan <{if $v.is_pay==1}>isKf<{/if}>" data-status='1' data-id='<{$v.id}>'>已支付</span> | 
+											<span class="kfSpan <{if $v.is_pay==0}>isKf<{/if}>" data-status='0' data-id='<{$v.id}>'>未支付</span>
+										</div></td>
+										<td><div><{$v.addtime}></div></td>
+										<td><div><{if $v.is_out}><span style='color:#428bca;font-weight:bold;'>已导出</span><{else}><span>未导出</span><{/if}></div></td>
+									</tr>
+									<{/foreach}>
+									<!------------列表结束------------>
+								</tbody>
+							</table>
+							<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+set_title_name('提现管理');
+set_menu_cur('menu_91', 'cur');
+function delRow(event,id){
+	if(confirm("确定要删除此信息吗?")){
+		$.ajax({
+			url:"index.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}else{
+					note_info('删除失败','warn',event);
+				}
+			}
+		});
+	}
+}
+$(document).ready(function(){
+	$('.kfTypeDiv span').click(function(){
+		if(confirm('确定要执行此操作吗？')){
+			var kf_type=$(this).attr('data-status');
+			var open_act_id=$(this).attr('data-id');
+			$.get('index.php',{a:'kf',id:open_act_id,is_pay:kf_type},function(res){
+				if(res){
+					window.location.reload();
+				}
+			})
+		}
+	})
+})
+</script>
