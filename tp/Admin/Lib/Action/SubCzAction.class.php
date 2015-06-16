@@ -1,5 +1,5 @@
 <?php
-class RechargeAction extends CommonAction{
+class SubCzAction extends CommonAction{
 	public function index(){
 		$userModel=M('SubUser');
 		$where=array();
@@ -79,8 +79,6 @@ class RechargeAction extends CommonAction{
 		
 		$this->display();
 	}
-	
-	//充值操作在SubUser/cz函数里
 	
 	//数据导出
 	public function daochu(){
