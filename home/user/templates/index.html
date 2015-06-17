@@ -35,6 +35,12 @@
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
 				<input type="hidden" name="admin" value="<{$smarty.get.admin}>" />
+				<select name="did" style="height:25px;line-height:25px;">
+					<option value="">请选择区</option>
+					<{foreach from=$darr item="v"}>
+						<option value="<{$v.DistrictID}>" <{if $smarty.get.did==$v.DistrictID}>selected<{/if}> ><{$v.DistrictName}></option>
+					<{/foreach}>
+				</select>&nbsp;&nbsp;
 				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>">&nbsp;&nbsp;
 				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
 				<input value="搜索" id="search" class="" title="搜索" type="submit">
@@ -61,6 +67,7 @@
 						<th name="Theme" class="hover enable">公司名称</th>
 						<th name="Theme" class="hover enable">联系人</th>
 						<{/if}>
+						<th name="Operate" class="hover enable">所属区</th>
 						<th name="Operate" class="hover enable">操作</th>
 					</tr>
 				</thead>
@@ -90,6 +97,7 @@
 						<td><div><{$v.nickname}></div></td>
 						<td><div><{$v.contact_name}></div></td>
 						<{/if}>
+						<td><div><{$v.district}></div></td>
 						<td>
 							<div class="btn-operate">
 							<{if $smarty.get.type==1}>

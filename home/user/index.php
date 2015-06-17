@@ -11,7 +11,7 @@
 			//所属省市区
 			$prow=D('s_province')->where("ProvinceID=".$vo['pid'])->dataRow();
 			$crow=D('s_city')->where("CityId=".$vo['cid'])->dataRow();
-			$drow=D('s_district')->where("DistrictId=".$vo['did'])->order('DistrictId asc')->dataRow();
+			$drow=D('s_district')->where("DistrictID=".$vo['did'])->order('DistrictID asc')->dataRow();
 			$vo['province']=$prow['ProvinceName'];
 			$vo['city']=$crow['CityName'];
 			$vo['district']=$drow['DistrictName'];
@@ -134,17 +134,23 @@
 	}
 	
 	//数据列表
+	$dmodel=new Model_Subtable('s_district');
 	$condition=array();
 	$condition[]=" id!=1 ";
+	if($_GET['did']){
+		$condition[]=" did='".$_GET['did']."' ";
+		$count_district_str=" and did='".$_GET['did']."' ";
+	}
+	
 	if($_GET['type']==1){
 		$condition[]=" type in (1,3)";//个人用户或客服
 		//人数统计
-		$res1=$model->field('count(*) as countnum')->where("type in (1,3) and pid!=0")->dataRow();
+		$res1=$model->field('count(*) as countnum')->where("type in (1,3) and pid!=0".$count_district_str)->dataRow();
 		$smarty->assign('countnum',$res1['countnum']);
 	}else{
 		$condition[]=" type=2";
 		//人数统计
-		$res1=$model->field('count(*) as countnum')->where("type = 2 and pid!=0")->dataRow();
+		$res1=$model->field('count(*) as countnum')->where("type = 2 and pid!=0".$count_district_str)->dataRow();
 		$smarty->assign('countnum',$res1['countnum']);
 	}
 	$condition[]=" pid!=0";
@@ -159,7 +165,13 @@
 	foreach($listArr as $key=>$value){
 		//微信头像
 		$listArr[$key]['headPic']=$memberModel->getPic($value['fromuser']);
+		//所属区
+		$drow=$dmodel->where("DistrictID='".$value['did']."'")->dataRow();
+		$listArr[$key]['district']=$drow['DistrictName'];
 	}
 	$smarty->assign('list',$listArr);
 	$smarty->assign('page',$model->pager($data['pager']));
+	
+	//苏州下的区
+	$smarty->assign('darr',$dmodel->where("CityID=78")->order('DistrictID asc')->dataArr());
 	$smarty->setTpl('user/templates/index.html')->display();
