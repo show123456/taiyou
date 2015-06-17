@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-14 07:45:42
+<?php /* Smarty version 2.6.19, created on 2015-06-17 14:18:33
          compiled from D:%5Cwamp%5Cwww%5Cmobile/templates/user_index_company.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'D:\\wamp\\www\\mobile/templates/user_index_company.html', 25, false),)), $this); ?>

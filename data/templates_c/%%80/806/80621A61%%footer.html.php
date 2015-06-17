@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-12 22:22:41
+<?php /* Smarty version 2.6.19, created on 2015-06-17 13:57:23
          compiled from footer.html */ ?>
 <style type="text/css">
 .bottom_bar { position: fixed; z-index: 99999; bottom: 0; left: 0; right: 0;}

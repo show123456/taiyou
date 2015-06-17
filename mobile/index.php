@@ -1,6 +1,5 @@
 <?php
 include_once("../includes/config.inc.php");
-//die('<script type="text/javascript">alert(\'系统改版中\')</script>');
 //cookie获取用户信息
 if($_COOKIE['tyuid'] && !$_SESSION['tyuser']['id']) $_SESSION['tyuser']['id']=$_COOKIE['tyuid'];
 
