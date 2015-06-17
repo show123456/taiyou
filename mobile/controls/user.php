@@ -131,3 +131,13 @@ if($_REQUEST['a']=='jk'){
 	$smarty->assign('totalmoney',$moneyLogRow['totalmoney']);
 	$smarty->setLayout('')->setTpl('mobile/templates/user_jk.html')->display();die;
 }
+
+//由id获取个人基本信息
+if($_REQUEST['a']=='get_person_info'){
+	$id=(int)$_GET['id'];
+	if($id && $userRow['id']==1){
+		$res=$userModel->field('nickname,username')->where("id='{$id}'")->dataRow();
+		$result=$res['nickname'].$res['username'];
+	}
+	$result ? die($result) : die('err');
+}

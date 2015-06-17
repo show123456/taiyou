@@ -99,7 +99,7 @@ if($_REQUEST['a']=='detail'){
 			else
 				$picStr="images/men_icon.gif";
 			$signList[$sk]['head_pic']=$picStr;
-			$signList[$sk]['nicheng']=sub_cut_str(deletehtml($suRow['nicheng']),3);;
+			$signList[$sk]['nicheng']=sub_cut_str(deletehtml($suRow['nicheng']),3);
 		}
 	}
 	$smarty->assign('signList',$signList);
@@ -131,7 +131,7 @@ if($_REQUEST['a']=='detail_ajax'){
 			else
 				$picStr="images/men_icon.gif";
 			$signList[$sk]['head_pic']=$picStr;
-			$signList[$sk]['nicheng']=sub_cut_str(deletehtml($suRow['nicheng']),3);;
+			$signList[$sk]['nicheng']=sub_cut_str(deletehtml($suRow['nicheng']),3);
 		}
 		echo json_encode($signList);die;
 	}else{

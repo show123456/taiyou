@@ -152,7 +152,7 @@
 		<div class="discuss_list">
 		<{foreach from=$signList item=v}>
 			<div class="user_icon" style="width:40px;height:60px;border:0;">
-				<img src="<{$v.head_pic|default:'images/men_icon.gif'}>" style="width:40px;height:40px;"/>
+				<img src="<{$v.head_pic|default:'images/men_icon.gif'}>" style="width:40px;height:40px;" />
 				<span style="font-size:12px;px;display:inline-block;width:100%;text-align:center;"><{$v.nicheng}></span>
 			</div>
 		<{/foreach}>
@@ -178,7 +178,7 @@
 		<{if $replyList}>
 		<{foreach from=$replyList item=v}>
 		<div class="discuss_list" id="discuss_list<{$v.id}>">
-			<div class="user_icon"><img src="<{$v.head_pic|default:'images/men_icon.gif'}>"/></div>
+			<div class="user_icon"><img src="<{$v.head_pic|default:'images/men_icon.gif'}>" onclick="alert_info('<{$v.uid}>')" /></div>
 			<div class="discuss_info">
 				<div class="user_title">
 					<p><{$v.name}><{if $v.tomanname}> @ <{$v.tomanname}><{/if}></p>
@@ -276,7 +276,7 @@ $(document).ready(function(){
 					var goodsStr='';
 					$.each(res,function(i,item){
 						goodsStr+='<div class="discuss_list" id="discuss_list'+item.id+'">';
-						goodsStr+='<div class="user_icon"><img src="'+item.head_pic+'"/></div><div class="discuss_info"><div class="user_title">';
+						goodsStr+='<div class="user_icon"><img src="'+item.head_pic+'" onclick="alert_info(\''+item.uid+'\')" /></div><div class="discuss_info"><div class="user_title">';
 						goodsStr+='<p>'+item.name;
 						if(item.tomanname){
 							goodsStr+=' @ '+item.tomanname;
@@ -436,6 +436,15 @@ function delMsg(obj,id){
 	if(confirm('确定要删除吗？')){
 		$.get('index.php?m=task&a=del_reply&id='+id,function(){
 			$('#discuss_list'+id).remove();
+		})
+	}
+}
+//点击评论人头像弹出基本信息
+function alert_info(id){
+	if(id && '<{$userRow.id}>'=='1'){//仅管理员可见
+		$.get('index.php?m=user&a=get_person_info&id='+id,function(res){
+			res=$.trim(res);
+			if(res!='err') alert(res);
 		})
 	}
 }
