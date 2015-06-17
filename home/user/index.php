@@ -120,6 +120,18 @@
 			$smarty->setTpl('user/templates/cz.html')->display();
 		}
 	}
+
+	//向单个用户发消息
+	if($_REQUEST['a']=='send_msg'){
+		if(method_is('post')){
+			$id=$_POST['id'];
+			$userModel=new Model_Subtable('sub_user');
+			$userRow=$userModel->find($id);
+			$configModel=new Model_CustomerConfig();
+			$configModel->sendCustomerMsg($_POST['content'],$userRow['fromuser']);
+		}
+		die;
+	}
 	
 	//数据列表
 	$condition=array();
