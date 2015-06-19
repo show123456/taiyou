@@ -52,10 +52,12 @@
     </div>
 	<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
 	<div class="register_end" onclick="save();">确认</div>
+	<div class="register_end" onclick="send_msg();">发送提醒消息</div>
 	<div class="register_end" onclick="window.history.go(-1);" style="background-color:#aaa;">返回</div>
 	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的</div>
+	<div style="color:#777;text-align:center;padding:5px;">点击发送提醒消息按钮，即可向已确认过报名的用户发送提醒消息</div>
 </div>
-<div id="loading" style="position:fixed;z-index:29999;display:none;width:100%;height:100px;top:0;background:#fff url(images/loading.gif) no-repeat center center;background-size:40px 40px;opacity:0.8;"></div>
+<div id="loading" style="position:fixed;z-index:29999;display:none;width:100%;height:100px;top:0;background:#fff url(images/loading.gif) no-repeat center center;background-size:40px 40px;opacity:0.8;filter:alpha(opacity=80);"></div>
 <script type="text/javascript">
 $(function(){
 	var bodyHeight = document.documentElement.clientHeight;
@@ -113,6 +115,14 @@ function seeMore(obj){
 			}
 		}
 	},'json');
+}
+//向已确认的报名用户发送提醒消息
+function send_msg(){
+	$('#loading').show();
+	$.get('send_wx_msg.php?a=send_msg_confirm&tid=<{$smarty.get.tid}>',function(){
+		$('#loading').hide();
+		alert('发送成功');
+	})
 }
 </script>
 </body>
