@@ -107,6 +107,7 @@ if($_REQUEST['a']=='sign_index'){
 	}
 }
 if($_REQUEST['a']=='sign_index_ajax'){
+	$dmodel=new Model_Subtable('s_district');
 	$signModel=new Model_Subtable('sub_sign');
 	$pageSize=30;$p=$_GET['p'];$limitStr = ($p-1)*$pageSize.','.$pageSize;	
 	$listArr=$signModel->where("tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
@@ -122,7 +123,7 @@ if($_REQUEST['a']=='sign_index_ajax'){
 			//距离处理
 			$listArr[$key]['distance'] > 500 ? $listArr[$key]['distance']='未知' : $listArr[$key]['distance']=$listArr[$key]['distance'].'km';
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 			//所属区
 			$drow=$dmodel->where("DistrictId='".$uRow['did']."'")->dataRow();
 			$listArr[$key]['district']=$drow['DistrictName'];
@@ -232,7 +233,7 @@ if($_REQUEST['a']=='sign_js_ajax'){
 			//是否可看手机号
 			if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
 		echo json_encode($listArr);die;
 	}else{
@@ -330,7 +331,7 @@ if($_REQUEST['a']=='sign_qd_ajax'){
 			//是否可看手机号
 			if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
 		echo json_encode($listArr);die;
 	}else{

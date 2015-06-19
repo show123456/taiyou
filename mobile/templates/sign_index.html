@@ -81,7 +81,9 @@ function refuse(obj){
 function seeMore(obj){
 	var pageNum=parseInt($(obj).attr('data-page'))+1;
 	$(obj).attr('data-page',pageNum);
+	$('#loading').show();
 	$.get('index.php?m=task_company&a=sign_index_ajax&tid=<{$smarty.get.tid}>&p='+pageNum,function(res){
+		$('#loading').hide();
 		if(res){
 			if(res=='err'){
 				$(obj).text('没有更多了:)');
