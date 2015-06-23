@@ -5,7 +5,7 @@
 <title>后台管理</title>
 <link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
-<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript" src="__PUBLIC__/admin/js/cc-alert.js"></script>
 <script language="javascript">
 	$(function() {
 		//导航切换
@@ -61,9 +61,9 @@
 			<tr>
 				<th>手机号</th>
 				<th>姓名</th>
-				<th>充值金额(元)</th>
-				<th>备注</th>
-				<th>充值时间</th>
+				<th>职位</th>
+				<th>金额(元)</th>
+				<th>时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -71,8 +71,8 @@
 			<tr>
 				<td><{$v.username}></td>
 				<td><{$v.nickname}></td>
+				<td><{$v.title}></td>
 				<td><{$v.money}></td>
-				<td><{$v.desc}></td>
 				<td><{$v.addtime}></td>
 			</tr>
 			</foreach>
@@ -85,8 +85,8 @@
 	</div>
 	<div style="color:red;font-size:16px;font-weight:bold;">
 		<if condition="$sum_row['search'] eq 1">
-			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
+			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总额为:￥<{$sum_row['sum_money']|default=0}>
+			<a href="<{:U('daochu',array('type'=>'thsqf','start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
 		</if>
 	</div>
 </div>

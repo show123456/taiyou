@@ -30,25 +30,42 @@
 <body>
 <div class="rightinfo">
 	<div class="tools">
-		<ul class="toolbar">
-			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
-		</ul>
-		<!-- <form action="" name="searchForm" method="get">
+		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
+		<input type="hidden" name='uid' value="<{:I('get.uid')}>" />
 		<ul class="toolbar1"><li>
 			<span>
-				<input type="text" name="name" placeholder="请输入名字" value="<{:I('get.name')}>" />
+				<select name="type" style="margin-top:0;">
+					<option value="">请选择类别</option>
+					<option value="1" <{:$_GET['type']==1 ? 'selected' : ''}> >会员充值</option>
+					<option value="2" <{:$_GET['type']==2 ? 'selected' : ''}> >提现</option>
+					<option value="3" <{:$_GET['type']==3 ? 'selected' : ''}> >转账日结</option>
+					<option value="4" <{:$_GET['type']==4 ? 'selected' : ''}> >支付申请费</option>
+					<option value="5" <{:$_GET['type']==5 ? 'selected' : ''}> >退还申请费</option>
+					<option value="6" <{:$_GET['type']==6 ? 'selected' : ''}> >系统充值</option>
+				</select>
 			</span>
-			<select name="scoredate">
-				<option value="">请选择日期</option>
-				<foreach name="dateArr" item="vo">
-					<option value="<{$vo}>" <if condition="$_GET['scoredate'] eq $vo">selected</if> ><{$vo}></option>
-				</foreach>
-			</select>
-			<b onclick="document.searchForm.submit()">搜索</b>
-		</li></ul>
-		</form> -->
+			<span style="margin-top:0;">
+				开始日期:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
+			</span>
+			<span style="margin-top:0;">
+				结束日期:
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</span>
+			<if condition="$_GET['uid'] eq ''">
+			<span>
+				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
+			</span>
+			<span>
+				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
+			</span>
+			</if>
+			<b onclick="search()">搜索</b>
+		</li>
+		</ul>
+		</form>
 	</div>
 	<table class="imgtable">
 		<thead>
@@ -68,9 +85,6 @@
 				<td><{$v.type}></td>
 				<td><{$v.money}></td>
 				<td><{$v.addtime}></td>
-				<!-- <td><a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">edit/编辑</a>
-				&nbsp;|&nbsp;
-				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">del/删除</a></td> -->
 			</tr>
 			</foreach>
 		</tbody>
@@ -82,10 +96,30 @@
 	</div>
 </div>
 <script type="text/javascript">
-/*$('.imgtable tbody tr:odd').addClass('odd');
-function delRow(str){
-	if(confirm('Sure to delete?/确定要删除吗？')) window.location.href=str;
-}*/
+function search(){
+	if($("input[name='start_date']").val()=='' && $("input[name='end_date']").val()!=''){
+		alert_tip('请选择开始日期');return;
+	}
+	if($("input[name='start_date']").val()!='' && $("input[name='end_date']").val()==''){
+		alert_tip('请选择结束日期');return;
+	}
+	var start_date_val=parseInt($("input[name='start_date']").val().replace(/-/g,""));
+	var end_date_val=parseInt($("input[name='end_date']").val().replace(/-/g,""));
+	if(start_date_val > end_date_val){
+		alert_tip('开始日期不能大于结束日期');return;
+	}
+	document.searchForm.submit();
+}
 </script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
 </body>
 </html>

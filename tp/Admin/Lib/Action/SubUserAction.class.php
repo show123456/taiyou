@@ -36,9 +36,6 @@ class SubUserAction extends CommonAction{
 		if(IS_POST){
 			$data=I('post.');
 			$current_time=time();
-			$data['info']['year']=date('Y',$current_time);
-			$data['info']['month']=date('m',$current_time);
-			$data['info']['day']=date('d',$current_time);
 			$res=D('Recharge')->saveData($data);			
 			if($res){
 				//用户金额增加

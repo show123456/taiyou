@@ -30,31 +30,21 @@
 <body>
 <div class="rightinfo">
 	<div class="tools">
+		<ul class="toolbar">
+			<li class="click" style="padding-left:5px;">搜索开始结束日期以查看总额、导出excel</li>
+		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
 		<ul class="toolbar1"><li>
-			<!-- <span>
-				<input type="text" class="date_picker" name="date" placeholder="充值日期" value="<{:I('get.date')}>" />
-			</span> -->
-			<select name="year">
-				<option value="">请选择年份</option>
-				<foreach name="yearArr" item="v">
-					<option value="<{$v}>" <if condition="$_GET['year'] eq $v">selected</if> ><{$v}></option>
-				</foreach>
-			</select>
-			<select name="month">
-				<option value="">请选择月份</option>
-				<foreach name="monthArr" item="vo">
-					<option value="<{$vo}>" <if condition="$_GET['month'] eq $vo">selected</if> ><{$vo}></option>
-				</foreach>
-			</select>
-			<select name="day">
-				<option value="">请选择日</option>
-				<foreach name="dayArr" item="vo">
-					<option value="<{$vo}>" <if condition="$_GET['day'] eq $vo">selected</if> ><{$vo}></option>
-				</foreach>
-			</select>
+			<span style="margin-top:0;">
+				开始日期:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
+			</span>
+			<span style="margin-top:0;">
+				结束日期:
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
+			</span>
 			<span>
 				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
 			</span>
@@ -72,7 +62,6 @@
 				<th>手机号</th>
 				<th>姓名</th>
 				<th>充值金额(元)</th>
-				<th>备注</th>
 				<th>充值时间</th>
 			</tr>
 		</thead>
@@ -82,7 +71,6 @@
 				<td><{$v.username}></td>
 				<td><{$v.nickname}></td>
 				<td><{$v.money}></td>
-				<td><{$v.desc}></td>
 				<td><{$v.addtime}></td>
 			</tr>
 			</foreach>
@@ -94,26 +82,24 @@
 		</ul>
 	</div>
 	<div style="color:red;font-size:16px;font-weight:bold;">
-		<empty name="sum_row['search']">
-			今日总充值额为:￥<{$sum_day_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('type'=>1))}>" target='_blank'>导出到excel</a><br>
-			本月总充值额为:￥<{$sum_month_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('type'=>2))}>" target='_blank'>导出到excel</a>
-		<else />
-			<{:I('get.keywords')}>&nbsp;&nbsp;<{:I('get.username')}>&nbsp;&nbsp;<{:I('get.year')}>&nbsp;&nbsp;<{:I('get.month')}>&nbsp;&nbsp;<{:I('get.day')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
-			<if condition="($_GET['month'] neq '') and ($_GET['username'] eq '') and ($_GET['keywords'] eq '')"><a href="<{:U('daochu',array('type'=>3,'year'=>I('get.year'),'month'=>I('get.month'),'day'=>I('get.day'),))}>" target='_blank'>导出到excel</a></if>
-		</empty>
+		<if condition="$sum_row['search'] eq 1">
+			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
+			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
+		</if>
 	</div>
 </div>
 <script type="text/javascript">
 function search(){
-	var year_val=$("select[name='year']").val();
-	var month_val=$("select[name='month']").val();
-	var day_val=$("select[name='day']").val();
-	if(year_val!='' || month_val!='' || day_val!=''){
-		if(year_val=='' || month_val==''){
-			alert_tip('请选择年月');return;
-		}
+	if($("input[name='start_date']").val()=='' && $("input[name='end_date']").val()!=''){
+		alert_tip('请选择开始日期');return;
+	}
+	if($("input[name='start_date']").val()!='' && $("input[name='end_date']").val()==''){
+		alert_tip('请选择结束日期');return;
+	}
+	var start_date_val=parseInt($("input[name='start_date']").val().replace(/-/g,""));
+	var end_date_val=parseInt($("input[name='end_date']").val().replace(/-/g,""));
+	if(start_date_val > end_date_val){
+		alert_tip('开始日期不能大于结束日期');return;
 	}
 	document.searchForm.submit();
 }

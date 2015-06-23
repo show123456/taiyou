@@ -25,6 +25,10 @@
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
 .toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
 	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+	
+.kfTypeDiv span{cursor:pointer;display:inline;}
+.kfSpan{color:#ccc;}
+.isKf{color:#428bca;}
 </style>
 </head>
 <body>
@@ -61,9 +65,10 @@
 			<tr>
 				<th>手机号</th>
 				<th>姓名</th>
-				<th>充值金额(元)</th>
-				<th>备注</th>
-				<th>充值时间</th>
+				<th>银行卡</th>
+				<th>金额(元)</th>
+				<th>支付状态</th>
+				<th>时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -71,8 +76,12 @@
 			<tr>
 				<td><{$v.username}></td>
 				<td><{$v.nickname}></td>
+				<td><{$v.bank_name}>-<{$v.bank_card}></td>
 				<td><{$v.money}></td>
-				<td><{$v.desc}></td>
+				<td class="kfTypeDiv">
+					<span class="kfSpan <{:$v['is_pay']==1 ? 'isKf' : ''}>" data-status='1' data-id='<{$v.id}>'>已支付</span> | 
+					<span class="kfSpan <{:$v['is_pay']==0 ? 'isKf' : ''}>" data-status='0' data-id='<{$v.id}>'>未支付</span>
+				</td>
 				<td><{$v.addtime}></td>
 			</tr>
 			</foreach>
@@ -105,6 +114,19 @@ function search(){
 	}
 	document.searchForm.submit();
 }
+$(document).ready(function(){
+	$('.kfTypeDiv span').click(function(){
+		if(confirm('确定要执行此操作吗？')){
+			var kf_type=$(this).attr('data-status');
+			var open_act_id=$(this).attr('data-id');
+			$.get('<{:U("kf")}>',{id:open_act_id,is_pay:kf_type},function(res){
+				if(res){
+					window.location.reload();
+				}
+			})
+		}
+	})
+})
 </script>
 <!-- 日期插件开始 -->
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />

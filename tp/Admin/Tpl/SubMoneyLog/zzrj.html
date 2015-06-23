@@ -31,44 +31,49 @@
 <div class="rightinfo">
 	<div class="tools">
 		<ul class="toolbar">
-			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
+			<li class="click" style="padding-left:5px;">搜索开始结束日期以查看总额、导出excel</li>
 		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
 		<ul class="toolbar1"><li>
-			<span>
-				<input type="text" name="keyword" placeholder="请输入姓名" value="<{:I('get.keyword')}>" />
+			<span style="margin-top:0;">
+				开始日期:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
 			</span>
-			<select name="scoredate">
-				<option value="">请选择日期</option>
-				<foreach name="dateArr" item="vo">
-					<option value="<{$vo}>" <if condition="$_GET['scoredate'] eq $vo">selected</if> ><{$vo}></option>
-				</foreach>
-			</select>
-			<b onclick="document.searchForm.submit()">搜索</b>
-		</li></ul>
+			<span style="margin-top:0;">
+				结束日期:
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
+			</span>
+			<span>
+				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
+			</span>
+			<span>
+				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
+			</span>
+			<b onclick="search()">搜索</b>
+		</li>
+		</ul>
 		</form>
 	</div>
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th>姓名</th>
 				<th>手机号</th>
-				<th>用户金额变动(收入-元)</th>
+				<th>姓名</th>
+				<th>职位</th>
+				<th>金额(元)</th>
 				<th>变动时间</th>
 			</tr>
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
 			<tr>
-				<td><{$v.nickname}></td>
 				<td><{$v.username}></td>
+				<td><{$v.nickname}></td>
+				<td><{$v.title}></td>
 				<td><{$v.money}></td>
 				<td><{$v.addtime}></td>
-				<!-- <td><a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">edit/编辑</a>
-				&nbsp;|&nbsp;
-				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">del/删除</a></td> -->
 			</tr>
 			</foreach>
 		</tbody>
@@ -78,15 +83,38 @@
 			<{$list['page']}>
 		</ul>
 	</div>
-	<div>
-		<p style="color:red;font-size:15px;">转账日结：</p>
+	<div style="color:red;font-size:16px;font-weight:bold;">
+		<if condition="$sum_row['search'] eq 1">
+			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
+			<a href="<{:U('daochu',array('type'=>'zzrj','start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
+		</if>
 	</div>
 </div>
 <script type="text/javascript">
-/*$('.imgtable tbody tr:odd').addClass('odd');
-function delRow(str){
-	if(confirm('Sure to delete?/确定要删除吗？')) window.location.href=str;
-}*/
+function search(){
+	if($("input[name='start_date']").val()=='' && $("input[name='end_date']").val()!=''){
+		alert_tip('请选择开始日期');return;
+	}
+	if($("input[name='start_date']").val()!='' && $("input[name='end_date']").val()==''){
+		alert_tip('请选择结束日期');return;
+	}
+	var start_date_val=parseInt($("input[name='start_date']").val().replace(/-/g,""));
+	var end_date_val=parseInt($("input[name='end_date']").val().replace(/-/g,""));
+	if(start_date_val > end_date_val){
+		alert_tip('开始日期不能大于结束日期');return;
+	}
+	document.searchForm.submit();
+}
 </script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
 </body>
 </html>

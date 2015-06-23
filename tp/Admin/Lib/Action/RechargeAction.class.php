@@ -4,8 +4,12 @@ class RechargeAction extends CommonAction{
 		$userModel=M('SubUser');
 		$where=array();
 		//搜索条件
-		if($_GET['keywords']){//姓名
-			$uArr=$userModel->where("nickname = '".I('get.keywords')."'")->select();
+		$condition=array();
+		if($_GET['keywords']) $condition[]="nickname = '".I('get.keywords')."'";
+		if($_GET['username']) $condition[]="username = '".I('get.username')."'";
+		if($condition){
+			$condition_str=implode(' and ',$condition);
+			$uArr=$userModel->where($condition_str)->select();
 			if($uArr){
 				foreach($uArr as $v){
 					$idRow[]=$v['id'];
@@ -15,20 +19,9 @@ class RechargeAction extends CommonAction{
 				$where['uid']=0;
 			}
 		}
-		if($_GET['username']){//手机号
-			$uArr=$userModel->where("username = '".I('get.username')."'")->select();
-			if($uArr){
-				foreach($uArr as $v){
-					$idRow[]=$v['id'];
-				}
-				$where['uid']=array('in',$idRow);
-			}else{
-				$where['uid']=0;
-			}
+		if(I('get.start_date')){
+			$where['_string']=" addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59' ";
 		}
-		if(I('get.year')) $where['year']=I('get.year');
-		if(I('get.month')) $where['month']=I('get.month');
-		if(I('get.day')) $where['day']=I('get.day');
 		
 		$list=D($this->moduleName)->getPager($where);
 		foreach($list['data'] as $key=>$value){
@@ -39,44 +32,11 @@ class RechargeAction extends CommonAction{
 		$this->assign('list',$list);
 		//总计充值额
 		$sum_row=array();
-		if(I('get.keywords') || I('get.username') || I('get.year')){
+		if(I('get.start_date')){
 			$sum_row=D($this->moduleName)->field("sum(money) as sum_money")->where($where)->find();
 			$sum_row['search']=1;
 			$this->assign('sum_row',$sum_row);
-		}else{//默认显示今日、本月
-			$current_time=time();
-			$month_str="year='".date('Y',$current_time)."' and month='".date('m',$current_time)."'";
-			$day_str=$month_str." and day='".date('d',$current_time)."'";
-			$sum_month_row=D($this->moduleName)->field("sum(money) as sum_money")->where($month_str)->find();
-			$sum_day_row=D($this->moduleName)->field("sum(money) as sum_money")->where($day_str)->find();
-			$this->assign('sum_month_row',$sum_month_row);
-			$this->assign('sum_day_row',$sum_day_row);
 		}
-		//年月日数组
-		$yearArr=array();
-		for($i=2014;$i<2026;$i++){
-			$yearArr[]=$i;
-		}
-		$this->assign('yearArr',$yearArr);
-		$monthArr=array();
-		for($i=1;$i<13;$i++){
-			if($i<10){
-				$monthArr[]='0'.$i;
-			}else{
-				$monthArr[]=$i;
-			}
-		}
-		$this->assign('monthArr',$monthArr);
-		$dayArr=array();
-		for($i=1;$i<32;$i++){
-			if($i<10){
-				$dayArr[]='0'.$i;
-			}else{
-				$dayArr[]=$i;
-			}
-		}
-		$this->assign('dayArr',$dayArr);
-		
 		$this->display();
 	}
 	
@@ -116,20 +76,8 @@ class RechargeAction extends CommonAction{
 		$userModel=M('SubUser');
 		$current_time=time();
 		
-		if(I('get.type')==1){//今日充值记录
-			$where_str="year='".date('Y',$current_time)."' and month='".date('m',$current_time)."' and day='".date('d',$current_time)."'";
-			$title=date('Y-m-d').'总充值额';
-		}else if(I('get.type')==2){//本月充值记录
-			$where_str="year='".date('Y',$current_time)."' and month='".date('m',$current_time)."'";
-			$title=date('Y-m').'总充值额';
-		}else if(I('get.type')==3){//搜索后的充值记录
-			$where_str="year='".I('get.year')."' and month='".I('get.month')."'";
-			$title=I('get.year').'年'.I('get.month').'月总充值额';
-			if(I('get.day')){
-				$where_str.=" and day='".I('get.day')."'";
-				$title=I('get.year').'年'.I('get.month').'月'.I('get.day').'日总充值额';
-			}
-		}
+		$where_str="(addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59')";
+		$title=I('get.start_date').'至'.I('get.end_date').'总充值额';
 		
 		$listArr=$model->where($where_str)->select();
 		$sum_row=$model->field("sum(money) as sum_money")->where($where_str)->find();
@@ -151,12 +99,12 @@ class RechargeAction extends CommonAction{
 		}
 											
 		// Rename worksheet
-		$objPHPExcel->getActiveSheet()->setTitle($title);
+		$objPHPExcel->getActiveSheet()->setTitle('统计数据');
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
 		// Redirect output to a client’s web browser (Excel5)
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="'.$title.'.xls"');
+		header('Content-Disposition: attachment;filename="'.$title.'系统充值.xls"');
 		header('Cache-Control: max-age=0');
 		// If you're serving to IE 9, then the following may be needed
 		header('Cache-Control: max-age=1');

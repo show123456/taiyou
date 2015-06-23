@@ -61,6 +61,7 @@
 				<th>银行卡号</th>
 				<th>系统充值</th>
 				<th>详细信息</th>
+				<th>金额变动</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,6 +75,7 @@
 				<td><{$v.bank_card}></td>
 				<td><a href="<{:U('cz',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">充值</a></td>
 				<td><a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">查看</a></td>
+				<td><a href="<{:U('SubMoneyLog/index',array('uid'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">查看</a></td>
 			</tr>
 			</foreach>
 		</tbody>
