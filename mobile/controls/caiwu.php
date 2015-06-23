@@ -84,3 +84,11 @@
 		$data['info']['fact_money']=(int)$_POST['fact_money'];
 		$signModel->add($data);
 	}
+	
+	//驳回处理
+	if($_REQUEST['a']=='back_act'){
+		$data=array();
+		$data['info']['id']=(int)$_POST['tid'];
+		$data['info']['jingli_queren']=0;
+		$model->add($data);
+	}

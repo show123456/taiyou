@@ -54,6 +54,7 @@
 		<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
 	<{/if}>
 	<div class="register_end" onclick="save()">确认结算</div>
+	<div class="register_end" onclick="back_act()" style="margin-top:50px;">驳回处理</div>
 </div>
 <{include file="footer.html"}>
 <script type="text/javascript">
@@ -76,6 +77,16 @@ function save(){
 			alert('结算失败');
 		}
 	})
+}
+//驳回
+function back_act(){
+	var tid=<{$smarty.get.tid}>;
+	if(confirm('确定要驳回吗？')){
+		$.post('index.php?m=caiwu&a=back_act',{tid:tid},function(res){
+			alert('操作成功');
+			window.location.href="index.php?m=caiwu&a=task_index";
+		})
+	}
 }
 //查看更多
 function seeMore(obj){
