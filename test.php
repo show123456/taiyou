@@ -1,2 +1,2 @@
 <?php
-get_browser();
+echo md5('caiwu123');

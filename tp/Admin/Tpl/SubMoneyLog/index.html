@@ -4,8 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>后台管理</title>
 <link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
-<script language="javascript" src="__PUBLIC__/admin/js/cc-alert.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
 <script language="javascript">
 	$(function() {
 		//导航切换
@@ -25,10 +25,51 @@
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
 .toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
 	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+
+.top_div{width:130px;height:100px;background-color:#ff7101;color:#fff;border:1px solid #ccc;
+	border-radius:5px;font-size:15px;padding:10px;text-align:center;float:left;margin-left:20px;}
 </style>
 </head>
 <body>
 <div class="rightinfo">
+	<if condition="$_GET['uid'] eq ''">
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />系统充值
+			<br />￥<{$sum_row['type6']|default=0}>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />个人充值
+			<br />￥<{$sum_row['type1']|default=0}>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />转账日结
+			<br />￥<{$sum_row['type3']|default=0}>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />支付报名费
+			<br />￥<{$sum_row['type4']|default=0}>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />退还报名费
+			<br />￥<{$sum_row['type5']|default=0}>
+		</div>
+	</if>
+	<div style="height:10px;clear:both;"></div>
 	<div class="tools">
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
@@ -41,8 +82,8 @@
 					<option value="1" <{:$_GET['type']==1 ? 'selected' : ''}> >会员充值</option>
 					<option value="2" <{:$_GET['type']==2 ? 'selected' : ''}> >提现</option>
 					<option value="3" <{:$_GET['type']==3 ? 'selected' : ''}> >转账日结</option>
-					<option value="4" <{:$_GET['type']==4 ? 'selected' : ''}> >支付申请费</option>
-					<option value="5" <{:$_GET['type']==5 ? 'selected' : ''}> >退还申请费</option>
+					<option value="4" <{:$_GET['type']==4 ? 'selected' : ''}> >支付报名费</option>
+					<option value="5" <{:$_GET['type']==5 ? 'selected' : ''}> >退还报名费</option>
 					<option value="6" <{:$_GET['type']==6 ? 'selected' : ''}> >系统充值</option>
 				</select>
 			</span>

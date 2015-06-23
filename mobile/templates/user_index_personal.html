@@ -37,6 +37,21 @@
 		<p><{if $userRow.type==3}>客服-<{/if}><{$userRow.nickname|default:'匿名'}></p>
 	</div>
 	<{if $userRow.is_v==1}><img class="vip" src="images/vip.gif"/><{/if}>
+	<!-- 财务界面 -->
+	<{if $userRow.username==1100}>
+	<div class="personal_list">
+		<ol>
+			<a href="index.php?m=caiwu&a=task_index">
+			<li>
+				<div class="list_info">结算管理</div>
+				<div class="next"><span class="fa fa-chevron-right" ></span></div>
+			</li>
+			</a>
+			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
+		</ol>
+	</div>
+	<{else}>
+	<!-- 个人用户界面 -->
 	<div class="personal_list">
 		<ol>
 			<a href="index.php?m=user&a=user_add_personal">
@@ -79,7 +94,7 @@
 			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
 		</ol>
 	</div>
-	<div style='color:#888;text-align:center;font-size:12px;'>技术支持：微沟通</div>
+	<{/if}>
 </div><{include file="footer.html"}>
 <!-- 上传照片 -->
 <div style="visibility:hidden;">

@@ -12,7 +12,7 @@ if($_REQUEST['a']=='dologin'){
 		echo 'passerr';die;
 	}else{
 		//写cookie
-		setCookie('tyuid',$userRow['id'],time()+3600*24*720);
+		setCookie('tyuid',$userRow['id'],time()+3600*24);//只写一天的cookie
 		
 		$_SESSION['tyuser']=$userRow;
 		echo 'success';die;

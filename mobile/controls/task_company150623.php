@@ -37,7 +37,7 @@ if($_REQUEST['a']=='subindex'){
 	$pageSize=10;//页大小
 	$p=((int)$_GET['p'])<1 ? 1 : (int)$_GET['p'];//当前页数
 	$limitStr = ($p-1)*$pageSize.','.$pageSize;
-	$listArr = $model->where("is_js=0 and uid=".$userRow['id'])->order('id desc')->limit(50)->dataArr();//无分页数据
+	$listArr = $model->where("is_js=0 and uid=".$userRow['id'])->order('id desc')->dataArr();//无分页数据
 	if(!$listArr){
 		$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
 	}
@@ -170,10 +170,25 @@ if($_REQUEST['a']=='sign_js'){
 		if($js1IdRow)
 			$model->query('update sub_sign set is_js=1 where id in ('.implode(',',$js1IdRow).')');
 		
-		//更改职位经理确认状态
-		$taskData=array();
+		$taskRow=$model->field('id,pay_type,is_js')->where("id=".$data['tid'])->dataRow();
+		//1现金日结，用户金额不增加，2转账日结，用户金额增加
+		if($taskRow['pay_type']==2 && $taskRow['is_js']==0){
+			$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
+			foreach($listArr as $k=>$v){
+				//用户金额增加
+				$signModel->query("update sub_user set money = money + ".$v['fact_money']." where id='".$v['uid']."'");
+				//写金额日志
+				$logData=array();
+				$logData['info']['type']=3;
+				$logData['info']['uid']=$v['uid'];
+				$logData['info']['money']=$v['fact_money'];
+				$logData['info']['desc']=$v['tid'];
+				$logModel->add($logData);
+			}
+		}
+		//更改职位结算状态
 		$taskData['num']['id']=$data['tid'];
-		$taskData['num']['jingli_queren']=1;
+		$taskData['num']['is_js']=1;
 		$taskData['num']['is_shut']=1;
 		$model->add($taskData);
 		die('suc');
@@ -251,9 +266,6 @@ if($_REQUEST['a']=='sign_mid'){
 		$smarty->assign('list',$listArr);
 		$smarty->assign('pay_type',$taskRow['pay_type']);
 		$smarty->setLayout('')->setTpl('mobile/templates/sign_index_js.html')->display();die;
-	}elseif($taskRow['jingli_queren']==1){
-		$smarty->assign('info','财务结算中...');
-		$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
 	}else{
 		$smarty->assign('tid',$_GET['tid']);
 		$smarty->setLayout('')->setTpl('mobile/templates/sign_mid.html')->display();die;
