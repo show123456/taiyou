@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-17 13:59:53
+<?php /* Smarty version 2.6.19, created on 2015-06-24 09:14:43
          compiled from D:%5Cwamp%5Cwww%5Cmobile/templates/user_index_personal.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'D:\\wamp\\www\\mobile/templates/user_index_personal.html', 37, false),)), $this); ?>
@@ -43,6 +43,21 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 </p>
 	</div>
 	<?php if ($this->_tpl_vars['userRow']['is_v'] == 1): ?><img class="vip" src="images/vip.gif"/><?php endif; ?>
+	<!-- 财务界面 -->
+	<?php if ($this->_tpl_vars['userRow']['username'] == 11000): ?>
+	<div class="personal_list">
+		<ol>
+			<a href="index.php?m=caiwu&a=task_index">
+			<li>
+				<div class="list_info">结算管理</div>
+				<div class="next"><span class="fa fa-chevron-right" ></span></div>
+			</li>
+			</a>
+			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
+		</ol>
+	</div>
+	<?php else: ?>
+	<!-- 个人用户界面 -->
 	<div class="personal_list">
 		<ol>
 			<a href="index.php?m=user&a=user_add_personal">
@@ -86,7 +101,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
 		</ol>
 	</div>
-	<div style='color:#888;text-align:center;font-size:12px;'>技术支持：微沟通</div>
+	<?php endif; ?>
 </div><?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "footer.html", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;

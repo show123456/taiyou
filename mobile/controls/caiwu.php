@@ -31,7 +31,20 @@
 		if(method_is('post')){
 			$data=$_POST;
 			$taskRow=$model->field('id,pay_type,is_js')->where("id=".$data['tid'])->dataRow();
-			//1现金日结，用户金额不增加，2转账日结，用户金额增加
+			//1现金日结，用户金额不增加
+			if($taskRow['pay_type']==1 && $taskRow['is_js']==0){
+				$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
+				foreach($listArr as $k=>$v){
+					//写金额日志
+					$logData=array();
+					$logData['info']['type']=7;//现金日结
+					$logData['info']['uid']=$v['uid'];
+					$logData['info']['money']=$v['fact_money'];
+					$logData['info']['desc']=$v['tid'];
+					$logModel->add($logData);
+				}
+			}
+			//2转账日结，用户金额增加
 			if($taskRow['pay_type']==2 && $taskRow['is_js']==0){
 				$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
 				foreach($listArr as $k=>$v){

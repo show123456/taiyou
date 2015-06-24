@@ -5,66 +5,81 @@
 b{color:#777;height:34px;line-height:34px}
 </style>
 <div class="main-content" style="min-height:1000px;height:auto;">
-	<div class='inner'>
-		<div class="manage-apply">
-			<div class="apply-content">
-				<div class="manage-menu">
-					<div class="msg_editer">
-						<div class="sub-list">
-							<div class="shop_sort_box">
-								<form id="memberform">
-									<h4 class='cc_title_h4'>发送消息时，请勿关闭页面。关闭页面即中断发送。</h4>
-							<div class="shop_sort">
-								<div class="shop_sort_title">
-									<h4>微信内容：</h4>
-								</div>
-								<div class="shop_sort_set">
-									<textarea name="content" maxlength="200" class="shop_sort_text" style="width:400px;height:150px;" placeholder="200字以内"><{$vo.introduce}></textarea>
-								</div>
-							</div>
-							<div class="shop_sort">
-								<div class="shop_sort_title">
-									<h4></h4>
-								</div>
-								<div class="shop_sort_set">
-									<button onclick="save(event);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
-										发送
-									</button>&nbsp;&nbsp;&nbsp;
-									<!-- <button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button> -->
-								</div>
-								<div class="clr"></div>
-							</div>
-								</form>
-							</div>
-						</div>
-					</div>
+<div class='inner'>
+<div class="manage-apply">
+<div class="apply-content">
+<div class="manage-menu">
+	<div class="msg_editer">
+		<div class="sub-list">
+			<div class="shop_sort_box">
+				<form id="memberform">
+					<h4 class='cc_title_h4'>发送消息时，请勿关闭页面。关闭页面即中断发送。</h4>
+			<div class="shop_sort">
+				<div class="shop_sort_title">
+					<h4>微信内容：</h4>
 				</div>
+				<div class="shop_sort_set">
+					<textarea name="content" maxlength="200" class="shop_sort_text" style="width:400px;height:150px;" placeholder="200字以内"></textarea>
+				</div>
+			</div>
+			<div class="shop_sort">
+				<div class="shop_sort_title">
+					<h4></h4>
+				</div>
+				<div class="shop_sort_set">
+					<button onclick="save(event);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+						发送
+					</button>&nbsp;&nbsp;&nbsp;
+					<!-- <button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button> -->
+				</div>
+				<div class="clr"></div>
+			</div>
+				</form>
 			</div>
 		</div>
 	</div>
+	<div class="list-table" style="padding:10px;font-size:15px;">余<span id="sy" style="color:red;font-weight:bold;"><{$listcount}></span>人。。。
+	</div>
+	<div id="info_from" style="visibility:hidden;">
+		<{foreach from=$list item=v}>
+			<span><{$v.fromuser}></span>
+		<{/foreach}>
+	</div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<!-- loading动画开始 -->
+<div id="loading" style="position:fixed;z-index:881213;display:none;width:100%;height:100px;top:0;"><img src="../task/images/loading.gif" style="display:block;margin:200px 550px;" /></div>
+<!-- loading动画结束 -->
 <script type="text/javascript">
-set_title_name('积分设置');
-set_menu_cur('menu_71', 'cur omega');
-function save(event){
-	if($("textarea[name='content']").val()==''){
+set_title_name('发送提醒消息');
+set_menu_cur('menu_41', 'cur omega');
+$(function(){
+	var bodyWidth = document.documentElement.clientWidth;
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+})
+function save(){
+	var send_content=$("textarea[name='content']").val();
+	if(send_content==''){
 		note_info('信息内容不能为空','warn',event);return;
 	}
-	note_info_time('微信发送中，可能需等待一段时间，请勿关闭页面','success',event,5000);
-	$.ajax({
-		url:"index.php",
-		data:$('#memberform').serializeArray(),
-		type:"post",
-		dataType:'json',
-		async :false,
-		success:function(res) {
-			if(res){
-				note_info('发送成功','success',event);
-				setTimeout("window.location.reload()",600);
-			}else{
-				note_info('发送失败','warn',event);
-			}
+	$('#loading').show();
+	var total_num=parseInt('<{$listcount}>');
+	var sy_num=0;
+	var time_clock;
+	time_clock=setInterval(function(){
+		var fromuser=$('#info_from span').eq(0).text();
+		$.post('index.php',{content:send_content,fromuser:fromuser});
+		$('#info_from span').eq(0).remove();
+		sy_num=parseInt($('#info_from span').length);
+		$('#sy').text(sy_num);
+		if(sy_num == 0){
+			clearInterval(time_clock);
+			$('#loading').hide();
 		}
-	});
+	},1000);
 }
 </script>
