@@ -20,7 +20,7 @@ class SubOutAction extends CommonAction{
 			}
 		}
 		if(I('get.start_date')){
-			$where['_string']=" addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59' ";
+			$where['_string']=" pay_time > '".I('get.start_date')." 00:00:00' and pay_time < '".I('get.end_date')." 23:59:59' ";
 		}
 		
 		$list=D($this->moduleName)->getPager($where);
@@ -46,6 +46,7 @@ class SubOutAction extends CommonAction{
 	public function kf(){
 		$data[is_pay]=(int)$_GET['is_pay'];
 		$data[id]=(int)$_GET['id'];
+		$data[pay_time]=date('Y-m-d H:i:s');
 		$res=D($this->moduleName)->save($data);
 		echo $res;die();
 	}

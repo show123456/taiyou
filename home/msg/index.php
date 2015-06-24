@@ -6,7 +6,7 @@ $userModel=new Model_Subtable('sub_user');
 if(method_is('post')){
 	$configModel->sendCustomerMsg($_POST['content'],$_POST['fromuser']);
 }else{
-	$listArr=$userModel->field('fromuser')->where("id < 50 and `type`!=2 and fromuser!='' group by fromuser")->dataArr();
+	$listArr=$userModel->field('fromuser')->where("`type`!=2 and fromuser!='' group by fromuser")->dataArr();
 	$smarty->assign('list',$listArr);
 	$smarty->assign('listcount',count($listArr));
 	$smarty->setTpl('msg/templates/add.html')->display();die();

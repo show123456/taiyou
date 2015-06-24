@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>后台管理</title>
 <link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
 <script language="javascript">
 	$(function() {
@@ -25,81 +25,66 @@
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
 .toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
 	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
-	
-.kfTypeDiv span{cursor:pointer;display:inline;}
-.kfSpan{color:#ccc;}
-.isKf{color:#428bca;}
+
+.top_div{width:130px;height:120px;background-color:#ff7101;color:#fff;border:1px solid #ccc;
+	border-radius:5px;font-size:15px;padding:10px;text-align:center;float:left;margin-left:20px;}
+.top_div a{color:#fff;font-size:15px;}
+.top_div a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
 <div class="rightinfo">
 	<div class="tools">
-		<ul class="toolbar">
-			<li class="click" style="padding-left:5px;">搜索开始结束日期以查看总额、导出excel</li>
-		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
+		<input type="hidden" name='uid' value="<{:I('get.uid')}>" />
 		<ul class="toolbar1"><li>
 			<span style="margin-top:0;">
-				支付开始日期:
+				开始日期:
 				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
 			</span>
 			<span style="margin-top:0;">
 				结束日期:
-				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
-			</span>
-			<span>
-				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
-			</span>
-			<span>
-				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 			<b onclick="search()">搜索</b>
 		</li>
 		</ul>
 		</form>
 	</div>
-	<table class="imgtable">
-		<thead>
-			<tr>
-				<th>手机号</th>
-				<th>姓名</th>
-				<th>银行卡</th>
-				<th>金额(元)</th>
-				<th>支付状态</th>
-				<th>支付时间</th>
-				<th>提现时间</th>
-			</tr>
-		</thead>
-		<tbody>
-			<foreach name="list['data']" item='v'>
-			<tr>
-				<td><{$v.username}></td>
-				<td><{$v.nickname}></td>
-				<td><{$v.bank_name}>-<{$v.bank_card}></td>
-				<td><{$v.money}></td>
-				<td class="kfTypeDiv">
-					<span class="kfSpan <{:$v['is_pay']==1 ? 'isKf' : ''}>" data-status='1' data-id='<{$v.id}>'>已支付</span> | 
-					<span class="kfSpan <{:$v['is_pay']==0 ? 'isKf' : ''}>" data-status='0' data-id='<{$v.id}>'>未支付</span>
-				</td>
-				<td><{$v.pay_time}></td>
-				<td><{$v.addtime}></td>
-			</tr>
-			</foreach>
-		</tbody>
-	</table>
-	<div class="pagin">
-		<ul class="paginList">
-			<{$list['page']}>
-		</ul>
-	</div>
-	<!-- <div style="color:red;font-size:16px;font-weight:bold;">
-		<if condition="$sum_row['search'] eq 1">
-			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
-		</if>
-	</div> -->
+	<div style="height:10px;clear:both;"></div>
+	<if condition="$_GET['uid'] eq ''">
+		<div class="top_div">
+			工资
+			<br /><{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br /><a href="<{:U('SubTask/xj_index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">现金￥<{$sum_row['type7']|default=0}></a>
+			<br /><a href="<{:U('SubTask/zz_index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">转账￥<{$sum_row['type3']|default=0}></a>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />提现
+			<br /><a href="<{:U('SubOut/index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">￥<{$sum_row['type2']|default=0}></a>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />系统充值
+			<br /><a href="<{:U('Recharge/index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">￥<{$sum_row['type6']|default=0}></a>
+		</div>
+		<div class="top_div">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />个人充值
+			<br /><a href="<{:U('SubCz/index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">￥<{$sum_row['type1']|default=0}></a>
+		</div>
+	</if>
 </div>
 <script type="text/javascript">
 function search(){
@@ -116,19 +101,6 @@ function search(){
 	}
 	document.searchForm.submit();
 }
-$(document).ready(function(){
-	$('.kfTypeDiv span').click(function(){
-		if(confirm('确定要执行此操作吗？')){
-			var kf_type=$(this).attr('data-status');
-			var open_act_id=$(this).attr('data-id');
-			$.get('<{:U("kf")}>',{id:open_act_id,is_pay:kf_type},function(res){
-				if(res){
-					window.location.reload();
-				}
-			})
-		}
-	})
-})
 </script>
 <!-- 日期插件开始 -->
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
