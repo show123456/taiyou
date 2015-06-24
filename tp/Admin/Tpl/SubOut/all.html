@@ -37,28 +37,17 @@
 		<ul class="toolbar">
 			<li class="click" style="padding-left:5px;">搜索开始结束日期以查看总额、导出excel</li>
 		</ul>
-		<form action="" name="searchForm" method="get">
-		<input type="hidden" name='m' value='<{$moduleName}>' />
-		<input type="hidden" name='a' value="<{$actionName}>" />
 		<ul class="toolbar1"><li>
 			<span style="margin-top:0;">
-				提现开始日期:
-				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
+				支付开始日期:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" disabled /> —
 			</span>
 			<span style="margin-top:0;">
 				结束日期:
-				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" disabled />
 			</span>
-			<span>
-				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
-			</span>
-			<span>
-				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
-			</span>
-			<b onclick="search()">搜索</b>
 		</li>
 		</ul>
-		</form>
 	</div>
 	<table class="imgtable">
 		<thead>
@@ -67,7 +56,6 @@
 				<th>姓名</th>
 				<th>银行卡</th>
 				<th>金额(元)</th>
-				<th>支付状态</th>
 				<th>支付时间</th>
 				<th>提现时间</th>
 			</tr>
@@ -79,10 +67,6 @@
 				<td><{$v.nickname}></td>
 				<td><{$v.bank_name}>-<{$v.bank_card}></td>
 				<td><{$v.money}></td>
-				<td class="kfTypeDiv">
-					<span class="kfSpan <{:$v['is_pay']==1 ? 'isKf' : ''}>" data-status='1' data-id='<{$v.id}>'>已支付</span> | 
-					<span class="kfSpan <{:$v['is_pay']==0 ? 'isKf' : ''}>" data-status='0' data-id='<{$v.id}>'>未支付</span>
-				</td>
 				<td><{$v.pay_time}></td>
 				<td><{$v.addtime}></td>
 			</tr>
@@ -93,12 +77,6 @@
 		<ul class="paginList">
 			<{$list['page']}>
 		</ul>
-	</div>
-	<div style="color:red;font-size:16px;font-weight:bold;">
-		<if condition="$sum_row['search'] eq 1">
-			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
-		</if>
 	</div>
 </div>
 <script type="text/javascript">
@@ -130,15 +108,5 @@ $(document).ready(function(){
 	})
 })
 </script>
-<!-- 日期插件开始 -->
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
-<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
-<style type="text/css">
-.date_selector .month_name{margin-left:30px;}
-</style>
-<script type="text/javascript">
-$(function(){$('.date_picker').date_input();})
-</script>
-<!-- 日期插件结束 -->
 </body>
 </html>

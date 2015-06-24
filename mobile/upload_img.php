@@ -6,7 +6,7 @@ if(method_is('post')){
 	$upload = new class_upload();
 	$upload->upload_form_field= 'imgfile';
 	$upload->out_file_dir     = '../data/image_c/'.$customer_id.'/'.date("Ymd");
-	$upload->max_file_size    = 1024*1024*4;//4M
+	$upload->max_file_size    = 1024*1024*6;//6M
 	$upload->make_script_safe = 1;
 	$upload->allowed_file_ext = array( 'gif', 'jpg', 'jpeg', 'png');
 	$upload->upload_process();

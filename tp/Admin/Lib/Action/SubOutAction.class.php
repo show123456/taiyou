@@ -20,7 +20,35 @@ class SubOutAction extends CommonAction{
 			}
 		}
 		if(I('get.start_date')){
-			$where['_string']=" pay_time > '".I('get.start_date')." 00:00:00' and pay_time < '".I('get.end_date')." 23:59:59' ";
+			$where['_string']=" addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59' ";
+		}
+		
+		$list=D($this->moduleName)->getPager($where);
+		foreach($list['data'] as $key=>$value){
+			$userRow=$userModel->find($value['uid']);
+			$list['data'][$key]['nickname']=$userRow['nickname'];
+			$list['data'][$key]['username']=$userRow['username'];
+			$list['data'][$key]['bank_name']=$userRow['bank_name'];
+			$list['data'][$key]['bank_card']=$userRow['bank_card'];
+		}
+		$this->assign('list',$list);
+		//总额
+		$sum_row=array();
+		if(I('get.start_date')){
+			$sum_row=D($this->moduleName)->field("sum(money) as sum_money")->where($where)->find();
+			$sum_row['search']=1;
+			$this->assign('sum_row',$sum_row);
+		}
+		$this->display();
+	}
+	
+	//总览
+	public function all(){
+		$userModel=M('SubUser');
+		$where=array();
+		//搜索条件
+		if(I('get.start_date')){
+			$where=" pay_time > '".I('get.start_date')." 00:00:00' and pay_time < '".I('get.end_date')." 23:59:59' ";
 		}
 		
 		$list=D($this->moduleName)->getPager($where);
@@ -111,7 +139,7 @@ class SubOutAction extends CommonAction{
 			$lj=$lk+3;
 			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['nickname'])
 										  ->setCellValue('B' . $lj, $lv['username'])
-										  ->setCellValue('C' . $lj, $lv['bank_name'].'-'.$lv['bank_card'])
+										  ->setCellValue('C' . $lj, $lv['bank_card'].' ')
 										  ->setCellValue('D' . $lj, $lv['money'])
 										  ->setCellValue('E' . $lj, $lv['pay_status'])
 										  ->setCellValue('F' . $lj, $lv['addtime']);

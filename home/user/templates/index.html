@@ -62,6 +62,7 @@
 						<th name="Theme" class="hover enable">余额(元)</th>
 						<th name="Theme" class="hover enable">向该用户</th>
 						<{if $smarty.get.admin==1}><th name="Theme" class="hover enable">充值</th><{/if}>
+						<th name="Theme" class="hover enable">审核通过</th>
 						<{else}>
 						<th name="Theme" class="hover enable">手机账号</th>
 						<th name="Theme" class="hover enable">公司名称</th>
@@ -92,6 +93,7 @@
 						<td><div><{$v.money}></div></td>
 						<td><div><a href="javascript:void(0);" onclick="sendMsg(this,<{$v.id}>)" data-name="<{$v.nickname}>">发消息</a></div></td>
 						<{if $smarty.get.admin==1}><td><a href="index.php?a=cz&id=<{$v.id}>">充值</a></td><{/if}>
+						<td><{if $v.is_see==1}><div>是</div><{else}><div style="color:red;">否</div><{/if}></td>
 						<{else}>
 						<td><div><{$v.username}></div></td>
 						<td><div><{$v.nickname}></div></td>

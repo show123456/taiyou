@@ -15,6 +15,9 @@
 <link rel="stylesheet" type="text/css" href="css/global.css"/>
 <link rel="stylesheet" type="text/css" href="css/main.css"/>
 <script src="js/jquery.min.js"></script>
+<style type="text/css">
+<{if $userRow.is_see==1}>input,select,textarea{background-color:#eee;}<{/if}>
+</style>
 </head>
 <body style="background-color:#F6F6F6;">
 <div class="main">	
@@ -81,7 +84,11 @@
 		<{/if}>
 	</div>
 	</form>
-	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>	
+	<{if $userRow.is_see==1}>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;">已审核通过</div></a>
+	<{else}>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>
+	<{/if}>
 </div><{include file="footer.html"}>
 <!-- 上传照片 -->
 <div style="visibility:hidden;">
@@ -94,7 +101,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#cardPic img").click(function(){
+		<{if $userRow.is_see!=1}>
 		$('#img-file').click();
+		<{/if}>
 	});
 	$('#img-frame').load(function(){
         try{var html = $(this).contents().find('body').html();
