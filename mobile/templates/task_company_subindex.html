@@ -30,16 +30,18 @@
 					<div class="clear"></div>
 				</div>
 				<div class="job_adress"><{$v.addr}>
-					<{if $v.sh_status==1}>
-						<div style="float:right;color:#ff6f28;">已审核通过</div>
+					<{if $v.sh_status==0}>
+						<div style="float:right;">职位审核未通过</div>
+					<{elseif $v.jingli_queren==0}>
+						<div style="float:right;color:#ff6f28;">报名管理中</div>
 					<{else}>
-						<div style="float:right;">未审核</div>
+						<div style="float:right;">财务结算中</div>
 					<{/if}>
 				</div>
 				<div style='clear:both;'></div>
 				<ul style='margin-top:5px;'>
 					<li><{$userRow.nickname}></li>
-					<li><span class="fa fa-clock-o"></span><{$v.start_time}></li>
+					<li><span class="fa fa-clock-o"></span><{$v.work_time|truncate:10:''}></li>
 					<li class="people_num">
 						<{if $v.is_js==1}>
 						已结算

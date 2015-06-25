@@ -38,11 +38,11 @@
 		<{foreach from=$list item=v}>
 			<div class="item_list" <{if $v.jingli_queren==1 && $v.is_js==0}>onclick="window.location.href='index.php?m=caiwu&a=sign_js&tid=<{$v.id}>'"<{elseif $v.is_js==1}>onclick="window.location.href='index.php?m=task_company&a=sign_mid&tid=<{$v.id}>'"<{/if}> >
 				<div class="list_title">
-					<div class="job_title"><{$v.title}></div>
+					<div class="job_title"><{$v.title}>-<{if $v.pay_type==1}>现金<{else}>转账<{/if}></div>
 					<div class="price">&nbsp;&nbsp;</div>
 					<div class="clear"></div>
 				</div>
-				<div class="job_adress"><{$v.addtime}>
+				<div class="job_adress"><{$v.addtime|truncate:10:''}>发布-<{$v.work_time|truncate:10:''}>工作
 					<div style="float:right;margin-right:10px;">
 						<{if $v.jingli_queren==0}>
 							<span style="color:#999;">审核中</span>

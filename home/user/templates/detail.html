@@ -16,13 +16,16 @@
 							<div class="shop_sort_box">
 								<form id="memberform">
 									<input type="hidden" name='a' value='addv'/>
+									<input type="hidden" name='fromuser' value='<{$vo.fromuser}>'/>
 									<input type="hidden" name="num[id]" value="<{$vo.id}>" />
 									<h4 class='cc_title_h4'>会员详情</h4>
 									<div class="shop_sort">
 										<div class="shop_sort_title">
 											<h4>手机账号：</h4>
 										</div>
-										<b><{$vo.username}></b>
+										<div class="shop_sort_set">
+											<input class="shop_sort_text" name="str[username]" value="<{$vo.username}>" type="text">
+										</div>
 									</div>
 									<div class="shop_sort">
 										<div class="shop_sort_title">
@@ -141,7 +144,7 @@ function save(event){
 		success:function(res) {
 			if(res){
 				note_info('保存成功','success',event);
-				setTimeout("window.location.href='index.php?type=1'",300);
+				setTimeout("window.history.go(-1)",300);
 			}else{
 				note_info('保存失败','warn',event);
 			}

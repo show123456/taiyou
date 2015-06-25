@@ -33,7 +33,11 @@
 		<thead>
 			<tr>
 				<th>标题</th>
-				<th>报名数</th>
+				<th>薪酬(元/人)</th>
+				<th>有效报名数(人)</th>
+				<th>允许结算数(人)</th>
+				<th>需备用资金</th>
+				<th>工作时间</th>
 				<th>添加时间</th>
 				<th>报名列表</th>
 			</tr>
@@ -42,7 +46,11 @@
 			<foreach name="list['data']" item='v'>
 			<tr>
 				<td><{$v.title}>-<if condition="$v.pay_type eq 1">现金日结<else/><span style='color:red'>转账日结</span></if></td>
-				<td><{$v.countnum}></td>
+				<td><{$v.money}></td>
+				<td><{$v.valid_num}></td>
+				<td><{$v.js_num}></td>
+				<td>￥<{$v.spare_money}></td>
+				<td><{$v.work_time|substr=0,10}></td>
 				<td><{$v.addtime}></td>
 				<td><a href="<{:U('see',array('tid'=>$v['id']))}>">查看</a></td>
 			</tr>

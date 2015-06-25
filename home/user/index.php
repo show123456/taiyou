@@ -25,6 +25,10 @@
 		$data=$_POST;
 		$res=$model->add($data);
 		if($res){
+			if($data['info']['is_see']=='1' && $data['fromuser']){
+				$configModel=new Model_CustomerConfig();
+				$configModel->sendCustomerMsg('亲~，你的个人资料已通过云姐的审核；审核通过后，除绑定银行卡信息外，其它信息均无法修改；遇手机号码有变动时，请在小窗口第一时间与云姐联系，云姐对个人信息审核无误后，方可进行修改。',$data['fromuser']);
+			}
 			echo json_encode('suc');die;
 		}
 	}

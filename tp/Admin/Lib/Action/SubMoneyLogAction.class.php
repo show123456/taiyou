@@ -29,7 +29,7 @@ class SubMoneyLogAction extends CommonAction{
 			$where['_string']=" addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59' ";
 		}
 		
-		$list=D($this->moduleName)->getPager($where);
+		$list=D($this->moduleName)->getPager($where,20);
 		foreach($list['data'] as $key=>$value){
 			$userRow=$userModel->find($value['uid']);
 			$list['data'][$key]['nickname']=$userRow['nickname'];
@@ -37,45 +37,19 @@ class SubMoneyLogAction extends CommonAction{
 			$list['data'][$key]['type']=$typeArr[$value['type']];
 		}
 		$this->assign('list',$list);
-		//总计
-		$model=D($this->moduleName);
-		$sum_row=array();
-		if(I('get.start_date')){
-			$start_date=I('get.start_date');
-			$end_date=I('get.end_date');
-		}else{
-			$start_date=date('Y-m-d');
-			$end_date=$start_date;
-		}
+		
+		I('get.start_date') ? $start_date=I('get.start_date') : $start_date=date('Y-m-d');
+		I('get.end_date') ? $end_date=I('get.end_date') : $end_date=date('Y-m-d');
 		$this->assign('start_date',$start_date);
 		$this->assign('end_date',$end_date);
-		//系统充值
-		$where_str6=" type=6 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str6)->find();
-		$sum_row['type6']=$row['sum_money'];
-		//个人充值
-		$where_str1=" type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
-		$sum_row['type1']=$row['sum_money'];
-		//转账日结
-		$where_str3=" (type=0 or type=3) and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str3)->find();
-		$sum_row['type3']=$row['sum_money'];
-		//支付报名费
-		$where_str4=" type=4 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str4)->find();
-		$sum_row['type4']=0-$row['sum_money'];
-		//退还报名费
-		$where_str5=" type=5 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str5)->find();
-		$sum_row['type5']=$row['sum_money'];
-		$this->assign('sum_row',$sum_row);
 		$this->display();
 	}
 	
 	//金额总览
 	public function all(){
 		$userModel=M('SubUser');
+		$taskModel=M('SubTask');
+		$signModel=M('SubSign');
 		$typeArr=get_money_type();//金额变动方式数组
 		//总计
 		$model=D($this->moduleName);
@@ -89,14 +63,62 @@ class SubMoneyLogAction extends CommonAction{
 		}
 		$this->assign('start_date',$start_date);
 		$this->assign('end_date',$end_date);
-		//现金日结
-		$where_str7=" type=7 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str7)->find();
-		$sum_row['type7']=$row['sum_money'];
-		//转账日结
-		$where_str3=" (type=0 or type=3) and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$model->field("sum(money) as sum_money")->where($where_str3)->find();
-		$sum_row['type3']=$row['sum_money'];
+		/* 现金日结 */
+		//查询该时间段内的所有通过审核的现金日结职位
+		if($start_date==$end_date){
+			$where_str_task="sh_status=1 and pay_type=1 and left(work_time,10) = '".$start_date."'";
+		}else{
+			$where_str_task="sh_status=1 and pay_type=1 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
+		}
+		$total_spare=0;//总备用额
+		$list=array();
+		$list=D('SubTask')->field('id,money')->where($where_str_task)->select();
+		foreach($list as $k=>$v){
+			//报名有效人数
+			$valid_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_valid'=>1))->find();
+			$list[$k]['valid_num']=(int)$valid_row['c'];
+			//允许结算人数
+			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
+			$list[$k]['js_num']=(int)$js_row['c'];
+			//需备用金额
+			if($valid_row['c']==0){
+				$list[$k]['spare_money']=0;
+			}else if($js_row['c']==0){//计算报名有效备用金额
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
+			}else{//计算允许结算报名备用金额
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			}
+			$total_spare+=$list[$k]['spare_money'];
+		}
+		$sum_row['type7']=$total_spare;
+		/* 转账日结 */
+		//查询该时间段内的所有通过审核的现金日结职位
+		if($start_date==$end_date){
+			$where_str_task="sh_status=1 and pay_type=2 and left(work_time,10) = '".$start_date."'";
+		}else{
+			$where_str_task="sh_status=1 and pay_type=2 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
+		}
+		$total_spare=0;//总备用额
+		$list=array();
+		$list=D('SubTask')->field('id,money')->where($where_str_task)->select();
+		foreach($list as $k=>$v){
+			//报名有效人数
+			$valid_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_valid'=>1))->find();
+			$list[$k]['valid_num']=(int)$valid_row['c'];
+			//允许结算人数
+			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
+			$list[$k]['js_num']=(int)$js_row['c'];
+			//需备用金额
+			if($valid_row['c']==0){
+				$list[$k]['spare_money']=0;
+			}else if($js_row['c']==0){//计算报名有效备用金额
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
+			}else{//计算允许结算报名备用金额
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			}
+			$total_spare+=$list[$k]['spare_money'];
+		}
+		$sum_row['type3']=$total_spare;
 		//提现，查询的sub_out表
 		$where_str2=" is_pay=1 and pay_time > '".$start_date." 00:00:00' and pay_time < '".$end_date." 23:59:59' ";
 		$row=M('SubOut')->field("sum(money) as sum_money")->where($where_str2)->find();
@@ -286,10 +308,11 @@ class SubMoneyLogAction extends CommonAction{
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+		I('get.type') ? $lie_title='职位' : $lie_title='类别';
 		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A2', '姓名')
 					->setCellValue('B2', '手机号')
-					->setCellValue('C2', '职位')
+					->setCellValue('C2', $lie_title)
 					->setCellValue('D2', '金额(元)')
 					->setCellValue('E2', '时间');
 		$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
@@ -315,10 +338,12 @@ class SubMoneyLogAction extends CommonAction{
 		$where_str=$type_str."(addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59')";
 		$title=I('get.start_date').'至'.I('get.end_date').'总额';
 		
-		$listArr=$model->where($where_str)->select();
+		$listArr=$model->where($where_str)->order('id desc')->select();
 		$sum_row=$model->field("sum(money) as sum_money")->where($where_str)->find();
 		if(empty($listArr)) die('无数据');
 		$title.=$sum_row['sum_money'].'元';
+		
+		if(!I('get.type')) $title=I('get.start_date').'至'.I('get.end_date');
 		
 		foreach($listArr as $key=>$value){
 			if($value['money'] < 0) $listArr[$key]['money']=0-$value['money'];
@@ -328,6 +353,11 @@ class SubMoneyLogAction extends CommonAction{
 			//职位
 			$taskRow=$taskModel->field('id,title,addtime')->find($value['desc']);
 			if($taskRow) $listArr[$key]['title']=cut_str(deletehtml($taskRow['title']),15).'-'.substr($taskRow['addtime'],0,10);
+			
+			if(!I('get.type')){//金额变动方式
+				$typeArr=get_money_type();
+				$listArr[$key]['title']=$typeArr[$value['type']];
+			}
 		}
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $title);
 		foreach($listArr as $lk=>$lv){

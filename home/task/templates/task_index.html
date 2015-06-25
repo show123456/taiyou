@@ -49,7 +49,7 @@
 									<!------------列表开始------------>
 									<{foreach from=$list item="v"}>
 									<tr data-bc='#fff'>
-										<td><div><{if $v.uid==1}>(平台)<{else}><span style='color:red'>(企业)</span><{/if}><{$v.title}></div></td>
+										<td><div><{if $v.uid==1}>(平台)<{else}><span style='color:red'>(企业)</span><{/if}><{$v.title}>-<{if $v.pay_type==1}>现金<{else}><span style='color:red'>转账</span><{/if}></div></td>
 										<td><div><{$v.countnum}></div></td>
 										<td><div><{$v.see_num}></div></td>
 										<td><div class="kfTypeDiv">

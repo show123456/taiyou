@@ -65,9 +65,9 @@
 			$model->add($taskData);
 			die('suc');
 		}else{
-			$listArr=$signModel->where("is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->dataArr();
+			$listArr=$signModel->where("is_js=1 and tid=".$_GET['tid'])->order('distance asc')->dataArr();
 			//应结算人数
-			$listRow=$signModel->field("count(*) as countnum")->where("is_qd=1 and tid=".$_GET['tid'])->dataRow();
+			$listRow=$signModel->field("count(*) as countnum")->where("is_js=1 and tid=".$_GET['tid'])->dataRow();
 			$smarty->assign('countnum',$listRow['countnum']);
 			
 			if($listArr){

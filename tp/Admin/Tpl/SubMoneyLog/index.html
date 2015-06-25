@@ -32,45 +32,10 @@
 </head>
 <body>
 <div class="rightinfo">
-	<!-- <if condition="$_GET['uid'] eq ''">
-		<div class="top_div">
-			<{$start_date}>
-			<br />至
-			<br /><{$end_date}>
-			<br />系统充值
-			<br />￥<{$sum_row['type6']|default=0}>
-		</div>
-		<div class="top_div">
-			<{$start_date}>
-			<br />至
-			<br /><{$end_date}>
-			<br />个人充值
-			<br />￥<{$sum_row['type1']|default=0}>
-		</div>
-		<div class="top_div">
-			<{$start_date}>
-			<br />至
-			<br /><{$end_date}>
-			<br />转账日结
-			<br />￥<{$sum_row['type3']|default=0}>
-		</div>
-		<div class="top_div">
-			<{$start_date}>
-			<br />至
-			<br /><{$end_date}>
-			<br />支付报名费
-			<br />￥<{$sum_row['type4']|default=0}>
-		</div>
-		<div class="top_div">
-			<{$start_date}>
-			<br />至
-			<br /><{$end_date}>
-			<br />退还报名费
-			<br />￥<{$sum_row['type5']|default=0}>
-		</div>
-	</if>
-	<div style="height:10px;clear:both;"></div> -->
 	<div class="tools">
+		<ul class="toolbar">
+			<li class="click" style="padding-left:5px;">默认导出当天的excel</li>
+		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
@@ -93,7 +58,7 @@
 			</span>
 			<span style="margin-top:0;">
 				结束日期:
-				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
 			</span>
 			<if condition="$_GET['uid'] eq ''">
 			<span>
@@ -104,6 +69,7 @@
 			</span>
 			</if>
 			<b onclick="search()">搜索</b>
+			<a href="<{:U('daochu',array('start_date'=>$start_date,'end_date'=>$end_date))}>"><b onclick="search()">导出到excel</b></a>
 		</li>
 		</ul>
 		</form>
@@ -120,7 +86,7 @@
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
-			<tr>
+			<tr style="height:25px;">
 				<td><{$v.nickname}></td>
 				<td><{$v.username}></td>
 				<td><{$v.type}></td>

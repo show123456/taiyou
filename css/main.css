@@ -1,0 +1,131 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+*{margin:0;padding:0;list-style-type:none;}
+html, body {
+  height: 100%;
+  font-family: "Microsoft YaHei","微软雅黑";
+  background: #fff;
+}
+a,img{border:0;}
+.header{height:60px;width:100%;background:#362e2b;}
+.yfk_logo{display:block;margin:0;padding:0;float:left;margin:7.5px 5px 0 0;}
+.header >div {
+  width: 985px;
+  margin: 0 auto;
+  height: 100%;
+}
+.header h2 {
+  float: left;
+  margin-right: 15px;
+  line-height: 60px;
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  text-align: left;
+}
+.header i {
+  font-style: normal;
+  color: #999;
+  font-size: 16px;
+  height: 16px;
+  position: relative;
+  top: 30px;
+}
+.header a {
+  float: right;
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-top: 15px;
+  background: url(../images/check.png) no-repeat;
+  position: relative;
+}
+.header a.QQ {
+  background-position: 0 -14px;
+}
+.header a.Wechat {
+  background-position: -30px -14px;
+}
+
+.header div>span {
+  color: #00a0e9;
+  font-size: 18px;
+  float: right;
+  margin-right: 15px;
+  display: block;
+  line-height: 60px;
+}
+.header a.Wechat span {
+  padding: 5px 6px;
+  background: #0093f0;
+  position: absolute;
+  top: 44px;
+  left: -120px;
+  border-radius: 4px;
+  z-index: 999999;
+}
+.header a.QQ span {
+  padding: 7px 12px;
+  background: #f08300;
+  color: #fff;
+  font-size: 16px;
+  position: absolute;
+  top: 44px;
+  left: -45px;
+  border-radius: 4px;
+  z-index: 999999;
+}
+
+.none {
+  display: none;
+}
+#footer-wrap {
+ color:#333;
+  width: 100%;  
+  position: relative;
+  font-size: 12px;  
+}
+#header-wrap, #container-wrap, #footer-wrap {
+  width: 100%;
+}
+#footer {
+  text-align: center;
+  width: 100%;
+padding-top:35px;
+}
+#header, #container, #footer {
+  width: 985px;
+  margin: 0 auto;
+}
+#footer div {
+  padding: 8px 0;
+}
+#fmenus, #copyright {
+  position: relative;
+  clear: both;
+  color:#333;
+}
+#footer a {
+  color:#333;
+  text-decoration: none;
+}
+/* flexslider */
+.flexslider{position:relative;height:600px;overflow:hidden;z-index:99;}
+.slides{position:relative;z-index:1;}
+.slides li{height:600px;}
+.flex-control-nav{position:absolute;bottom:10px;z-index:2;width:100%;text-align:center;}
+.flex-control-nav li{display:inline-block;width:14px;height:14px;margin:0 5px;*display:inline;zoom:1;}
+.flex-control-nav a{display:inline-block;width:14px;height:14px;line-height:40px;overflow:hidden;background:url(../images/dot.png) right 0 no-repeat;cursor:pointer;}
+.flex-control-nav .flex-active{background-position:0 0;}
+
+.flex-direction-nav{position:absolute;z-index:3;width:100%;top:45%;}
+.flex-direction-nav li a{display:block;width:66px;height:66px;overflow:hidden;cursor:pointer;position:absolute;}
+.flex-direction-nav li a.flex-prev{left:40px;background:url(../images/prev.png) center center no-repeat;}
+.flex-direction-nav li a.flex-next{right:40px;background:url(../images/next.png) center center no-repeat;}
