@@ -27,12 +27,16 @@ $(function(){
 <body style="background:#f0f9fd;">
 	<div class="lefttop"><span></span>功能菜单</div>
     <dl class="leftmenu">
+	<if condition="in_array($suserSession['type'],array(1,3))">
 		<dd>
 			<div class="title">
 				<span><img src="__PUBLIC__/admin/images/leftico01.png" /></span>财务模块
 			</div>
 			<ul class="menuson">
-				<li class="active"><cite></cite>
+				<!-- <li class="active"><cite></cite>
+					<a href="<{:U('SubUser/person_index')}>" target="rightFrame">个人用户</a>
+				</li> -->
+				<li><cite></cite>
 					<a href="<{:U('SubUser/person_index')}>" target="rightFrame">个人用户</a>
 				</li>
 				<li><cite></cite>
@@ -45,7 +49,7 @@ $(function(){
 					<a href="<{:U('SubCz/index')}>" target="rightFrame">个人充值</a>
 				</li>
 				<li><cite></cite>
-					<a href="<{:U('SubMoneyLog/zzrj')}>" target="rightFrame">转账日结</a>
+					<a href="<{:U('SubTask/zz_index')}>" target="rightFrame">转账日结</a>
 				</li>
 				<li><cite></cite>
 					<a href="<{:U('SubMoneyLog/zfsqf')}>" target="rightFrame">支付报名费</a>
@@ -61,6 +65,78 @@ $(function(){
 				</li>
 			</ul>
 		</dd>
+	</if>
+	<if condition="in_array($suserSession['type'],array(1,2))">
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico02.png" /></span>用户模块
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/user/index.php?type=1" target="rightFrame">个人用户</a>
+				</li>
+				<li><cite></cite>
+					<a href="../home/user/index.php?type=2" target="rightFrame">企业用户</a>
+				</li>
+			</ul>
+		</dd>
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico03.png" /></span>职位管理
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/task/task.php" target="rightFrame">职位列表</a>
+				</li>
+			</ul>
+		</dd>
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico04.png" /></span>任务兼职
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/job/index.php" target="rightFrame">任务兼职管理</a>
+				</li>
+			</ul>
+		</dd>
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico03.png" /></span>积分设置
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/score/index.php?a=qd" target="rightFrame">签到积分</a>
+				</li>
+				<li><cite></cite>
+					<a href="../home/score/index.php?a=tjr" target="rightFrame">返利积分</a>
+				</li>
+			</ul>
+		</dd>
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico02.png" /></span>行业管理
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/industry/index.php" target="rightFrame">行业列表</a>
+				</li>
+			</ul>
+		</dd>
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico01.png" /></span>互动评论
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="../home/pic/pic.php" target="rightFrame">分享互动</a>
+				</li>
+				<li><cite></cite>
+					<a href="../home/reply/talk.php?typenum=1" target="rightFrame">评论管理</a>
+				</li>
+			</ul>
+		</dd>
+	</if>
     </dl>
 </body>
 </html>

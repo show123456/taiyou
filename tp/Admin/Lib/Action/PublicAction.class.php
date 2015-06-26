@@ -6,6 +6,8 @@ class PublicAction extends CommonAction {
 		$this->display();
 	}
 	public function left(){
+		$userRes=getSuserInfo();
+		$this->assign('suserSession',$userRes);
 		$this->display();
 	}
 	public function swich(){

@@ -34,13 +34,17 @@
 <body>
 <div class="rightinfo">
 	<div class="tools">
-		<ul class="toolbar">
-			<li class="click" style="padding-left:5px;">搜索开始结束日期以查看总额、导出excel</li>
-		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
 		<ul class="toolbar1"><li>
+			<span>
+				<select name="is_pay" style="margin-top:0;">
+					<option value="">支付状态</option>
+					<option value="2" <{:$_GET['is_pay']==2 ? 'selected' : ''}> >未支付</option>
+					<option value="1" <{:$_GET['is_pay']==1 ? 'selected' : ''}> >已支付</option>
+				</select>
+			</span>
 			<span style="margin-top:0;">
 				提现开始日期:
 				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
@@ -97,10 +101,19 @@
 	<div style="color:red;font-size:16px;font-weight:bold;">
 		<if condition="$sum_row['search'] eq 1">
 			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
-			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date')))}>" target='_blank'>导出到excel</a>
+			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date'),'is_pay'=>I('get.is_pay')))}>">导出到excel</a>
 		</if>
 	</div>
 </div>
+<!-- loading动画开始 -->
+<div id="loading" style="position:fixed;z-index:881213;display:none;background-color:#fff;filter:alpha(opacity=70);opacity:0.7;width:100%;height:100px;top:0;"><img src="__PUBLIC__/admin/images/loading.gif" style="display:block;margin:200px 550px;" /></div>
+<script type="text/javascript">
+$(function(){
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+})
+</script>
+<!-- loading动画结束 -->
 <script type="text/javascript">
 function search(){
 	if($("input[name='start_date']").val()=='' && $("input[name='end_date']").val()!=''){
@@ -121,7 +134,9 @@ $(document).ready(function(){
 		if(confirm('确定要执行此操作吗？')){
 			var kf_type=$(this).attr('data-status');
 			var open_act_id=$(this).attr('data-id');
+			$('#loading').show();
 			$.get('<{:U("kf")}>',{id:open_act_id,is_pay:kf_type},function(res){
+				$('#loading').hide();
 				if(res){
 					window.location.reload();
 				}

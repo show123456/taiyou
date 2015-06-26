@@ -1,45 +1,36 @@
 <?php
-
-class Model_CustomerConfig extends Model_Table {
-	
-	protected $_name = 'customer_config';
+class CustomerConfigModel extends CommonModel{
+		
 	protected $customer_id = 1378;
 	
 	public function getRightToken(){
-		$customer_config = new Model_CustomerConfig();
-		$sql = "select customer_id,c_value,create_date from customer_config where customer_id='".$this->customer_id."' and c_type='token'";
-		$configinfo = $customer_config->fetchRow($sql);
-		//token 有记录
+		$configinfo = $this->where(array('customer_id'=>$this->customer_id,'c_type'=>'token'))->find();
 		if($configinfo){
-			//token 未过期
 			if(strtotime($configinfo['create_date'])>time()){
 				$token = $configinfo['c_value'];
-			//token 已经过期
 			}else{
-				$token = $this->gettoken($customer_config);
+				$token = $this->gettoken();
 				if($token){	
 					$configdata['c_value'] = $token;
-					$configdata['create_date'] = date('Y-m-d H:i:s',time()+1800);	
-					$customer_config->row_update($configdata,"customer_id='{$configinfo[customer_id]}' and c_type='token'");
+					$configdata['create_date'] = date('Y-m-d H:i:s',time()+1800);
+					$this->where(array('customer_id'=>$this->customer_id,'c_type'=>'token'))->save($configdata);
 				}
 			}		
 		}else{
-		//没有记录
-			$token = $this->gettoken($customer_config);
+			$token = $this->gettoken();
 			if($token){
 				$configdata['customer_id'] = $this->customer_id;
 				$configdata['c_type'] = "token";
 				$configdata['c_value'] = $token;
 				$configdata['create_date'] = date('Y-m-d H:i:s',time()+1800);	
-				$customer_config->insert($configdata);
+				$this->add($configdata);
 			}	
 		}
 		return $token;
 	}
 	
-	public function gettoken($customer_config){
-		$sql = "select c_value from customer_config where customer_id='".$this->customer_id."' and c_type='appid'";
-		$info = $customer_config->fetchRow($sql);
+	public function gettoken(){
+		$info = $this->where(array('customer_id'=>$this->customer_id,'c_type'=>'appid'))->find();;
 		$appinfo = explode(',',$info['c_value']);
 		$appid = $appinfo[0];
 		$appse = $appinfo[1];
@@ -53,8 +44,8 @@ class Model_CustomerConfig extends Model_Table {
 		return false;
 	}
 
-	public function https_request($url,$data = null){file_put_contents('cc.txt',$data,FILE_APPEND);
-		/* $curl = curl_init();
+	public function https_request($url,$data = null){//file_put_contents('cc.txt',$data,FILE_APPEND);
+		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -65,7 +56,7 @@ class Model_CustomerConfig extends Model_Table {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$output = curl_exec($curl);
 		curl_close($curl);
-		return $output; */
+		return $output;
 	}
 	
 	/*发送客服消息
@@ -102,4 +93,3 @@ class Model_CustomerConfig extends Model_Table {
 		}
 	}
 }
-

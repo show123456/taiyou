@@ -1,2 +1,2 @@
 <?php
-echo md5('caiwu123');
+echo md5('zhangzong123');

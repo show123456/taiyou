@@ -4,6 +4,9 @@ class SubOutAction extends CommonAction{
 		$userModel=M('SubUser');
 		$where=array();
 		//搜索条件
+		if(I('get.is_pay')){
+			I('get.is_pay')=='1' ? $where['is_pay']=1 : $where['is_pay']=0;
+		}
 		$condition=array();
 		if($_GET['keywords']) $condition[]="nickname = '".I('get.keywords')."'";
 		if($_GET['username']) $condition[]="username = '".I('get.username')."'";
@@ -72,10 +75,17 @@ class SubOutAction extends CommonAction{
 	
 	//更改支付状态
 	public function kf(){
-		$data[is_pay]=(int)$_GET['is_pay'];
-		$data[id]=(int)$_GET['id'];
-		$data[pay_time]=date('Y-m-d H:i:s');
+		$data['is_pay']=(int)$_GET['is_pay'];
+		$data['id']=(int)$_GET['id'];
+		$data['pay_time']=date('Y-m-d H:i:s');
 		$res=D($this->moduleName)->save($data);
+		if($res && $data['is_pay']==1){
+			$row=D($this->moduleName)->find($data['id']);
+			$userRow=M('SubUser')->find($row['uid']);
+			$fromuser=$userRow['fromuser'];
+			$content="您好，尾号为".substr($userRow['bank_card'],-4)."的银行账户，您提现的".$row['money']."元钱，将于两小时内到账，请注意查收！";
+			D('CustomerConfig')->sendCustomerMsg($content,$fromuser);
+		}
 		echo $res;die();
 	}
 	
@@ -95,16 +105,18 @@ class SubOutAction extends CommonAction{
 									 ->setKeywords("office 2007 openxml php")
 									 ->setCategory("Test result file");
 		// Add some data
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(40);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A2', '姓名')
-					->setCellValue('B2', '手机号')
-					->setCellValue('C2', '银行卡')
-					->setCellValue('D2', '金额(元)')
-					->setCellValue('E2', '支付状态')
-					->setCellValue('F2', '时间');
+					->setCellValue('A2', '手机号')
+					->setCellValue('B2', '银行卡')
+					->setCellValue('C2', '金额(元)')
+					->setCellValue('D2', '银行卡')
+					->setCellValue('E2', '姓名')
+					->setCellValue('F2', '支付状态')
+					->setCellValue('G2', '时间');
 		$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
@@ -112,6 +124,7 @@ class SubOutAction extends CommonAction{
 		$objPHPExcel->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
 
 		//数据库操作
 		$model=D($this->moduleName);
@@ -119,6 +132,9 @@ class SubOutAction extends CommonAction{
 		$current_time=time();
 		
 		$where_str="(addtime > '".I('get.start_date')." 00:00:00' and addtime < '".I('get.end_date')." 23:59:59')";
+		if(I('get.is_pay')){
+			I('get.is_pay')=='1' ? $where_str.=" and is_pay=1 " : $where_str.=" and is_pay=0 ";
+		}
 		$title=I('get.start_date').'至'.I('get.end_date').'总额';
 		
 		$listArr=$model->where($where_str)->select();
@@ -137,12 +153,13 @@ class SubOutAction extends CommonAction{
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $title);
 		foreach($listArr as $lk=>$lv){
 			$lj=$lk+3;
-			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['nickname'])
-										  ->setCellValue('B' . $lj, $lv['username'])
-										  ->setCellValue('C' . $lj, $lv['bank_card'].' ')
-										  ->setCellValue('D' . $lj, $lv['money'])
-										  ->setCellValue('E' . $lj, $lv['pay_status'])
-										  ->setCellValue('F' . $lj, $lv['addtime']);
+			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['username'])
+										  ->setCellValue('B' . $lj, $lv['bank_name'])
+										  ->setCellValue('C' . $lj, $lv['money'])
+										  ->setCellValueExplicit('D' . $lj, $lv['bank_card'])
+										  ->setCellValue('E' . $lj, $lv['nickname'])
+										  ->setCellValue('F' . $lj, $lv['pay_status'])
+										  ->setCellValue('G' . $lj, $lv['addtime']);
 		}
 											
 		// Rename worksheet

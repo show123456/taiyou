@@ -59,8 +59,8 @@ class SubTaskAction extends CommonAction{
 	//转账日结对应的任务列表
 	public function zz_index(){
 		$signModel=M('SubSign');
-		$start_date=I('get.start_date');
-		$end_date=I('get.end_date');
+		I('get.start_date') ? $start_date=I('get.start_date') : $start_date=date('Y-m-d');
+		I('get.end_date') ? $end_date=I('get.end_date') : $end_date=$start_date;
 		if($start_date==$end_date){
 			$where_str_task="sh_status=1 and pay_type=2 and left(work_time,10) = '".$start_date."'";
 		}else{
@@ -116,9 +116,10 @@ class SubTaskAction extends CommonAction{
 	public function see(){
 		$userModel=M('SubUser');
 		$tid=I('get.tid');
-		$listArr=M('SubSign')->where(" tid='{$tid}'")->select();
+		$listArr=M('SubSign')->where(" tid='{$tid}' and is_valid=1")->select();
 		if($listArr){
 			foreach($listArr as $key=>$value){
+				$listArr[$key]['xuhao']=$key+1;
 				$uRow=$userModel->find($value['uid']);
 				$listArr[$key]['nickname']=$uRow['nickname'];
 				$listArr[$key]['username']=$uRow['username'];
