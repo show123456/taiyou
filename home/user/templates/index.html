@@ -34,14 +34,22 @@
 		<div class="pull-right" style="margin-right:8px">
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
-				<input type="hidden" name="admin" value="<{$smarty.get.admin}>" />
+				<{if $smarty.get.type=='1'}>
+				<select name="is_see" style="height:25px;line-height:25px;">
+					<option value="">审核状态</option>
+					<option value="2" <{if $smarty.get.is_see=='2'}>selected<{/if}> >未通过</option>
+					<option value="1" <{if $smarty.get.is_see=='1'}>selected<{/if}> >通过</option>
+				</select>&nbsp;&nbsp;
 				<select name="did" style="height:25px;line-height:25px;">
 					<option value="">请选择区</option>
 					<{foreach from=$darr item="v"}>
 						<option value="<{$v.DistrictID}>" <{if $smarty.get.did==$v.DistrictID}>selected<{/if}> ><{$v.DistrictName}></option>
 					<{/foreach}>
 				</select>&nbsp;&nbsp;
+				<input name="username" class="keywords" placeholder="输入手机号" type="text" value="<{$smarty.get.username}>">&nbsp;&nbsp;
+				<input name="cardnum" class="keywords" placeholder="输入身份证号" type="text" value="<{$smarty.get.cardnum}>">&nbsp;&nbsp;
 				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>">&nbsp;&nbsp;
+				<{/if}>
 				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
 				<input value="搜索" id="search" class="" title="搜索" type="submit">
 			</form>

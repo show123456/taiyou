@@ -2,6 +2,7 @@
 class SubMoneyLogAction extends CommonAction{
 	public function index(){
 		$userModel=M('SubUser');
+		$taskModel=M('SubTask');
 		$typeArr=get_money_type();//金额变动方式数组
 		//搜索条件
 		$where=array();
@@ -35,6 +36,11 @@ class SubMoneyLogAction extends CommonAction{
 			$list['data'][$key]['nickname']=$userRow['nickname'];
 			$list['data'][$key]['username']=$userRow['username'];
 			$list['data'][$key]['type']=$typeArr[$value['type']];
+			//所属职位
+			if(in_array($value['type'],array(0,3,7))){
+				$taskRow=$taskModel->field('id,title,work_time,pay_type,addtime')->find($value['desc']);
+				$list['data'][$key]['type']=$typeArr[$value['type']].'-'.$taskRow['title'].'-'.substr($taskRow['work_time'],0,10);
+			}
 		}
 		$this->assign('list',$list);
 		
@@ -81,13 +87,7 @@ class SubMoneyLogAction extends CommonAction{
 			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
 			$list[$k]['js_num']=(int)$js_row['c'];
 			//需备用金额
-			if($valid_row['c']==0){
-				$list[$k]['spare_money']=0;
-			}else if($js_row['c']==0){//计算报名有效备用金额
-				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
-			}else{//计算允许结算报名备用金额
-				$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
-			}
+			$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
 			$total_spare+=$list[$k]['spare_money'];
 		}
 		$sum_row['type7']=$total_spare;
@@ -109,13 +109,7 @@ class SubMoneyLogAction extends CommonAction{
 			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
 			$list[$k]['js_num']=(int)$js_row['c'];
 			//需备用金额
-			if($valid_row['c']==0){
-				$list[$k]['spare_money']=0;
-			}else if($js_row['c']==0){//计算报名有效备用金额
-				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
-			}else{//计算允许结算报名备用金额
-				$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
-			}
+			$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
 			$total_spare+=$list[$k]['spare_money'];
 		}
 		$sum_row['type3']=$total_spare;

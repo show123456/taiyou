@@ -67,4 +67,9 @@ function cut_str($string, $sublen, $start = 0, $code = 'UTF-8') {
 function get_money_type(){
 	return array(0=>'转账日结',1=>'会员充值',2=>'提现',3=>'转账日结',4=>'支付报名费',5=>'退还报名费',6=>'系统充值',7=>'现金日结');
 }
+
+//禁闭类别
+function get_ban_type(){
+	return array(1=>'禁止登录',2=>'禁止发言',3=>'禁止报名',4=>'禁言禁报名');
+}
 ?>

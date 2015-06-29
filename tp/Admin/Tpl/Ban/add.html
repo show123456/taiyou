@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">禁闭<{:$vo['id'] ? '修改' : '新增'}></a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('add')}>" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$vo['id']}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>手机号<b></b></label>
+					<input type="text" name="info[username]" value="<{$vo['username']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>身份证号<b></b></label>
+					<input type="text" name="info[cardnum]" value="<{$vo['cardnum']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>禁闭类别<b></b></label>
+					<select name="info[type]" class="dfinput yaheifont">
+					<foreach name="ban_type" key="k" item="v">
+						<option value="<{$k}>" <{:$vo['type']==$k ? 'selected' : ''}> ><{$v}></option>
+					</foreach>
+					</select>
+				</li>
+				<li>
+					<label>解禁时间<b></b></label>
+					<input type="text" name="info[end_time]" value="<{$vo['end_time']}>" class="dfinput yaheifont date_picker">
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返回" onclick="window.history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	if($("input[name='info[username]']").val()=='' && $("input[name='info[cardnum]']").val()==''){
+		alert_tip('手机号和身份证号必填其一');return;
+	}
+	if($("input[name='info[end_time]']").val()==''){
+		alert_tip('解禁时间不能为空');return;
+	}
+	$('#memberform').submit();
+}
+</script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</body>
+</html>

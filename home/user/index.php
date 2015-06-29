@@ -121,7 +121,7 @@
 			if($id){
 				$smarty->assign('vo',$model->find($id));
 			}
-			$smarty->setTpl('user/templates/cz.html')->display();
+			$smarty->setTpl('user/templates/cz.html')->display();die;
 		}
 	}
 
@@ -161,6 +161,13 @@
 
 	if($_GET['keywords']) $condition[]=" nickname like '%".common_pg('keywords')."%' ";
 	if($_GET['nicheng']) $condition[]=" nicheng like '%".common_pg('nicheng')."%' ";
+	if($_GET['username']) $condition[]=" username = '".common_pg('username')."' ";
+	if($_GET['cardnum']) $condition[]=" cardnum = '".common_pg('cardnum')."' ";
+	if($_GET['is_see']=='1'){
+		$condition[]=" is_see=1 ";
+	}elseif($_GET['is_see']=='2'){
+		$condition[]=" is_see=0 ";
+	}
 	if($condition) $filter['where'] = implode(' and ',$condition);
 	$filter['order'] = " id desc ";
 	$data = $model->paginate($filter,'*',common_pg('p'),10);
