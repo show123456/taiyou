@@ -45,8 +45,12 @@ if($_REQUEST['a']=='detail'){
 $filter['order'] = " is_up desc,up_time desc,id desc ";
 $data = $model->paginate($filter,'*',common_pg('p'),10);
 $listArr = $data['data'];
+$userModel=D('sub_user');
 foreach($listArr as $key=>$value){
 	$listArr[$key]['introduce']=cut_str(deletehtml($value['introduce']),20);
+	//发布人
+	$userRow=$userModel->where("fromuser='".$value['fromuser']."'")->dataRow();
+	$listArr[$key]['faburen']=$userRow['nickname'].'-'.$userRow['nicheng'].'-'.$userRow['username'];
 }
 $smarty->assign('list',$listArr);
 $smarty->assign('page',$model->pager($data['pager']));

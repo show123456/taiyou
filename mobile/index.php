@@ -24,6 +24,14 @@ if($_GET['m']=='task' && ($_GET['a']=='index' || $_GET['a']=='detail')){
 	$smarty->assign('userRow',$userRow);
 	if(!$userRow['pid']) $smarty->assign('nowanshan',1);//未完善资料
 }
+//判断是否禁登录
+$banModel=new Model_Ban('ban');
+$ban_res_login=$banModel->no_login_rights($userRow);
+if($ban_res_login){
+	setCookie('tyuid','',time()-1);
+	$smarty->assign('info','您的账号还有'.ceil($ban_res_login/3600).'小时解禁');
+	$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+}
 //路由
 $_GET['m'] ? $controllerName=$_GET['m'] : $controllerName='index';
 if(!$_GET['a']) $_GET['a']='index';

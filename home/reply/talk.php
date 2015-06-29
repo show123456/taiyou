@@ -46,12 +46,16 @@ if($condition) $filter['where'] = implode('and',$condition);
 $filter['order'] = " id desc ";
 $data = $model->paginate($filter,'*',common_pg('p'),10);
 $listArr = $data['data'];
+$userModel=D('sub_user');
 foreach($listArr as $key=>$value){
 	//$listArr[$key]['content']=cut_str(deletehtml($value['content']),20);
 	if(!$value['name']) $listArr[$key]['name']='匿名';
 	//显示职位名
 	$taskRow=$taskModel->field('id,title')->where("id='".$value['tid']."'")->dataRow();
 	$listArr[$key]['title']=$taskRow['title'];
+	//评论人
+	$userRow=$userModel->where("fromuser='".$value['fromuser']."'")->dataRow();
+	$listArr[$key]['faburen']=$userRow['nickname'].'-'.$userRow['username'];
 }
 $smarty->assign('list',$listArr);
 $smarty->assign('page',$model->pager($data['pager']));

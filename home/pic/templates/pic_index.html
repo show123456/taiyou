@@ -30,6 +30,7 @@
 									<tr>
 										<th class="enable">图片</th>
 										<th class="enable">简介</th>
+										<th class="enable">发布人(姓名-昵称-电话)</th>
 										<th class="enable">置顶状态</th>
 										<th name="Operate" class="enable">操作</th>
 									</tr>
@@ -40,6 +41,7 @@
 									<tr>
 										<td><div><img src="../../data/image_c/<{$v.pic}>" style="height:51px;" /></div></td>
 										<td><div><{$v.introduce}></div></td>
+										<td><div><{$v.faburen}></div></td>
 										<td><div><{if $v.is_up==1}>是<{else}>否<{/if}></div></td>
 										<td>
 											<div class="btn-operate">
