@@ -1,5 +1,6 @@
 <?php
 include_once("../includes/config.inc.php");
+//if(!strpos($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')) die("请在微信浏览器中打开");//判断是否微信打开
 //cookie获取用户信息
 if($_COOKIE['tyuid'] && !$_SESSION['tyuser']['id']) $_SESSION['tyuser']['id']=$_COOKIE['tyuid'];
 

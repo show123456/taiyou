@@ -29,6 +29,7 @@
 </head>
 <body>
 <div class="rightinfo">
+	<if condition="$_GET['history'] eq ''">
 	<div class="tools">
 		<ul class="toolbar">
 			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
@@ -49,14 +50,23 @@
 		</ul>
 		</form>
 	</div>
+	</if>
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th width="200px;">手机号</th>
+				<th>手机号</th>
 				<th>身份证号</th>
+				<th>姓名</th>
+				<th>性别</th>
 				<th>禁闭类别</th>
-				<th>解禁日期</th>
+				<th>禁闭时长</th>
+				<th>开始日期</th>
+				<th>结束日期</th>
+				<th>备注</th>
+				<if condition="$_GET['history'] eq ''">
+				<th>历史记录</th>
 				<th>操作</th>
+				</if>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,13 +74,21 @@
 			<tr>
 				<td><{$v.username}></td>
 				<td><{$v.cardnum}></td>
+				<td><{$v.nickname}></td>
+				<td><{:$v['sex']==1 ? '男' : '女'}></td>
 				<td><{$ban_type[$v['type']]}></td>
+				<td><{$v.ban_day|default=0}>天</td>
+				<td><{$v.start_time}></td>
 				<td><{$v.end_time}></td>
+				<td title='<{$v.des}>'><{:cut_str($v['des'],15)}></td>
+				<if condition="$_GET['history'] eq ''">
+				<td><a href="<{:U('index',array('history'=>1,'username'=>$v['username'],'cardnum'=>$v['cardnum']))}>">查看</a></td>
 				<td>
 				<a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
 				&nbsp;|&nbsp;
 				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a>
 				</td>
+				</if>
 			</tr>
 			</foreach>
 		</tbody>

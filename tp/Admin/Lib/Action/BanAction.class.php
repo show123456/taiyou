@@ -1,10 +1,21 @@
 <?php
 class BanAction extends CommonAction{
     public function index(){
+		$userModel=M('SubUser');
 		$where=array();
 		if(I('get.username')) $where['username']=I('get.username');
 		if(I('get.cardnum')) $where['cardnum']=I('get.cardnum');
-        $this->assign('list',D($this->moduleName)->getPager($where));
+		$list=D($this->moduleName)->getPager($where);
+		foreach($list['data'] as $k=>$v){
+			//匹配用户信息
+			$condition="id>0";
+			if($v['username']) $condition.=" and username='".$v['username']."'";
+			if($v['cardnum']) $condition.=" and cardnum='".$v['cardnum']."'";
+			$userRow=$userModel->where($condition)->find();
+			$list['data'][$k]['nickname']=$userRow['nickname'];
+			$list['data'][$k]['sex']=$userRow['sex'];
+		}
+        $this->assign('list',$list);
 		$this->assign('ban_type',get_ban_type());
         $this->display();
     }
@@ -12,7 +23,7 @@ class BanAction extends CommonAction{
 	public function add(){
 		if(IS_POST){
 			$data=I('post.');
-			//查重
+			/* //查重
 			if(!$data['info']['id']){
 				if(!$data['info']['username']) $where="cardnum='".$data['info']['cardnum']."'";
 				if(!$data['info']['cardnum']) $where="username='".$data['info']['username']."'";
@@ -22,7 +33,8 @@ class BanAction extends CommonAction{
 				if($row){
 					$this->error('该手机号或身份证号已在禁闭列表');die;
 				}
-			}
+			} */
+			if(!$data['info']['id']) $data['info']['start_time']=date('Y-m-d');
 			$res=D($this->moduleName)->saveData($data);
 			if($res){
 				$this->success('保存成功',I('post.lastURL'));

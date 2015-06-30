@@ -3,6 +3,11 @@ $model=new Model_Subtable('sub_pic');
 //数据保存
 if($_REQUEST['a']=='add'){
 	if(method_is('post')){
+		//是否禁言
+		$banModel=new Model_Ban('ban');
+		$ban_res_say=$banModel->no_rights($userRow,2);
+		if($ban_res_say) die('err');
+		
 		$data=$_POST;
 		$data['info']['fromuser']=$_SESSION['picuser']['fromuser'];
 		$data['info']['name']=$_SESSION['picuser']['nickname'];
@@ -77,6 +82,17 @@ if($_REQUEST['a']=='index_ajax'){
 if($_REQUEST['a']=='reply'){
 	$replyModel=new Model_Subtable('sub_pic_reply');
 	if($_GET['pid'] && $_GET['content']){
+		//是否禁言
+		$banModel=new Model_Ban('ban');
+		$ban_res_say=$banModel->no_rights($userRow,2);
+		if($ban_res_say) die('err');
+		
+		if($ban_res_login){
+			setCookie('tyuid','',time()-1);
+			$smarty->assign('info','您的账号还有'.ceil($ban_res_login/3600).'小时解禁');
+			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+		}
+		
 		$memberModel=new Model_Member();
 		$data['num']['pid']=$_GET['pid'];
 		$data['info']['fromuser']=$_SESSION['picuser']['fromuser'];
@@ -131,10 +147,16 @@ if($_REQUEST['a']=='ajax_reply'){
 	}
 }
 
-
 //删除评论
 if($_REQUEST['a']=='del_reply'){
 	$id=(int)$_GET['id'];
 	$signModel=D('sub_pic_reply');
 	$signModel->del($id);
+}
+
+//删除帖子
+if($_REQUEST['a']=='del'){
+	$id=(int)$_GET['id'];
+	$res=D('sub_pic')->del($id);
+	$res ? die('suc') : die('err');
 }

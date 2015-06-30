@@ -140,6 +140,11 @@ if($_REQUEST['a']=='detail_ajax'){
 }
 //申请职位
 if($_REQUEST['a']=='sign'){
+	//是否禁报名
+	$banModel=new Model_Ban('ban');
+	$ban_res_say=$banModel->no_rights($userRow,3);
+	if($ban_res_say) die('err');
+		
 	$signModel=new Model_Subtable('sub_sign');
 	$data['num']['tid']=$_GET['tid'];
 	$data['num']['uid']=$userRow['id'];
@@ -246,6 +251,11 @@ if($_REQUEST['a']=='sign_zj'){
 if($_REQUEST['a']=='reply'){
 	$replyModel=new Model_Subtable('sub_reply');
 	if($_GET['tid'] && $_GET['content']){
+		//是否禁言
+		$banModel=new Model_Ban('ban');
+		$ban_res_say=$banModel->no_rights($userRow,2);
+		if($ban_res_say) die('err');
+		
 		$memberModel=new Model_Member();
 		$data['num']['tid']=$_GET['tid'];
 		$data['num']['uid']=$userRow['id'];

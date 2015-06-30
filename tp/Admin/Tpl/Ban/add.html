@@ -34,15 +34,21 @@
 				</li>
 				<li>
 					<label>禁闭类别<b></b></label>
-					<select name="info[type]" class="dfinput yaheifont">
 					<foreach name="ban_type" key="k" item="v">
-						<option value="<{$k}>" <{:$vo['type']==$k ? 'selected' : ''}> ><{$v}></option>
+						<label><input type="radio" name="info[type]" value="<{$k}>" style="vertical-align:middle;" <{:$vo['type']==$k ? 'checked' : ''}> /><{$v}></label>
 					</foreach>
-					</select>
+				</li>
+				<li>
+					<label>禁闭时长<b></b></label>
+					<input type="text" name="info[ban_day]" value="<{$vo['ban_day']}>" class="dfinput yaheifont" id="ban_day" /> 天
 				</li>
 				<li>
 					<label>解禁时间<b></b></label>
-					<input type="text" name="info[end_time]" value="<{$vo['end_time']}>" class="dfinput yaheifont date_picker">
+					<input type="text" name="info[end_time]" value="<{$vo['end_time']}>" class="dfinput yaheifont" id="end_time" readonly style="background:none;background-color:#eee;" />
+				</li>
+				<li>
+					<label>备注<b></b></label>
+					<textarea name="info[des]" class="dfinput yaheifont" style="height:100px;"><{$vo['des']}></textarea>
 				</li>
 				<li>
 					<label>&nbsp;</label>
@@ -55,12 +61,31 @@
 	</div>
 </div>
 <script type="text/javascript">
+$(function(){
+	//自动填充解禁时间
+	$('#ban_day').keyup(function(){
+		var ban_day_val=$(this).val();
+		var currennt_timestamp=Date.parse(new Date());//获取的是毫秒数
+		currennt_timestamp+=ban_day_val*24*3600*1000;
+		var end_obj=new Date(currennt_timestamp);
+		var end_time_year=end_obj.getFullYear();
+		var end_time_month=end_obj.getMonth()+1;
+		if(end_time_month<10) end_time_month='0'+end_time_month;
+		var end_time_day=end_obj.getDate();
+		if(end_time_day<10) end_time_day='0'+end_time_day;
+		var end_time_str=end_time_year+'-'+end_time_month+'-'+end_time_day;
+		$('#end_time').val(end_time_str);
+	})
+})
 function save(obj){
 	if($("input[name='info[username]']").val()=='' && $("input[name='info[cardnum]']").val()==''){
 		alert_tip('手机号和身份证号必填其一');return;
 	}
-	if($("input[name='info[end_time]']").val()==''){
-		alert_tip('解禁时间不能为空');return;
+	if(!$("input:radio[name='info[type]']:checked").val()){
+		alert_tip('请选择禁闭类别');return;
+	}
+	if($("#ban_day").val()==''){
+		alert_tip('禁闭时长不能为空');return;
 	}
 	$('#memberform').submit();
 }

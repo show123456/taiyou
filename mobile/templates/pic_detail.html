@@ -32,7 +32,10 @@
 	<div class="record">
 		<div style='float:left;font-size:13px;'>发布人：<{$vo.name}></div>
 		<span onclick="eggClick(this)"><{$vo.enum}></span>
-		<p onclick="flowerClick(this)"><{$vo.fnum}></p>		
+		<p onclick="flowerClick(this)"><{$vo.fnum}></p>
+		<{if $userRow.id==1}>
+		<div style='float:right;margin-right:30px;font-size:14px;color:#01b4ec;' onclick="del_pic()">删除</div>
+		<{/if}>
 		<div class="clear"></div>
 	</div>
 	<div class="discuss">
@@ -158,6 +161,17 @@ function delMsg(obj,id){
 	if(confirm('确定要删除吗？')){
 		$.get('index.php?m=pic&a=del_reply&id='+id,function(){
 			$('#discuss_list'+id).remove();
+		})
+	}
+}
+//删除帖子
+function del_pic(){
+	if(confirm('确定要删除吗')){
+		$.get('index.php?m=pic&a=del&id=<{$vo.id}>',function(res){
+			res=$.trim(res);
+			if(res=='suc'){
+				window.location.href="index.php?m=pic&a=index";
+			}
 		})
 	}
 }
