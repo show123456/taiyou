@@ -71,6 +71,16 @@
 				<input maxlength="30" class="shop_sort_text" name="num[ordernum]" value="<{$vo.ordernum|default:0}>" type="text" style="width:45px" /><span class="input_span_extra">&nbsp;&nbsp;注：序号越大，位置越靠前</span>
 			</div>
 		</div>
+		<div class="shop_sort">
+			<div class="shop_sort_title">
+				<h4>状态：</h4>
+			</div>
+			<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+				<input type="radio" name="info[is_shut]" id="sh_status1" value="0" <{if $vo.is_shut==0}>checked<{/if}> > <label for="sh_status1">开放</label>
+				<input type="radio" name="info[is_shut]" id="sh_status2" value="1" <{if $vo.is_shut==1}>checked<{/if}> > 
+				<label for="sh_status2">关闭&nbsp;&nbsp;</label>
+			</div>
+		</div>
 		<div class="shop_sort" style="margin-top:10px;">
 			<div class="shop_sort_title">
 				<h4></h4>

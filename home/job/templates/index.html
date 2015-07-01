@@ -29,6 +29,7 @@
 						<th name="Theme" class="hover enable">取消列表</th>
 						<th name="Theme" class="hover enable">提报列表</th>
 						<th name="Theme" class="hover enable">添加时间</th>
+						<th name="Theme" class="hover enable">状态</th>
 						<th name="Operate" class="hover enable">操作</th>
 					</tr>
 				</thead>
@@ -41,6 +42,7 @@
 						<td><div><a href="index.php?a=sign_cancel&id=<{$v.id}>">查看</a></div></td>
 						<td><div><a href="index.php?a=submit&id=<{$v.id}>">查看</a></div></td>
 						<td><div><{$v.addtime}></div></td>
+						<td><div><{if $v.is_shut==1}>关闭<{else}>开放<{/if}></div></td>
 						<td>
 							<div class="btn-operate">
 							<a href="<{$WEB_DOMAIN}>/home/job/index.php?a=add&id=<{$v.id}>" class="redactbtn">修改</a> | 
