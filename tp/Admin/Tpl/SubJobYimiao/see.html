@@ -5,7 +5,7 @@
 <title>后台管理</title>
 <link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
-<script language="javascript" src="__PUBLIC__/admin/js/cc-alert.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
 <script language="javascript">
 	$(function() {
 		//导航切换
@@ -30,46 +30,39 @@
 <body>
 <div class="rightinfo">
 	<div class="tools">
-		<ul class="toolbar">
-			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
-		</ul>
-		<!-- <form action="<{:U('index')}>" name="searchForm" method="get">
+		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
-		<ul class="toolbar1">
-			<li>
-				<span>
-					<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
-				</span>
-				<span>
-					<input type="text" name="cardnum" placeholder="请输入身份证号" value="<{:I('get.cardnum')}>" />
-				</span>
-				<b onclick="document.searchForm.submit()">搜索</b>
-			</li>
+		<ul class="toolbar1"><li>
+			<span style="margin-top:0;">
+				日期:
+				<input type="text" class="date_picker" name="date" placeholder="日期" value="<{:I('get.date')}>" />
+			</span>
+			<b onclick="search()">搜索</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</li>
 		</ul>
-		</form> -->
+		</form>
 	</div>
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th>医院名</th>
-				<th>地址</th>
-				<th>服务时间</th>
-				<th>操作</th>
+				<th>医院</th>
+				<th>日期</th>
+				<th>领取人姓名</th>
+				<th>领取人性别</th>
+				<th>领取人电话</th>
+				<th>提报人数</th>
 			</tr>
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
 			<tr>
-				<td><{$v.name}></td>
-				<td><{$v.address}></td>
-				<td><{$v.service_time}></td>
-				<td>
-				<a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
-				&nbsp;|&nbsp;
-				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a>
-				</td>
-				</if>
+				<td><{$v.hpt_name}></td>
+				<td><{:substr($v['addtime'],0,10)}></td>
+				<td><{$v.nickname}></td>
+				<td><{$v.sex}></td>
+				<td><{$v.username}></td>
+				<td><{:$v['num']==0 ? '未提报' : $v['num'].'人'}></td>
 			</tr>
 			</foreach>
 		</tbody>
@@ -81,10 +74,19 @@
 	</div>
 </div>
 <script type="text/javascript">
-$('.imgtable tbody tr:odd').addClass('odd');
-function delRow(str){
-	if(confirm('确定要删除吗？')) window.location.href=str;
+function search(){
+	document.searchForm.submit();
 }
 </script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
 </body>
 </html>

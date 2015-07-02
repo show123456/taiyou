@@ -23,7 +23,9 @@
     <div class='recommend'>
 	<div style="clear:both;"></div>
 	<{foreach from=$list item="v"}>
-		<{if $smarty.get.user}>
+		<{if $v.is_shut==1}>
+		<a href="javascript:void(0);" onclick="alert('任务已关闭');" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+		<{elseif $smarty.get.user}>
 		<a href="javascript:void(0);" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
 		<{else}>
 		<a href="index.php?m=job&a=detail&id=<{$v.id}>" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
@@ -32,7 +34,7 @@
 			<{if $v.pic}><img src="../../data/image_c/<{$v.pic}>" /><{/if}>
 		   </div>
 		   <div class="titles" style="width:72%;height:90%;position:relative;">
-			   <p class="name" <{if $smarty.get.user}>onclick="window.location.href='index.php?m=job&a=detail&id=<{$v.id}>'"<{/if}> ><{$v.title}></p>
+			   <p class="name" <{if !$v.is_shut && $smarty.get.user}>onclick="window.location.href='index.php?m=job&a=detail&id=<{$v.id}>'"<{/if}> ><{$v.title}></p>
 			   <{if $smarty.get.user}>
 			   <p class="keywords" id='cancel_btn'><span onclick="cancel_sign(<{$v.id}>)">取消任务</span></p>
 			   <{else}>
@@ -43,13 +45,28 @@
 		   </div>
 		</a>
 	<{/foreach}>
+		<!-- 疫苗 -->
+		<a href="index.php?m=job&a=yimiao_detail&id=<{$yimiaoRow.id}>" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+		   <div class="img" style="margin:0 3%;height:90%;width:20%;">
+			<img src="../tp/<{$yimiaoRow.pic}>" />
+		   </div>
+		   <div class="titles" style="width:72%;height:90%;position:relative;">
+			   <p class="name" <{if !$v.is_shut && $smarty.get.user}>onclick="window.location.href=''"<{/if}> ><{$yimiaoRow.title}></p>
+			   <{if $smarty.get.user}>
+			   <p class="keywords" id='cancel_btn'><span onclick="cancel_sign(<{$v.id}>)">取消任务</span></p>
+			   <{else}>
+			   <p class="keywords" style="color:#999;"><{$yimiaoRow.content}></p>
+			   <{/if}>
+			   <p class="keywords" style="position:absolute;bottom:0;right:0;">已有<span style="color:#ff6f28;"><{$yimiaoRow.num}></span>人领取</p>
+		   </div>
+		</a>
 	<{if $is_page}><div class="register_end" data-page="1">查看更多</div><{/if}>
     </div>
 </section>
 <div class="clearfix"></div>
 <{include file="footer.html"}>
 <script type="text/javascript">
-$(document).ready(function(){
+/*$(document).ready(function(){
 	//分页
 	$('.register_end').click(function(){
 		var pageNum=parseInt($(this).attr('data-page'))+1;
@@ -84,7 +101,7 @@ $(document).ready(function(){
 			}
 		},'json');
 	})
-})
+})*/
 //取消任务
 function cancel_sign(jid){
 	if(confirm('确定要取消该任务吗？')){

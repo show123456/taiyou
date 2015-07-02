@@ -44,7 +44,7 @@
 		if($res){
 			$configModel=new Model_CustomerConfig();
 			if($uRow['fromuser']){
-				$configModel->sendCustomerMsg('你的身份证照片与所填写身份证号码不符，审核未通过，请重新上传身份证照片',$uRow['fromuser']);
+				$configModel->sendCustomerMsg('你的照片审核未通过，请重新上传完整身份证正面照片',$uRow['fromuser']);
 			}
 			die('suc');
 		}else{

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>个人中心-任务管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="cleartype" content="on">
+<link rel="stylesheet" href="./css/common.css" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<script src="js/jquery.min.js"></script>
+<style type="text/css">
+.register_end{height:35px;line-height:35px;font-size:16px;width:96%;
+	background-color:#01B4EC;color:#fff;letter-spacing:3px;padding-left:3px;
+	text-align:center;border-radius:5px;margin:15px auto;}
+#cancel_btn{position:absolute;bottom:0;left:0;}
+#cancel_btn span{display:block;color:#fff;background-color:#46b0e0;padding:3px 4px;
+	border-radius:3px;font-size:13px;}
+.newsList .newsListLine{width:97.68%;margin-left:1%;padding-top:2%;}
+.newsList .newsListLine .img{margin:0 3%;height:90%;width:20%;}
+</style>
+</head>
+<body class='white'>
+<div class="clearfix"></div>
+<section class="Main newsList">
+    <div class='recommend'>
+	<div style="clear:both;"></div>
+		<!-- 疫苗 -->
+		<a href="index.php?m=job&a=lp_history" class="newsListLine">
+		   <div class="img">
+			<img src="../tp/<{$yimiaoRow.pic}>" />
+		   </div>
+		   <div class="titles" style="width:72%;height:90%;position:relative;">
+			   <p class="name"><{$yimiaoRow.title}></p>
+			   <p class="keywords" style="color:#999;"><{$yimiaoRow.content}></p>
+		   </div>
+		</a>
+    </div>
+</section>
+<div class="clearfix"></div>
+<{include file="footer.html"}>
+</body>
+</html>

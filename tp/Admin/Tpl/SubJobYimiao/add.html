@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<style type="text/css">
+	.yaheifont{font-family:"Microsoft YaHei","黑体","宋体";}
+	.returnUpBtn{font-size:16px;background:none;color:#aaa;border:1px solid #ccc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="formbody">
+	<div id="usual1" class="usual">
+		<div class="itab">
+			<ul>
+				<li><a href="#tab1" class="selected">任务<{:$vo['id'] ? '修改' : '添加'}></a></li>
+			</ul>
+		</div>
+		<form method="post" action="<{:U('add')}>" enctype="multipart/form-data" id="memberform">
+		<input type="hidden" name='info[id]' value="<{$vo['id']|default=''}>"/>
+		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
+		<div id="tab1" class="tabson">
+			<ul class="forminfo">
+				<li>
+					<label>LOGO<b>*</b></label>
+					<input type="file" name="pic" class="yaheifont" onchange="$('.picShow').hide();">
+					<span style='color:red;display:inline'>注：请上传尺寸为90px*75px的图片</span>
+				</li>
+				<notempty name="vo.pic">
+				<li class="picShow">
+					<label>&nbsp;<b></b></label>
+					<span style=''><img src="<{$vo['pic']}>" style="width:90px;" /></span>
+				</li>
+				</notempty>
+				<li>
+					<label>标题<b></b></label>
+					<input type="text" name="info[title]" value="<{$vo['title']}>" class="dfinput yaheifont">
+				</li>
+				<li>
+					<label>内容<b></b></label>
+					<textarea id="goods_intro" name="info[content]" style="width:550px;height:150px;float:left;"><{$vo.content}></textarea>
+					<div style="clear:both;"></div>
+				</li>
+				<li>
+					<label>状态<b></b></label>
+					<label><input type="radio" name="info[is_shut]" value="0" style="vertical-align:middle;" <{:$vo['is_shut']==0 ? 'checked' : ''}> />开放</label>
+					<label><input type="radio" name="info[is_shut]" value="1" style="vertical-align:middle;" <{:$vo['is_shut']==1 ? 'checked' : ''}> />关闭</label>
+				</li>
+				<li>
+					<label>&nbsp;</label>
+					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="btn yaheifont returnUpBtn" value="返回" onclick="window.history.go(-1);"/>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function save(obj){
+	if($("input[name='info[title]']").val()==''){
+		alert_tip('标题不能为空');return;
+	}
+	if($("input[name='info[content]']").val()==''){
+		alert_tip('内容不能为空');return;
+	}
+	$('#memberform').submit();
+}
+</script>
+<!-- UE编辑器开始 -->
+<script type="text/javascript" src="../includes/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="../includes/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">$(function(){UE.getEditor('goods_intro');});</script>
+<!-- UE编辑器结束 -->
+</body>
+</html>
