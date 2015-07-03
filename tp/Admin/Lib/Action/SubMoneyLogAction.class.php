@@ -72,44 +72,62 @@ class SubMoneyLogAction extends CommonAction{
 		/* 现金日结 */
 		//查询该时间段内的所有通过审核的现金日结职位
 		if($start_date==$end_date){
-			$where_str_task="sh_status=1 and pay_type=1 and left(work_time,10) = '".$start_date."'";
+			$where_str_task="pay_type=1 and left(work_time,10) = '".$start_date."'";
 		}else{
-			$where_str_task="sh_status=1 and pay_type=1 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
+			$where_str_task="pay_type=1 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
 		}
 		$total_spare=0;//总备用额
 		$list=array();
-		$list=D('SubTask')->field('id,money')->where($where_str_task)->select();
+		$list=D('SubTask')->field('id,money,is_kh')->where($where_str_task)->select();
 		foreach($list as $k=>$v){
 			//报名有效人数
 			$valid_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_valid'=>1))->find();
 			$list[$k]['valid_num']=(int)$valid_row['c'];
+			//允许签到人数
+			$qd_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_qd'=>1))->find();
+			$list[$k]['qd_num']=(int)$qd_row['c'];
 			//允许结算人数
 			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
 			$list[$k]['js_num']=(int)$js_row['c'];
 			//需备用金额
-			$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			if($v['is_kh']==1){
+				$list[$k]['spare_money']=0;
+			}else{
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
+				if($qd_row['c']) $list[$k]['spare_money']=intval($list[$k]['money'])*$qd_row['c'];
+				if($js_row['c']) $list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			}
 			$total_spare+=$list[$k]['spare_money'];
 		}
 		$sum_row['type7']=$total_spare;
 		/* 转账日结 */
 		//查询该时间段内的所有通过审核的现金日结职位
 		if($start_date==$end_date){
-			$where_str_task="sh_status=1 and pay_type=2 and left(work_time,10) = '".$start_date."'";
+			$where_str_task="pay_type=2 and left(work_time,10) = '".$start_date."'";
 		}else{
-			$where_str_task="sh_status=1 and pay_type=2 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
+			$where_str_task="pay_type=2 and left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
 		}
 		$total_spare=0;//总备用额
 		$list=array();
-		$list=D('SubTask')->field('id,money')->where($where_str_task)->select();
+		$list=D('SubTask')->field('id,money,is_kh')->where($where_str_task)->select();
 		foreach($list as $k=>$v){
 			//报名有效人数
 			$valid_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_valid'=>1))->find();
 			$list[$k]['valid_num']=(int)$valid_row['c'];
+			//允许签到人数
+			$qd_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_qd'=>1))->find();
+			$list[$k]['qd_num']=(int)$qd_row['c'];
 			//允许结算人数
 			$js_row=$signModel->field('count(id) as c')->where(array('tid'=>$v['id'],'is_js'=>1))->find();
 			$list[$k]['js_num']=(int)$js_row['c'];
 			//需备用金额
-			$list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			if($v['is_kh']==1){
+				$list[$k]['spare_money']=0;
+			}else{
+				$list[$k]['spare_money']=intval($list[$k]['money'])*$valid_row['c'];
+				if($qd_row['c']) $list[$k]['spare_money']=intval($list[$k]['money'])*$qd_row['c'];
+				if($js_row['c']) $list[$k]['spare_money']=intval($list[$k]['money'])*$js_row['c'];
+			}
 			$total_spare+=$list[$k]['spare_money'];
 		}
 		$sum_row['type3']=$total_spare;

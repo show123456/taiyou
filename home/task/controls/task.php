@@ -1,5 +1,6 @@
 <?php
 $model=new Model_Subtable('sub_task');
+$userModel=D('sub_user');
 if($_REQUEST['a']=='add'){
 	if(method_is('post')){
 		$data=$_POST;
@@ -180,6 +181,15 @@ if($_REQUEST['a']=='sign_zj'){
 		if(!$memLocRow['latitude']){$memLocRow['latitude']=0;$memLocRow['longitude']=0;}
 		//计算距离
 		$data['info']['distance']=get_distance($trow['latitude'],$trow['longitude'],$memLocRow['latitude'],$memLocRow['longitude']);
+		//职位工作日期
+		if($trow['work_time']){
+			$tempWorkArr=explode(' ',$trow['work_time']);
+			$data['info']['task_date']=$tempWorkArr[0];
+		}
+		//同一个工作日不能报名两次
+		$result1=$signModel->where("is_valid!=2 and uid=".$data['num']['uid']." and task_date='".$tempWorkArr[0]."'")->dataRow();
+		if($result1) die('chongfu');
+		
 		$res=$signModel->add($data);
 		$res ? die('suc') : die('err');
 	}

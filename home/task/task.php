@@ -84,7 +84,7 @@ if($_REQUEST['a']=='taskadd'){
 	if(method_is('post')){
 		$data=$_POST;
 		$data['info']['uid']=1;//uid为1是平台方
-		$data['info']['sh_status']=1;//默认通过审核
+		//$data['info']['sh_status']=1;//默认通过审核
 		$data['info']['work_time']=$data['work_date'].' '.$data['work_hour'].'-'.$data['work_hour_end'];
 		$data['info']['jihe_time']=$data['jihe_date'].' '.$data['jihe_hour'];
 		//截止时间戳

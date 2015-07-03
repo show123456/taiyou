@@ -17,9 +17,8 @@
         .bm5041_con_li{width: 100%;height: 1.8em;line-height: 1.8em;font-size: 0.9em;border-bottom: 1px solid #CDCDCD;margin-top:5px;margin-bottom:15px;padding-bottom:15px;height: 1.5em;
 		line-height: 1.5em;font-size: 1em;text-align: center;}
        .bm5041_con_li div{float: left;}
-        .bm5041_con_li_1{width:15%;color:#323232;margin-left:2%;}
-        .bm5041_con_li_3{width:20%;color:#323232;}
-        .bm5041_con_li_4{width:20%;color:#323232;}
+        .bm5041_con_li_1{width:25%;color:#323232;margin-left:2%;}
+        .bm5041_con_li_3{width:12%;color:#323232;}
         .bm5041_con_li_5{width:20%;color:#990066;}
 		.refuceBtn{background-color:#aaa;}
         .bm5041_con_sub{border-radius: 5px;font-weight:bold;width:30%;  height: 2em;
@@ -35,20 +34,26 @@
         <form action="" id='meminfo'>
 			<{foreach from=$list item=v}>
             <div class="bm5041_con_li">
-                <div class="bm5041_con_li_1"><{$v.nickname}></div>
+                <div class="bm5041_con_li_1"><{$v.xuhao}>-<{$v.nickname}></div>
                 <div class="bm5041_con_li_3">￥<{$v.fact_money}></div>
 				<{if $v.is_valid==2}>
 					<div class="bm5041_con_li_5">拒绝报名</div>
+				<{elseif $v.is_valid==0}>
+					<div class="bm5041_con_li_5" style="color:#999">未审核</div>
 				<{else}>
 					<div class="bm5041_con_li_5" style="color:#01B4EC">正常报名</div>
 				<{/if}>
 				<{if $v.is_qd==2}>
 					<div class="bm5041_con_li_5">未报到</div>
+				<{elseif $v.is_qd==0}>
+					<div class="bm5041_con_li_5" style="color:#999">未审核</div>
 				<{else}>
 					<div class="bm5041_con_li_5" style="color:#01B4EC">已报到</div>
 				<{/if}>
 				<{if $v.is_js==2}>
 					<div class="bm5041_con_li_5">拒绝发放</div>
+				<{elseif $v.is_js==0}>
+					<div class="bm5041_con_li_5" style="color:#999">未审核</div>
 				<{else}>
 					<div class="bm5041_con_li_5" style="color:#01B4EC">正常发放</div>
 				<{/if}>

@@ -94,7 +94,7 @@ if($_REQUEST['a']=='sign_index'){
 				$listArr[$key]['xuhao']=$key+1;
 			}
 		}else{
-			$smarty->setLayout('')->setTpl('home/task/templates/no_data.html')->display();die;
+			$smarty->assign('no_data',1);
 		}
 		$smarty->assign('list',$listArr);
 		$smarty->setLayout('')->setTpl('home/task/templates/sign_index.html')->display();die;
@@ -114,7 +114,7 @@ if($_REQUEST['a']=='sign_index_ajax'){
 			//距离处理
 			$listArr[$key]['distance'] > 500 ? $listArr[$key]['distance']='未知' : $listArr[$key]['distance']=$listArr[$key]['distance'].'km';
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
 		echo json_encode($listArr);die;
 	}else{
@@ -218,7 +218,7 @@ if($_REQUEST['a']=='sign_js_ajax'){
 			$listArr[$key]['nickname']=$uRow['nickname'];
 			$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
 		echo json_encode($listArr);die;
 	}else{
@@ -245,6 +245,7 @@ if($_REQUEST['a']=='sign_mid'){
 				$uRow=$userModel->find($value['uid']);
 				$listArr[$key]['nickname']=$uRow['nickname'];
 				$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
+				$listArr[$key]['xuhao']=$key+1;
 			}
 		}
 		$smarty->assign('list',$listArr);
@@ -311,7 +312,7 @@ if($_REQUEST['a']=='sign_qd_ajax'){
 			$listArr[$key]['nickname']=$uRow['nickname'];
 			$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
 			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*10+$key+1;
+			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
 		echo json_encode($listArr);die;
 	}else{

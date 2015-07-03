@@ -30,6 +30,8 @@
 	.register_end{height:35px;line-height:35px;font-size:16px;width:90%;margin-top:5px;}
 	.redColor{color:red;}
 	.register_end,img{cursor:pointer;}
+	#add_num{display block;float:left;margin:5px 8px 0 60px;height:25px;
+		line-height:25px;border-radius:3px;border:1px solid #ccc;width:180px;}
     </style>
 </head>
 <body style='width:370px;'>
@@ -50,12 +52,19 @@
 			<{/foreach}>
         </form>
     </div>
+	<{if $signNum!=0}>
 	<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
 	<div class="register_end" onclick="save();">确认</div>
 	<div class="register_end" onclick="send_msg();">发送提醒消息</div>
+	<{/if}>
+	<input type="text" id="add_num"/>
+	<div class="register_end" id="addSign" style="height:30px;line-height:30px;width:15%;float:left;">追加</div>
+	<div style="clear:both;"></div>
+	<{if $signNum!=0}>
 	<div class="register_end" onclick="window.history.go(-1);" style="background-color:#aaa;">返回</div>
 	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的</div>
 	<div style="color:#777;text-align:center;padding:5px;">点击发送提醒消息按钮，即可向已确认过报名的用户发送提醒消息</div>
+	<{/if}>
 </div>
 <div id="loading" style="position:fixed;z-index:29999;display:none;width:100%;height:100px;top:0;background:#fff url(images/loading.gif) no-repeat center center;background-size:40px 40px;opacity:0.8;filter:alpha(opacity=80);"></div>
 <script type="text/javascript">
@@ -123,6 +132,36 @@ function send_msg(){
 		$('#loading').hide();
 		alert('发送成功');
 	})
+}
+$(function(){
+	//追加报名
+	$("#addSign").click(function(){
+		var add_phone=$('#add_num').val();
+		if(!isMobil(add_phone)){
+			alert("请填写正确的手机账号");return;
+		}
+		$.get('index.php?m=task&a=sign_zj&tid=<{$smarty.get.tid}>&phone='+add_phone,function(res){
+			res=jQuery.trim(res);
+			if(res=='no'){
+				alert('该账号不存在或信息不完善');
+			}else if(res=='ybm'){
+				alert('已申请过该职位');
+			}else if(res=='chongfu'){
+				alert('该工作日已报名了其它职位！');
+			}else if(res=='suc'){
+				alert('追加成功');
+			}else if(res=='err'){
+				alert('追加失败！');
+			}
+			window.location.reload();
+		})
+	});
+})
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
 }
 </script>
 </body>

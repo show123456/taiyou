@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-24 09:14:43
+<?php /* Smarty version 2.6.19, created on 2015-07-02 11:56:21
          compiled from D:%5Cwamp%5Cwww%5Cmobile/templates/user_index_personal.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'D:\\wamp\\www\\mobile/templates/user_index_personal.html', 37, false),)), $this); ?>
@@ -86,7 +86,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 			</li>
 			</a>
 			<?php endif; ?>
-			<a href="index.php?m=job&a=index&user=1">
+			<a href="index.php?m=job&a=index_user">
 			<li>
 				<div class="list_info">任务管理</div>
 				<div class="next"><span class="fa fa-chevron-right" ></span></div>

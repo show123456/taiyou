@@ -142,7 +142,7 @@
 		<{else}>
 		<div class="register_end" id="doSign">申请职位</div>
 		<{/if}>
-	<{elseif $userRow.type==2 && $userRow.id==$vo.uid}>
+	<{elseif $userRow.type==2 && ($userRow.id==$vo.uid || $userRow.id==1)}>
 		<div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_mid&tid=<{$vo.id}>'">报名管理</div>
 	<{elseif $userRow.type==3}>
 		<div class="register_end" id="addSign">追加报名</div>

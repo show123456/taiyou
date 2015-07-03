@@ -46,17 +46,17 @@
 		</a>
 	<{/foreach}>
 		<!-- 疫苗 -->
+		<{if $yimiaoRow.is_shut==1}>
+		<a href="javascript:void(0);" onclick="alert('任务已关闭');" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+		<{else}>
 		<a href="index.php?m=job&a=yimiao_detail&id=<{$yimiaoRow.id}>" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+		<{/if}>
 		   <div class="img" style="margin:0 3%;height:90%;width:20%;">
 			<img src="../tp/<{$yimiaoRow.pic}>" />
 		   </div>
 		   <div class="titles" style="width:72%;height:90%;position:relative;">
-			   <p class="name" <{if !$v.is_shut && $smarty.get.user}>onclick="window.location.href=''"<{/if}> ><{$yimiaoRow.title}></p>
-			   <{if $smarty.get.user}>
-			   <p class="keywords" id='cancel_btn'><span onclick="cancel_sign(<{$v.id}>)">取消任务</span></p>
-			   <{else}>
+			   <p class="name"><{$yimiaoRow.title}></p>
 			   <p class="keywords" style="color:#999;"><{$yimiaoRow.content}></p>
-			   <{/if}>
 			   <p class="keywords" style="position:absolute;bottom:0;right:0;">已有<span style="color:#ff6f28;"><{$yimiaoRow.num}></span>人领取</p>
 		   </div>
 		</a>

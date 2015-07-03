@@ -165,7 +165,7 @@
 		$data=array();
 		$data['info']['hpt_id']=(int)$_REQUEST['hpt_id'];
 		$data['info']['uid']=$_SESSION['tyuser']['id'];
-		$jobRow=$model->dataRow();
+		$jobRow=D('sub_job_yimiao')->dataRow();
 		
 		$now_date=date('Y-m-d');
 		$row=$signModel->where("left(addtime,10)='{$now_date}' and uid='".$data['info']['uid']."'")->dataRow();

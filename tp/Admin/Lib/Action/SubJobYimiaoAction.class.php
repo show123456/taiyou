@@ -81,4 +81,33 @@ class SubJobYimiaoAction extends CommonAction{
 		$this->assign('list',$list);
 		$this->display();
 	}
+	
+	public function del_sign($id){
+        $res = D('SubYimiaoSign')->delData($id);
+		if($res){
+			$this->success('删除成功');
+		}else{
+			$this->error('删除失败');
+		}
+    }
+	
+	public function add_sign(){
+		if(IS_POST){
+			$res = D('SubYimiaoSign')->saveData(I('post.'));
+			if($res){
+				$this->success('保存成功',I('post.lastURL'));
+			}else{
+				$this->error('保存失败');
+			}
+		}else{
+			$id=I('get.id');
+			$vo=D('SubYimiaoSign')->find($id);
+			//医院名
+			$row=M('SubJobHospital')->find($vo['hpt_id']);
+			$vo['hpt_name']=$row['name'];
+            $this->assign('vo',$vo);
+			$this->assign('lastURL',$_SERVER['HTTP_REFERER']);
+            $this->display();
+		}
+	}
 }

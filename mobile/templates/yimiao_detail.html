@@ -51,6 +51,8 @@ select,input{color:#555;}
 		<div class="hpt_name"><{$v.name}>
 			<{if $v.lp_status==0}>
 			<div class="lq_btn" onclick="lq_fun(<{$v.id}>)">领取</div>
+			<{else}>
+			<div class="lq_btn" style="background-color:#bbb;">已领取</div>
 			<{/if}>
 		</div>
 		<div class="hpt_addr">
