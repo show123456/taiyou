@@ -147,7 +147,7 @@
 		$smarty->assign('vo',$vo);
 		//医院列表
 		$hptModel=D('sub_job_hospital');
-		$hptArr=$hptModel->order('id desc')->dataArr();
+		$hptArr=$hptModel->order('id asc')->dataArr();
 		foreach($hptArr as $k=>$v){
 			//该医院当天的领取情况
 			$now_date=date('Y-m-d');
@@ -240,4 +240,30 @@
 		}
 		$smarty->assign('list',$list);
 		$smarty->setLayout('')->setTpl('mobile/templates/yimiao_lp_history.html')->display();die;
+	}
+	
+	//10000查看每日的领取记录
+	if($_REQUEST['a']=='lp_day'){
+		$now_date=date('Y-m-d');
+		$where="left(addtime,10) = '{$now_date}'";
+		$signModel=new Model_Subtable('sub_yimiao_sign');
+		$hptModel=D('sub_job_hospital');
+		$userModel=D('sub_user');
+		$list=$signModel->where($where)->order('id desc')->dataArr();
+		foreach($list as $k=>$v){
+			$hptRow=$hptModel->find($v['hpt_id']);
+			$list[$k]['hpt_name']=$hptRow['name'];
+			$uRow=$userModel->find($v['uid']);
+			$list[$k]['nickname']=$uRow['nickname'];
+			$list[$k]['username']=$uRow['username'];
+		}
+		$smarty->assign('now_date',$now_date);
+		$smarty->assign('list',$list);
+		$smarty->setLayout('')->setTpl('mobile/templates/yimiao_lp_day.html')->display();die;
+	}
+	
+	//删除疫苗领取记录
+	if($_REQUEST['a']=='del_yimiao_sign'){
+		D('sub_yimiao_sign')->del((int)$_GET['id']);
+		die;
 	}

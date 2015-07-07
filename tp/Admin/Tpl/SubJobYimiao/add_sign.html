@@ -35,6 +35,11 @@
 					<input type="text" name="info[num]" value="<{$vo['num']}>" class="dfinput yaheifont">
 				</li>
 				<li>
+					<label>支付状态<b></b></label>
+					<label><input type="radio" name="info[is_pay]" value="0" style="vertical-align:middle;" <{:$vo['is_pay']==0 ? 'checked' : ''}> />未支付</label>
+					<label><input type="radio" name="info[is_pay]" value="1" style="vertical-align:middle;" <{:$vo['is_pay']==1 ? 'checked' : ''}> />已支付</label>
+				</li>
+				<li>
 					<label>日期<b></b></label>
 					<b><{$vo.addtime|substr=0,10}></b>
 				</li>

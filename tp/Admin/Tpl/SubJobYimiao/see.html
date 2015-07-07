@@ -52,6 +52,7 @@
 				<th>领取人性别</th>
 				<th>领取人电话</th>
 				<th>提报人数</th>
+				<th>支付状态</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -64,6 +65,7 @@
 				<td><{$v.sex}></td>
 				<td><{$v.username}></td>
 				<td><{:$v['num']==0 ? '未提报' : $v['num'].'人'}></td>
+				<td><{:$v['is_pay']==1 ? '<span style="color:#00a4ac;">已支付</span>' : '未支付'}></td>
 				<td><a href="<{:U('add_sign',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
 				&nbsp;|&nbsp;
 				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del_sign',array('id'=>$v['id']))}>')">删除</a></td>

@@ -21,13 +21,14 @@
 select,input{color:#555;}
 .job_info .info_list p{float:none;color:#666;font-weight:normal;}
 .job_info .info_list span{display:inline;float:none;}
+.job_desc{font-size:13px;margin-top:5px;margin-bottom:-5px;}
 
 .hpt_list{background-color:#fff;}
 .hpt_item{border-bottom:1px solid #ddd;}
 .hpt_name{padding:10px 0 0 8px;}
 .hpt_addr{padding:5px 0 8px 8px;}
 .hpt_addr span{font-size:13px;display:block;color:#666;}
-.lq_btn{font-size:16px;float:right;margin-top:5px;margin-right:10px;
+.lq_btn{font-size:14px;float:right;margin-top:5px;margin-right:10px;
 	background-color:#01B4EC;border-radius:3px;color:#fff;padding:1px 8px;}
 .hpt_addr b{font-weight:normal;color:#ff7101;}
 </style>
@@ -37,6 +38,8 @@ select,input{color:#555;}
 		<div class="item_list" style="padding:8px 0;">
 			<div class="list_title">
 				<div class="job_title">领取记录</div>
+				<div style="clear:both;"></div>
+				<div class="job_desc">当天工作结束后，请点击“提报”按钮，填写完成任务的注册数量进行保存，云姐将会在后台进行核对结算</div>
 			</div>
 			<div class="clear" style="height:5px;"></div>
 		</div>
@@ -46,7 +49,9 @@ select,input{color:#555;}
 	<{foreach from=$list item='v'}>
 	<div class="hpt_item">
 		<div class="hpt_name">
-			<a style="color:#46b0e0;" href="<{if $v.num > 0}>javascript:void(0);<{else}>index.php?m=job&a=yimiao_submit&sid=<{$v.id}><{/if}>"><{$v.hpt_name}></a>
+			<a style="color:#46b0e0;" href="<{if $v.num > 0}>javascript:void(0);<{else}>index.php?m=job&a=yimiao_submit&sid=<{$v.id}><{/if}>"><{$v.hpt_name}>
+			<{if $v.num==0}><span class="lq_btn">提报</span><{/if}>
+			</a>
 			<!-- <div class="lq_btn" onclick="lq_fun(<{$v.id}>)">取消</div> -->
 		</div>
 		<div class="hpt_addr">
@@ -56,20 +61,5 @@ select,input{color:#555;}
 	<{/foreach}>
 </div>
 <{include file="footer.html"}>
-<script type="text/javascript">
-	function lq_fun(hpt_id){
-		$('#loading').show();
-		$.get('index.php?m=job&a=yimiao_lq&hpt_id='+hpt_id,function(res){
-			$('#loading').hide();
-			res=$.trim(res);
-			if(res=='suc'){
-				alert('“任务兼职密函”已发送至您的微信，请注意及时查收！');
-				window.location.href="index.php?m=job&a=index_user";
-			}else{
-				alert('每天只能领取一次任务');
-			}
-		})
-	}
-</script>
 </body>
 </html>
