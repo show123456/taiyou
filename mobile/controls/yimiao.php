@@ -1,55 +1,5 @@
 <?php
 $model=new Model_Subtable('sub_job');
-/* $model=new Model_Subtable('sub_job');
-if($_REQUEST['a']=='index'){
-	$jobsignModel=new Model_Subtable('sub_jobsign');
-	$pageSize=30;//页大小
-	$p=((int)$_GET['p'])<1 ? 1 : (int)$_GET['p'];//当前页数
-	$limitStr = ($p-1)*$pageSize.','.$pageSize;
-	//条件
-	$where='';
-	if($_GET['user']==1){//我的任务
-		$signArr=$jobsignModel->field("id,jid")->where(" uid='".$_SESSION['tyuser']['id']."' ")->order('id desc')->dataArr();
-		if($signArr){
-			$signRow=array();
-			foreach($signArr as $k=>$v){
-				$signRow[]=$v['jid'];
-			}
-			$idStr=implode(',',$signRow);
-			$where=" id in (".$idStr.") ";
-		}else{
-			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
-		}
-	}
-	
-	if($where){
-		$listArr = $model->where($where)->order('ordernum desc,id desc')->limit($limitStr)->order('id desc')->dataArr();
-	}else{
-		$listArr = $model->order('ordernum desc,id desc')->limit($limitStr)->order('id desc')->dataArr();
-	}
-	foreach($listArr as $key=>$value){
-		$listArr[$key]['title']=cut_str(deletehtml($value['title']),12);
-		$listArr[$key]['content']=cut_str(deletehtml($value['content']),25);
-	}
-	//查询总数，判断是否分页********无需分页，只显示最新的30条
-	/* if($where){
-		$countRow=$model->field("count(id) as countnum")->where($where)->dataRow();
-	}else{
-		$countRow=$model->field("count(id) as countnum")->dataRow();
-	}
-	if($countRow['countnum'] > $pageSize) $smarty->assign('is_page',1); */
-	
-	if($p > 1){
-		if($listArr){
-			echo json_encode($listArr);die;
-		}else{
-			echo json_encode('err');die;
-		}
-	}else{
-		$smarty->assign('list',$listArr);
-		$smarty->setLayout('')->setTpl('mobile/templates/job_index.html')->display();die;
-	}
-}
 if($_REQUEST['a']=='detail'){
 	$jobsignModel=new Model_Subtable('sub_jobsign');
 	$id=(int)$_GET['id'];
@@ -124,4 +74,4 @@ if($_REQUEST['a']=='signadd'){
 	$data['info']['uid']=$_SESSION['tyuser']['id'];
 	$res=$submitModel->add($data);
 	$res ? die('suc') : die('err');
-} */
+}

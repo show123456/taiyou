@@ -157,7 +157,18 @@
 		$res1=$model->field('count(*) as countnum')->where("type = 2 and pid!=0".$count_district_str)->dataRow();
 		$smarty->assign('countnum',$res1['countnum']);
 	}
-	$condition[]=" pid!=0";
+	
+	//信息完善
+	if($_GET['wanshan']==1){
+		$condition[]=" pic!='' ";
+	}elseif($_GET['wanshan']==2){
+		$condition[]=" pic='' ";
+	}
+	if($_GET['bank_card']==1){
+		$condition[]=" bank_name!='' and bank_card!='' ";
+	}elseif($_GET['bank_card']==2){
+		$condition[]=" bank_name is Null and bank_card is Null ";
+	}
 
 	if($_GET['keywords']) $condition[]=" nickname like '%".common_pg('keywords')."%' ";
 	if($_GET['nicheng']) $condition[]=" nicheng like '%".common_pg('nicheng')."%' ";

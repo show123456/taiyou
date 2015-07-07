@@ -46,6 +46,10 @@
 					<div style="clear:both;"></div>
 				</li>
 				<li>
+					<label>推送消息链接<b></b></label>
+					<input type="text" name="info[msg]" value="<{$vo['msg']}>" class="dfinput yaheifont">
+				</li>
+				<li>
 					<label>状态<b></b></label>
 					<label><input type="radio" name="info[is_shut]" value="0" style="vertical-align:middle;" <{:$vo['is_shut']==0 ? 'checked' : ''}> />开放</label>
 					<label><input type="radio" name="info[is_shut]" value="1" style="vertical-align:middle;" <{:$vo['is_shut']==1 ? 'checked' : ''}> />关闭</label>

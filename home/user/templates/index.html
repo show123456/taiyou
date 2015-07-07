@@ -35,6 +35,16 @@
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
 				<{if $smarty.get.type=='1'}>
+				<select name="wanshan" style="height:25px;line-height:25px;">
+					<option value="">身份证照</option>
+					<option value="2" <{if $smarty.get.wanshan=='2'}>selected<{/if}> >无</option>
+					<option value="1" <{if $smarty.get.wanshan=='1'}>selected<{/if}> >有</option>
+				</select>&nbsp;&nbsp;
+				<select name="bank_card" style="height:25px;line-height:25px;">
+					<option value="">银行卡</option>
+					<option value="2" <{if $smarty.get.bank_card=='2'}>selected<{/if}> >无</option>
+					<option value="1" <{if $smarty.get.bank_card=='1'}>selected<{/if}> >有</option>
+				</select>&nbsp;&nbsp;
 				<select name="is_see" style="height:25px;line-height:25px;">
 					<option value="">审核状态</option>
 					<option value="2" <{if $smarty.get.is_see=='2'}>selected<{/if}> >未通过</option>
@@ -47,7 +57,7 @@
 					<{/foreach}>
 				</select>&nbsp;&nbsp;
 				<input name="username" class="keywords" placeholder="输入手机号" type="text" value="<{$smarty.get.username}>">&nbsp;&nbsp;
-				<input name="cardnum" class="keywords" placeholder="输入身份证号" type="text" value="<{$smarty.get.cardnum}>">&nbsp;&nbsp;
+				<!-- <input name="cardnum" class="keywords" placeholder="输入身份证号" type="text" value="<{$smarty.get.cardnum}>">&nbsp;&nbsp; -->
 				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>">&nbsp;&nbsp;
 				<{/if}>
 				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;

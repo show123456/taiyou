@@ -297,8 +297,6 @@ if($_REQUEST['a']=='sign_qd'){
 				//序号处理
 				$listArr[$key]['xuhao']=$key+1;
 			}
-		}else{
-			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
 		}
 		$smarty->assign('list',$listArr);
 		$smarty->setLayout('')->setTpl('mobile/templates/sign_qd.html')->display();die;

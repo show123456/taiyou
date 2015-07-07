@@ -34,6 +34,7 @@
 </head>
 <body>
 <div class="bm5041">
+	<{if $list}>
     <p class="bm5041_tit">应到<{$countnum}>人</p>
     <div class="bm5041_con">
         <form action="" id='meminfo'>
@@ -53,6 +54,7 @@
 	<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
 	<div class="register_end" onclick="save();">确认</div>
 	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的</div>
+	<{/if}>
 	<{if $userRow.id==1}>
 	<div style="height:10px;"></div>
 	<div class="register_end" id="addSign" style="height:35px;line-height:35px;font-size:16px;width:90%;">追加报名</div>
@@ -146,6 +148,7 @@ $(function(){
 				alert('该工作日已报名了其它职位！');
 			}else if(res=='suc'){
 				alert('追加成功');
+				window.location.reload();
 			}else if(res=='err'){
 				alert('追加失败！');
 			}
