@@ -72,4 +72,9 @@ function get_money_type(){
 function get_ban_type(){
 	return array(1=>'禁止登录',2=>'禁止发言',3=>'禁止报名',4=>'禁言禁报名');
 }
+
+//角色类别
+function get_group(){
+	return array(0=>'普通用户',1=>'区域经理',2=>'区域主管',3=>'督导');
+}
 ?>

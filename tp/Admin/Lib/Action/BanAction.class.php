@@ -5,6 +5,19 @@ class BanAction extends CommonAction{
 		$where=array();
 		if(I('get.username')) $where['username']=I('get.username');
 		if(I('get.cardnum')) $where['cardnum']=I('get.cardnum');
+		//搜索姓名
+		if(I('get.nickname')){
+			$uArr=$userModel->where(array('nickname'=>I('get.nickname')))->select();
+			if($uArr){
+				foreach($uArr as $v){
+					$usernameRow[]=$v['username'];
+				}
+				$where['username']=array('in',$usernameRow);
+			}else{
+				$where['id']=0;
+			}
+		}
+		
 		$list=D($this->moduleName)->getPager($where);
 		foreach($list['data'] as $k=>$v){
 			//匹配用户信息

@@ -51,7 +51,7 @@
 			<{/foreach}>
         </form>
     </div>
-	<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
+	<!-- <div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div> -->
 	<div class="register_end" onclick="save();">确认</div>
 	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的</div>
 </div>
@@ -82,7 +82,7 @@ function refuse(obj){
 	}
 }
 //查看更多
-function seeMore(obj){
+/*function seeMore(obj){
 	var pageNum=parseInt($(obj).attr('data-page'))+1;
 	$(obj).attr('data-page',pageNum);
 	$.get('index.php?m=task_company&a=sign_js_ajax&tid=<{$smarty.get.tid}>&p='+pageNum,function(res){
@@ -109,7 +109,49 @@ function seeMore(obj){
 			}
 		}
 	},'json');
-}
+}*/
+//分页
+var pageNum=1;
+var page_ajax=true;
+$(document).ready(function(){
+    $(window).scroll(function(){
+        var bot = 50; //bot是底部距离的高度
+        if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+			if(page_ajax){
+				page_ajax=false;
+				pageNum++;
+				$('#loading').show();
+				
+				$.get('index.php?m=task_company&a=sign_js_ajax&tid=<{$smarty.get.tid}>&p='+pageNum,function(res){
+					$('#loading').hide();
+					if(res){
+						if(res=='err'){
+						}else{
+							var goodsStr='';
+							$.each(res,function(i,item){
+								if(item.is_js==0){
+									goodsStr+='<div class="bm5041_con_li redColor">';
+								}else{
+									goodsStr+='<div class="bm5041_con_li">';
+								}
+								goodsStr+='<div class="bm5041_con_li_1">'+item.xuhao+item.nickname+'</div><div class="bm5041_con_li_2">'+item.sex+'</div><div class="bm5041_con_li_3">'+item.username+'</div><div class="bm5041_con_li_6">';
+								if(item.is_js==2){
+									goodsStr+='<img onclick="refuse(this);" src="images/js_off.png" />';
+								}else{
+									goodsStr+='<img onclick="refuse(this);" src="images/js_on.png" />';
+								}
+								goodsStr+='<input type="hidden" name="info[js_'+item.id+']" value="'+item.is_js+'" /></div></div>';
+							})
+							$('#meminfo').append(goodsStr);
+							page_ajax=true;
+						}
+					}
+				},'json');
+				
+			}
+        }
+    });
+});
 </script>
 </body>
 </html>

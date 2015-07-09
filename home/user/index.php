@@ -148,14 +148,8 @@
 	
 	if($_GET['type']==1){
 		$condition[]=" type in (1,3)";//个人用户或客服
-		//人数统计
-		$res1=$model->field('count(*) as countnum')->where("type in (1,3) and pid!=0".$count_district_str)->dataRow();
-		$smarty->assign('countnum',$res1['countnum']);
 	}else{
 		$condition[]=" type=2";
-		//人数统计
-		$res1=$model->field('count(*) as countnum')->where("type = 2 and pid!=0".$count_district_str)->dataRow();
-		$smarty->assign('countnum',$res1['countnum']);
 	}
 	
 	//信息完善
@@ -180,6 +174,11 @@
 		$condition[]=" is_see=0 ";
 	}
 	if($condition) $filter['where'] = implode(' and ',$condition);
+	
+	//人数统计
+	$res1=$model->field('count(*) as countnum')->where($filter['where'])->dataRow();
+	$smarty->assign('countnum',$res1['countnum']);
+	
 	$filter['order'] = " id desc ";
 	$data = $model->paginate($filter,'*',common_pg('p'),10);
 	$listArr = $data['data'];

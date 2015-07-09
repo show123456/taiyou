@@ -7,7 +7,7 @@
 		$p=((int)$_GET['p'])<1 ? 1 : (int)$_GET['p'];//当前页数
 		$limitStr = ($p-1)*$pageSize.','.$pageSize;
 		
-		$listArr=$model->where("sh_status=1")->order('id desc')->limit($limitStr)->dataArr();
+		$listArr=$model->order('id desc')->limit($limitStr)->dataArr();
 		foreach($listArr as $key=>$value){
 			$listArr[$key]['title']=cut_str(deletehtml($value['title']),15);
 		}

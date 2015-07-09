@@ -66,6 +66,18 @@ $(function(){
 			</ul>
 		</dd>
 	</if>
+	<if condition="$suserSession['type'] eq '1'">
+		<dd>
+			<div class="title">
+				<span><img src="__PUBLIC__/admin/images/leftico03.png" /></span>角色管理
+			</div>
+			<ul class="menuson">
+				<li><cite></cite>
+					<a href="<{:U('SubUser/index')}>" target="rightFrame">用户列表</a>
+				</li>
+			</ul>
+		</dd>
+	</if>
 	<if condition="in_array($suserSession['type'],array(1,2))">
 		<dd>
 			<div class="title">

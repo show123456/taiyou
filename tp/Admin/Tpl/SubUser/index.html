@@ -29,69 +29,45 @@
 </head>
 <body>
 <div class="rightinfo">
-	<if condition="$_GET['history'] eq ''">
 	<div class="tools">
 		<ul class="toolbar">
-			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
+			<!-- <li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li> -->
 		</ul>
-		<form action="<{:U('index')}>" name="searchForm" method="get">
+		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
-		<ul class="toolbar1">
-			<li>
-				<span>
-					<input type="text" name="nickname" placeholder="请输入姓名" value="<{:I('get.nickname')}>" />
-				</span>
-				<span>
-					<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
-				</span>
-				<span>
-					<input type="text" name="cardnum" placeholder="请输入身份证号" value="<{:I('get.cardnum')}>" />
-				</span>
-				<b onclick="document.searchForm.submit()">搜索</b>
-			</li>
-		</ul>
+		<ul class="toolbar1"><li>
+			<span>
+				<input type="text" name="group_id" placeholder="角色类别" value="<{:I('get.group_id')}>" />
+			</span>
+			<span>
+				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
+			</span>
+			<span>
+				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
+			</span>
+			<b onclick="document.searchForm.submit()">搜索</b>
+		</li></ul>
 		</form>
 	</div>
-	</if>
 	<table class="imgtable">
 		<thead>
 			<tr>
 				<th>手机号</th>
-				<th>身份证号</th>
 				<th>姓名</th>
 				<th>性别</th>
-				<th>禁闭类别</th>
-				<th>禁闭时长</th>
-				<th>开始日期</th>
-				<th>结束日期</th>
-				<th>备注</th>
-				<if condition="$_GET['history'] eq ''">
-				<th>历史记录</th>
+				<th>角色</th>
 				<th>操作</th>
-				</if>
 			</tr>
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
 			<tr>
 				<td><{$v.username}></td>
-				<td><{$v.cardnum}></td>
 				<td><{$v.nickname}></td>
 				<td><{:$v['sex']==1 ? '男' : '女'}></td>
-				<td><{$ban_type[$v['type']]}></td>
-				<td><{$v.ban_day|default=0}>天</td>
-				<td><{$v.start_time}></td>
-				<td><{$v.end_time}></td>
-				<td title='<{$v.des}>'><{:cut_str($v['des'],15)}></td>
-				<if condition="$_GET['history'] eq ''">
-				<td><a href="<{:U('index',array('history'=>1,'username'=>$v['username'],'cardnum'=>$v['cardnum']))}>">查看</a></td>
-				<td>
-				<a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
-				&nbsp;|&nbsp;
-				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a>
-				</td>
-				</if>
+				<td><{$group_row[$v['group_id']]}></td>
+				<td><a href="<{:U('cz',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">修改角色</a></td>
 			</tr>
 			</foreach>
 		</tbody>
@@ -102,11 +78,5 @@
 		</ul>
 	</div>
 </div>
-<script type="text/javascript">
-$('.imgtable tbody tr:odd').addClass('odd');
-function delRow(str){
-	if(confirm('确定要删除吗？')) window.location.href=str;
-}
-</script>
 </body>
 </html>

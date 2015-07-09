@@ -1,5 +1,18 @@
 <?php
 class SubUserAction extends CommonAction{
+	//角色模块-用户列表
+	public function index(){
+		$where=array();
+		$where['pid']=array('neq',0);
+		if($_GET['keywords']) $where['nickname']=I('get.keywords');
+		if($_GET['group_id']) $where['group_id']=I('get.group_id');
+		
+		$list=D($this->moduleName)->getPager($where);
+		$this->assign('list',$list);
+		$this->assign('group_row',get_group());
+		$this->display();
+	}
+	
 	public function person_index(){
 		$where=array();
 		$where['type']=array('in',array(1,3));//个人用户或客服
