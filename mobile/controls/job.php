@@ -153,6 +153,14 @@
 			$now_date=date('Y-m-d');
 			$row=$signModel->where("left(addtime,10)='{$now_date}' and hpt_id='".$v['id']."'")->dataRow();
 			$row ? $hptArr[$k]['lp_status']=1 : $hptArr[$k]['lp_status']=0;
+			//是否在领取期内
+			$hptArr[$k]['allow_lp']=0;
+			if($v['lq_time']){
+				$lq_time_arr=explode(',',$v['lq_time']);
+				$w=date('w');
+				if($w==0) $w=7;
+				if(in_array($w,$lq_time_arr)) $hptArr[$k]['allow_lp']=1;
+			}
 		}
 		$smarty->assign('hptArr',$hptArr);
 		
@@ -244,8 +252,12 @@
 	
 	//10000查看每日的领取记录
 	if($_REQUEST['a']=='lp_day'){
-		$now_date=date('Y-m-d');
-		$where="left(addtime,10) = '{$now_date}'";
+		if($_GET['date']){
+			$date=$_GET['date'];
+		}else{
+			$date=date('Y-m-d');
+		}
+		$where="left(addtime,10) = '{$date}'";
 		$signModel=new Model_Subtable('sub_yimiao_sign');
 		$hptModel=D('sub_job_hospital');
 		$userModel=D('sub_user');
@@ -257,7 +269,7 @@
 			$list[$k]['nickname']=$uRow['nickname'];
 			$list[$k]['username']=$uRow['username'];
 		}
-		$smarty->assign('now_date',$now_date);
+		$smarty->assign('date',$date);
 		$smarty->assign('list',$list);
 		$smarty->setLayout('')->setTpl('mobile/templates/yimiao_lp_day.html')->display();die;
 	}

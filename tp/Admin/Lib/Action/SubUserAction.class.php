@@ -2,14 +2,60 @@
 class SubUserAction extends CommonAction{
 	//角色模块-用户列表
 	public function index(){
+		$extModel=D('SubUserExt');
+		$districtModel=D('SubDistrict');
+		$group_row=get_group();
 		$where=array();
+		
+		//管理人员列表
+		if(I('get.manage')){
+			$where_id_arr=array();
+			$ext_arr=$extModel->select();
+			if($ext_arr){
+				foreach($ext_arr as $ek=>$ev){
+					$where_id_arr[]=$ev['uid'];
+				}
+				$where['id']=array('in',$where_id_arr);
+			}else{
+				$where['id']=0;
+			}
+		}
+		
 		$where['pid']=array('neq',0);
-		if($_GET['keywords']) $where['nickname']=I('get.keywords');
-		if($_GET['group_id']) $where['group_id']=I('get.group_id');
+		if($_GET['username']) $where['username']=I('get.username');
+		if($_GET['nickname']) $where['nickname']=I('get.nickname');
+		if($_GET['group_id']){
+			$where_id_arr=array();
+			$ext_arr=$extModel->where(array('group_id'=>I('get.group_id')))->select();
+			if($ext_arr){
+				foreach($ext_arr as $ek=>$ev){
+					$where_id_arr[]=$ev['uid'];
+				}
+				$where['id']=array('in',$where_id_arr);
+			}else{
+				$where['id']=0;
+			}
+		}
 		
 		$list=D($this->moduleName)->getPager($where);
+		foreach($list['data'] as $k=>$v){
+			$row=$extModel->where(array('uid'=>$v['id']))->find();
+			if($row){
+				$list['data'][$k]['group_id']=$row['group_id'];
+				$row['area']=trim($row['area'],',');
+				$districtArr=$districtModel->where(array('id'=>array('in',$row['area'])))->select();
+				$dnameArr=array();
+				foreach($districtArr as $key=>$value){
+					$dnameArr[]=$value['name'];
+				}
+				$list['data'][$k]['dname']=implode(',',$dnameArr);
+			}else{
+				$list['data'][$k]['group_id']=1;
+			}
+		}
+		
 		$this->assign('list',$list);
-		$this->assign('group_row',get_group());
+		$this->assign('group_row',$group_row);
 		$this->display();
 	}
 	
@@ -69,6 +115,45 @@ class SubUserAction extends CommonAction{
 			$vo=D($this->moduleName)->find(I('get.id'));
 			$this->assign('vo',$vo);
 			$this->assign('lastURL',$_SERVER['HTTP_REFERER']);
+			$this->display();
+		}
+	}
+	
+	//修改角色
+	public function add_group(){
+		$extModel=D('SubUserExt');
+		if(IS_POST){
+			$data=I('post.');
+			if(!$data['area']) $data['area']=array(2865);
+			$data['info']['area']=','.implode(',',$data['area']).',';
+			//是否存在数据
+			$row=$extModel->where(array('uid'=>$data['info']['uid']))->find();
+			if($row){
+				$data['info']['id']=$row['id'];
+			}
+			$res=$extModel->saveData($data);			
+			if($res){
+				$this->success('保存成功',I('post.lastURL'));
+			}else{
+				$this->error('保存失败');
+			}
+		}else{
+			$vo=D($this->moduleName)->find(I('get.id'));
+			$this->assign('vo',$vo);
+			//角色信息
+			$dArr=array();
+			$ext_row=$extModel->where(array('uid'=>$vo['id']))->find();
+			$this->assign('ext_row',$ext_row);
+			if($ext_row['area']){
+				$dStr=trim($ext_row['area'],',');
+				$dArr=explode(',',$dStr);
+			}
+			$this->assign('dArr',$dArr);
+			
+			$this->assign('group_row',get_group());
+			$this->assign('lastURL',$_SERVER['HTTP_REFERER']);
+			//苏州下所有区
+			$this->assign('districtArr',D('SubDistrict')->where('pid=78')->order('id asc')->select());
 			$this->display();
 		}
 	}

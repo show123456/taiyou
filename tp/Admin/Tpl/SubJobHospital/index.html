@@ -55,6 +55,7 @@
 				<th>医院名</th>
 				<th>地址</th>
 				<th>服务时间</th>
+				<th>可领取时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -64,6 +65,7 @@
 				<td><{$v.name}></td>
 				<td><{$v.address}></td>
 				<td><{$v.service_time}></td>
+				<td><{$v.lq_week}></td>
 				<td>
 				<a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
 				&nbsp;|&nbsp;

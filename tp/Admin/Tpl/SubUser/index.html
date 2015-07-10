@@ -36,12 +36,20 @@
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
+		<input type="hidden" name='manage' value="<{:I('get.manage')}>" />
 		<ul class="toolbar1"><li>
 			<span>
-				<input type="text" name="group_id" placeholder="角色类别" value="<{:I('get.group_id')}>" />
+				<select name="group_id" style="margin-top:0;">
+					<option value="">请选择角色</option>
+					<foreach name='group_row' key='k' item='v'>
+						<if condition="$k neq 1">
+						<option value="<{$k}>" <{:$_GET['group_id']==$k ? 'selected' : ''}> ><{$v}></option>
+						</if>
+					</foreach>
+				</select>
 			</span>
 			<span>
-				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
+				<input type="text" name="nickname" placeholder="请输入姓名" value="<{:I('get.nickname')}>" />
 			</span>
 			<span>
 				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
@@ -57,6 +65,7 @@
 				<th>姓名</th>
 				<th>性别</th>
 				<th>角色</th>
+				<th>所辖区域</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -67,7 +76,8 @@
 				<td><{$v.nickname}></td>
 				<td><{:$v['sex']==1 ? '男' : '女'}></td>
 				<td><{$group_row[$v['group_id']]}></td>
-				<td><a href="<{:U('cz',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">修改角色</a></td>
+				<td><{$v.dname}></td>
+				<td><a href="<{:U('add_group',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">修改角色</a></td>
 			</tr>
 			</foreach>
 		</tbody>

@@ -37,6 +37,16 @@
 					<input type="text" name="info[service_time]" value="<{$vo['service_time']}>" class="dfinput yaheifont">
 				</li>
 				<li>
+					<label>可领取时间<b></b></label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="7" style="vertical-align:middle;" <{:in_array(7,$lp_time_arr) ? 'checked' : ''}> />周日</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="1" style="vertical-align:middle;" <{:in_array(1,$lp_time_arr) ? 'checked' : ''}> />周一</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="2" style="vertical-align:middle;" <{:in_array(2,$lp_time_arr) ? 'checked' : ''}> />周二</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="3" style="vertical-align:middle;" <{:in_array(3,$lp_time_arr) ? 'checked' : ''}> />周三</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="4" style="vertical-align:middle;" <{:in_array(4,$lp_time_arr) ? 'checked' : ''}> />周四</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="5" style="vertical-align:middle;" <{:in_array(5,$lp_time_arr) ? 'checked' : ''}> />周五</label>
+					<label style="width:50px;"><input type="checkbox" name="lq_time[]" value="6" style="vertical-align:middle;" <{:in_array(6,$lp_time_arr) ? 'checked' : ''}> />周六</label>
+				</li>
+				<li>
 					<label>&nbsp;</label>
 					<input type="button" class="btn yaheifont" style="font-size:16px;" value="保存" onclick="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="button" class="btn yaheifont returnUpBtn" value="返回" onclick="window.history.go(-1);"/>

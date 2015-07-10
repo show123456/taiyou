@@ -30,18 +30,28 @@ select,input{color:#555;}
 .lq_btn{font-size:14px;float:right;margin-top:5px;margin-right:10px;
 	background-color:#01B4EC;border-radius:3px;color:#fff;padding:1px 8px;}
 .hpt_addr b{font-weight:normal;color:#ff7101;}
+.assign_title{float:left;font-size:16px;font-weight:bold;height:25px;line-height:25px;color:#444;margin:5px -5px 10px 10px;}
 </style>
 <body style="background-color:#eeeeee;">
-<div class="main">  
-	<div class="job_detail">
+<div class="main">
+	<div class="assign_title">领取记录:</div>
+	<form action="" name="date_form" method='get'>
+		<input type="hidden" name='m' value='job' />
+		<input type="hidden" name='a' value='lp_day' />
+		<input type="date" placeholder="请选择日期" name="date" value="<{$date}>" style='display:block;width:30%;height:25px;line-height:25px;float:left;margin:5px 10px 10px 10px;'/>
+		<span class="lq_btn" style="float:left;margin-top:8px;" onclick="document.date_form.submit()">查询</span>
+	</form>
+	<div class="clear" style="height:5px;"></div>
+	
+	<!-- <div class="job_detail">
 		<div class="item_list" style="padding:8px 0;">
 			<div class="list_title">
 				<div class="job_title"><{$now_date}>领取记录</div>
 				<div style="clear:both;"></div>
 			</div>
-			<div class="clear" style="height:5px;"></div>
+			
 		</div>
-	</div>
+	</div> -->
 </div>
 <div class="hpt_list">
 	<{foreach from=$list item='v'}>

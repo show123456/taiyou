@@ -52,12 +52,14 @@ select,input{color:#555;}
 <{/if}>
 <div class="hpt_list">
 	<{foreach from=$hptArr item='v'}>
-	<div class="hpt_item" <{if $v.lp_status==1}>style="background-color:#eee;"<{/if}> >
+	<div class="hpt_item" <{if $v.lp_status==1 || $v.allow_lp==0}>style="background-color:#eee;"<{/if}> >
 		<div class="hpt_name"><{$v.name}>
-			<{if $v.lp_status==0}>
-			<div class="lq_btn" onclick="lq_fun(<{$v.id}>)">领取</div>
-			<{else}>
+			<{if $v.allow_lp==0}>
+			<div class="lq_btn" style="background-color:#bbb;">不可领取</div>
+			<{elseif $v.lp_status==1}>
 			<div class="lq_btn" style="background-color:#bbb;">已领取</div>
+			<{else}>
+			<div class="lq_btn" onclick="lq_fun(<{$v.id}>)">领取</div>
 			<{/if}>
 		</div>
 		<div class="hpt_addr">
