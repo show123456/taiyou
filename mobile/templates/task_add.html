@@ -118,6 +118,12 @@
 			<textarea name="str[yaoqiu]" placeholder="请输入职位要求"><{$vo.yaoqiu}></textarea>
 			<textarea name="str[introduce]" placeholder="请输入工作内容"><{$vo.introduce}></textarea>
 			<textarea name="str[attention]" placeholder="请输入注意事项"><{$vo.attention}></textarea>
+			<{if $userRow.id==1}>
+			<select name="num[sh_status]" style="width:100%">
+				<option value="0" <{if $vo.sh_status==0}>selected<{/if}> >审核未通过</option>
+				<option value="1" <{if $vo.sh_status==1}>selected<{/if}> >审核通过</option>
+			</select>
+			<{/if}>
 		</div>
 		<div class="blank_15"></div>
 	</div>

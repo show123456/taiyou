@@ -195,4 +195,9 @@
 	
 	//苏州下的区
 	$smarty->assign('darr',$dmodel->where("CityID=78")->order('DistrictID asc')->dataArr());
+	//本日平台活跃量
+	$now_date=date('Y-m-d');//$now_date='2015-05-21';
+	$arr=D('message')->field('id,fromuser')->where("left(create_date,10) = '".$now_date."' group by fromuser")->dataArr();
+	$activenum=count($arr);
+	$smarty->assign('activenum',$activenum);
 	$smarty->setTpl('user/templates/index.html')->display();

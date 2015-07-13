@@ -49,7 +49,7 @@
 	//使用统一支付接口
 	$unifiedOrder = new UnifiedOrder_pub();
 	$unifiedOrder->setParameter("openid","$openid");
-	$unifiedOrder->setParameter("body","开发平台-微沟通");//商品描述
+	$unifiedOrder->setParameter("body","开发平台-云客驿站");//商品描述
 	$unifiedOrder->setParameter("out_trade_no","$oid");//商户订单号
 	//$orderfee=$orderfee*100;
 	$unifiedOrder->setParameter("total_fee",$orderfee);//总金额

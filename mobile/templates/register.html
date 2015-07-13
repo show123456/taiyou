@@ -18,6 +18,7 @@
 #phone{width:50%;float:left;}
 .tabs_info .get_num{letter-spacing:0;font-size:16px;}
 .tabs_info .code_gray{background-color:#aaa;border:1px solid #bbb;}
+.tabs_info .upload_pic1,.tabs_info .upload_pic2{width:150px;margin:15px auto 0px;height:105px;}
 </style>
 </head>
 <body>
@@ -41,11 +42,93 @@
 		<{/if}>
 		<input type="password" name="pass" placeholder="密码(6-15位字母数字组合)"/>
 		<input type="password" name="repass" placeholder="请再次输入密码"/>
+		
+		<{if $smarty.get.type==2}>
+		<input type="hidden" id='bank_card' name='bank_card' value='' />
+		<div class="input_group" onclick="up_pic1()">
+			<img class="upload_pic1" src="<{if $vo.bank_card}>/data/image_c/<{$vo.pic}><{else}>images/upload_yyzz.jpg<{/if}>" />
+		</div>
+		<input type="hidden" id='pic' name='pic' value='' />
+		<div class="input_group" onclick="up_pic2()">
+			<img class="upload_pic2" src="<{if $vo.pic}>/data/image_c/<{$vo.pic}><{else}>images/upload_sfz.jpg<{/if}>" />
+		</div>
+		<{/if}>
+		
 		<div class="register_end" onclick="save()">完成注册</div>
 	</div>
 	</form>
 </div>
+<!-- 上传照片 -->
+<div id="loading" style="position:fixed;z-index:29999;display:none;width:100%;height:100px;top:0;background:#fff url(images/loading.gif) no-repeat center center;background-size:40px 40px;opacity:0.8;"></div>
+<div style="visibility:hidden;">
+	<iframe name='img-frame1' id="img-frame1" style="visibility:hidden;height:10px"></iframe>
+	<form id="img-form1" action="upload_img.php" enctype="multipart/form-data" method="post" target="img-frame1">
+		<input type="file" name="imgfile" value="" id="img-file1" onchange="changeValImg1()"/>
+	</form>
+</div>
+<div style="visibility:hidden;">
+	<iframe name='img-frame2' id="img-frame2" style="visibility:hidden;height:10px"></iframe>
+	<form id="img-form2" action="upload_img.php" enctype="multipart/form-data" method="post" target="img-frame2">
+		<input type="file" name="imgfile" value="" id="img-file2" onchange="changeValImg2()"/>
+	</form>
+</div>
 <script type="text/javascript">
+$(function(){
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+})
+function up_pic1(){
+	$('#img-file1').click();
+	$('#img-frame1').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["img-frame1"].document.body.innerText;}
+    	try{
+			var result = $.parseJSON(html);
+			if(result.success==1){
+				setTimeout(function(){
+					$('#loading').hide();
+				},1000)
+				$(".upload_pic1").attr('src',"/data/image_c/"+result.data.path);
+				$("#bank_card").val(result.data.path);
+			}else{
+				setTimeout(function(){
+					$('#loading').hide();
+				},1500)
+				alert("照片太大或其他错误");
+			}
+    	}catch(e){}
+    });
+}
+function up_pic2(){
+	$('#img-file2').click();
+	$('#img-frame2').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["img-frame2"].document.body.innerText;}
+    	try{
+			var result = $.parseJSON(html);
+			if(result.success==1){
+				setTimeout(function(){
+					$('#loading').hide();
+				},1000)
+				$(".upload_pic2").attr('src',"/data/image_c/"+result.data.path);
+				$("#pic").val(result.data.path);
+			}else{
+				setTimeout(function(){
+					$('#loading').hide();
+				},1500)
+				alert("照片太大或其他错误");
+			}
+    	}catch(e){}
+    });
+}
+function changeValImg1(){
+	$('#loading').show();
+	$('#img-form1').submit();
+}
+function changeValImg2(){
+	$('#loading').show();
+	$('#img-form2').submit();
+}
 function save(){
 	if($('input[name="username"]').val()==''){
 		alert("请填写手机号");return;
@@ -63,6 +146,12 @@ function save(){
 		}
 		if($('input[name="contact_post"]').val()==''){
 			alert("请填写联系人职位");return;
+		}
+		if($('#bank_card').val()==''){
+			alert("营业执照不能为空");return;
+		}
+		if($('#pic').val()==''){
+			alert("法人身份证照片不能为空");return;
 		}
 	<{/if}>
 	

@@ -73,6 +73,12 @@ class SubUserAction extends CommonAction{
 		
 		$list=D($this->moduleName)->getPager($where);
 		$this->assign('list',$list);
+		
+		//本日平台活跃量
+		$now_date=date('Y-m-d');//$now_date='2015-05-21';
+		$arr=M('Message')->field('id,fromuser')->where("left(create_date,10) = '".$now_date."'")->group('fromuser')->select();
+		$countnum=count($arr);
+		$this->assign('countnum',$countnum);
 		$this->display();
 	}
 	

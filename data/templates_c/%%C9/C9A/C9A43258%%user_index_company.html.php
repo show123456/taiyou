@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-17 14:18:33
+<?php /* Smarty version 2.6.19, created on 2015-07-13 10:24:07
          compiled from D:%5Cwamp%5Cwww%5Cmobile/templates/user_index_company.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'D:\\wamp\\www\\mobile/templates/user_index_company.html', 25, false),)), $this); ?>
@@ -65,7 +65,6 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
 		</ol>
 	</div>
-	<div style='color:#888;text-align:center;font-size:12px;'>技术支持：微沟通</div>
 </div><?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "footer.html", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;

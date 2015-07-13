@@ -13,7 +13,7 @@ if(method_is('post')){
 	if($upload->error_no) ajax_feedback(0,$upload->error_no);
 	
 	//等比缩放
-	makethumb($upload->saved_upload_name,$upload->saved_upload_name,400,400,1);
+	makethumb($upload->saved_upload_name,$upload->saved_upload_name,800,800,1);
 	
 	$save_path=str_replace('../data/image_c/','',$upload->saved_upload_name);
 	ajax_feedback(1,array('path'=>$save_path));

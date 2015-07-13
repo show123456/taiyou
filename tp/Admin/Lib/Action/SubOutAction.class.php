@@ -83,7 +83,7 @@ class SubOutAction extends CommonAction{
 			$row=D($this->moduleName)->find($data['id']);
 			$userRow=M('SubUser')->find($row['uid']);
 			$fromuser=$userRow['fromuser'];
-			$content="您好，尾号为".substr($userRow['bank_card'],-4)."的银行账户，您提现的".$row['money']."元钱，将于两小时内到账，请注意查收！";
+			$content="您好，尾号为".substr($userRow['bank_card'],-4)."的银行账户，您提现的".$row['money']."元钱，将于两小时内到账，请注意查收！遇节假日，顺延到工作日。";
 			D('CustomerConfig')->sendCustomerMsg($content,$fromuser);
 		}
 		echo $res;die();
