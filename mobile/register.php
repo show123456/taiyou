@@ -1,6 +1,6 @@
 <?php
 include_once("../includes/config.inc.php");
-//if(!strpos($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')) die("请在微信浏览器中打开");//判断是否微信打开
+if(!strpos($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')) die("请在微信浏览器中打开");//判断是否微信打开
 $customer_id=1378;
 $model=new Model_Subtable('sub_user');
 //中间跳转页
@@ -47,8 +47,7 @@ if($_REQUEST['a']=='doregister'){
 }
 
 //微信用户标识
-//include_once("get_openid.php");
-$fromuser='aa';
+include_once("get_openid.php");
 $smarty->assign('fromuser',$fromuser);
 
 //防止恶意请求的随机码

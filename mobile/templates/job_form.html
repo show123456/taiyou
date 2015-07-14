@@ -37,18 +37,18 @@ select,input{color:#555;}
 	<div style="margin-left:5px;height:40px;line-height:40px;margin-bottom:-20px;font-size:18px;font-weight:bold;color:#ff7101;">任务提报:</div>
 	<div class="tabs_info">
 		<div class="input_group">
-			<input style="text-indent:6em;" type="text" name="str[name]" value="<{$vo.name}>" placeholder="请输入真实姓名" />
-			<div class="title">司机姓名：</div>
+			<input style="text-indent:6em;" type="text" name="str[name]" value="<{$vo.name}>" placeholder="请输入商家名称" />
+			<div class="title">商家名称：</div>
 		</div>
 		<div class="input_group">
-			<input style="text-indent:6em;" type="text" name="str[phone]" value="<{$vo.phone}>" placeholder="请输入正确号码" />
-			<div class="title">司机电话：</div>
+			<input style="text-indent:6.5em;" type="text" name="str[carnum]" value="<{$vo.carnum}>" placeholder="请输入联系人姓名" />
+			<div class="title">联系人姓名：</div>
 		</div>
 		<div class="input_group">
-			<input style="text-indent:6em;" type="text" name="str[carnum]" value="<{$vo.carnum}>" placeholder="请输入正确车牌号" />
-			<div class="title">车牌号：</div>
+			<input style="text-indent:6.5em;" type="text" name="str[phone]" value="<{$vo.phone}>" placeholder="请输入正确号码" />
+			<div class="title">联系人手机：</div>
 		</div>
-		<div class="input_group">
+		<!-- <div class="input_group">
 			<select style="width:99%;" name="str[license]">
 				<option value="0">请选择驾照类型</option>
 				<option value="A1">A1</option>
@@ -62,7 +62,7 @@ select,input{color:#555;}
 			<input type="checkbox" name="num[is_jsz]" value="1" id="check1" /><label for="check1">驾驶证</label>
 			&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" name="num[is_clz]" value="1" id="check2" /><label for="check2">车辆照片</label>
-		</div>
+		</div> -->
 	</div>
 	</form>
 	<div style="height:10px;"></div>
@@ -73,16 +73,13 @@ select,input{color:#555;}
 <script type="text/javascript">
 function save(){
 	if($('input[name="str[name]"]').val()==''){
-		alert("请填写司机姓名");return;
+		alert("请输入商家名称");return;
+	}
+	if($('input[name="str[carnum]"]').val()==''){
+		alert("请输入联系人姓名");return;
 	}
 	if(!isMobil($('input[name="str[phone]"]').val())){
 		alert("请填写正确的手机号码");return;
-	}
-	if($('input[name="str[carnum]"]').val()==''){
-		alert("请填写车牌号");return;
-	}
-	if($('select[name="str[license]"]').val()=='0'){
-		alert("请选择驾照类型");return;
 	}
 	$('#loading').show();
 	$.post('index.php?m=job&a=signadd',$('#meminfo').serialize(),function(res){
@@ -92,7 +89,7 @@ function save(){
 			alert('请勿重复提交');
 		}else if(res=='suc'){
 			alert('保存成功');
-			window.location.href='index.php?m=job&a=index&user=1';
+			window.location.href='index.php?m=job&a=index_user';
 		}else{
 			alert('保存失败');
 		}

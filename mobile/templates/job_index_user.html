@@ -23,7 +23,7 @@
 <div class="clearfix"></div>
 <section class="Main newsList">
     <div class='recommend'>
-	<div style="clear:both;"></div>
+		<div style="clear:both;"></div>
 		<!-- 疫苗 -->
 		<a href="index.php?m=job&a=lp_history" class="newsListLine">
 		   <div class="img">
@@ -34,9 +34,44 @@
 			   <p class="keywords" style="color:#999;"><{$yimiaoRow.content}></p>
 		   </div>
 		</a>
+		<div style="clear:both;"></div>
+		<{foreach from=$list item="v"}>
+			<{if $v.is_shut==1}>
+			<a href="javascript:void(0);" onclick="alert('任务已关闭');" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+			<{else}>
+			<a href="javascript:void(0);" class="newsListLine" style="width:97.68%;margin-left:1%;padding-top:2%;">
+			<{/if}>
+			   <div class="img" style="margin:0 3%;height:90%;width:20%;">
+				<{if $v.pic}><img src="../../data/image_c/<{$v.pic}>" /><{/if}>
+			   </div>
+			   <div class="titles" style="width:72%;height:90%;position:relative;">
+				   <p class="name" <{if !$v.is_shut}>onclick="window.location.href='index.php?m=job&a=detail&id=<{$v.id}>'"<{/if}> ><{$v.title}></p>
+				   <p class="keywords" id='cancel_btn'><span onclick="cancel_sign(<{$v.id}>)">取消任务</span></p>
+				   <p class="keywords" style="position:absolute;bottom:0;right:0;">已有<span style="color:#ff6f28;"><{$v.num}></span>人领取</p>
+				   <p class="keywords" style="position:absolute;top:0;right:0;">￥<span style="color:#ff6f28;"><{$v.fee|default:0}></span></p>
+			   </div>
+			</a>
+		<{/foreach}>
     </div>
 </section>
 <div class="clearfix"></div>
 <{include file="footer.html"}>
+<script type="text/javascript">
+//取消任务
+function cancel_sign(jid){
+	if(confirm('确定要取消该任务吗？')){
+		$.get('index.php?m=job&a=cancel_sign&jid='+jid,function(res){
+			res=$.trim(res);
+			if(res=='ywc'){
+				alert_tip('该任务有提报数据，无法取消');
+			}else if(res=='suc'){
+				window.location.reload();
+			}else{
+				alert_tip('取消失败');
+			}
+		})
+	}
+}
+</script>
 </body>
 </html>

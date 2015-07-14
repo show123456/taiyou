@@ -68,7 +68,14 @@ margin: 0 2%;
 			<div class="input_group">
 				<input style="text-indent:5em;" type="text" name="str[bank_name]" value="<{$userRow.bank_name}>" placeholder="银行名称" />
 				<div class="title">银行名称</div>
-			</div>	
+			</div>
+			<div class="input_group">
+				<input style="text-indent:6.5em;" type="text" name="str[contact_name]" value="<{$userRow.contact_name}>" placeholder="X省X市X区XX支行" />
+				<div class="title">开户行名称:</div>
+			</div>
+			<div class="input_group">
+				<div style="font-size:14px;color:#666;margin-top:5px;">注：若非吴江本地中国银行，将会根据异地/异行收取手续费2.5/5元不等</div>
+			</div>
 			<div class="input_group">
 				<input style="text-indent:5em;" type="text" name="str[bank_card]" value="<{$userRow.bank_card}>" placeholder="请输入卡号" />
 				<div class="title">银行卡号</div>
@@ -115,6 +122,9 @@ function tixian(){
 function save(){
 	if($('input[name="str[bank_name]"]').val()==''){
 		alert("请填写银行名称");return;
+	}
+	if($('input[name="str[contact_name]"]').val()==''){
+		alert("请填写开户行");return;
 	}
 	if($('input[name="str[bank_card]"]').val().length<10){
 		alert("请填写正确的银行卡号");return;

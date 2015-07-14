@@ -129,7 +129,7 @@
 		$submitModel=new Model_Subtable('sub_job_submit');
 		$data=$_POST;
 		//查重
-		$phoneRow=$submitModel->where("phone='".$data['str']['phone']."'")->dataRow();
+		$phoneRow=$submitModel->where("name='".$data['str']['name']."' and phone='".$data['str']['phone']."'")->dataRow();
 		if($phoneRow) die('cf');
 		
 		$data['info']['uid']=$_SESSION['tyuser']['id'];
@@ -221,7 +221,7 @@
 		}
 	}
 	
-	//个人中心-任务管理-只显示疫苗任务
+	//个人中心-任务管理
 	if($_REQUEST['a']=='index_user'){
 		//我是否领取
 		$signModel=new Model_Subtable('sub_yimiao_sign');
@@ -234,6 +234,26 @@
 		$yimiaoRow=$yimiaoModel->dataRow();
 		$yimiaoRow['content']=cut_str(deletehtml(html_entity_decode($yimiaoRow['content'])),25);
 		$smarty->assign('yimiaoRow',$yimiaoRow);
+		
+		//我的任务
+		$jobsignModel=D('sub_jobsign');
+		$signArr=$jobsignModel->field("id,jid")->where(" uid='".$_SESSION['tyuser']['id']."' ")->order('id desc')->dataArr();
+		if($signArr){
+			$signRow=array();
+			foreach($signArr as $k=>$v){
+				$signRow[]=$v['jid'];
+			}
+			$idStr=implode(',',$signRow);
+			$where=" id in (".$idStr.") ";
+		}
+		if($where){
+			$listArr=$model->where($where)->order('ordernum desc,id desc')->dataArr();
+			foreach($listArr as $key=>$value){
+				$listArr[$key]['title']=cut_str(deletehtml($value['title']),12);
+				$listArr[$key]['content']=cut_str(deletehtml($value['content']),25);
+			}
+		}
+		$smarty->assign('list',$listArr);
 		$smarty->setLayout('')->setTpl('mobile/templates/job_index_user.html')->display();die;
 	}
 	
