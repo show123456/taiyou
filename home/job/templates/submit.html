@@ -34,14 +34,12 @@
 			<thead>
 				<tr>
 					<th name="Theme" class="hover enable">提交人姓名/性别/电话</th>
-					<th name="Theme" class="hover enable">司机姓名</th>
-					<th name="Theme" class="hover enable">手机号码</th>
-					<th name="Theme" class="hover enable">车牌号</th>
-					<th name="Theme" class="hover enable">驾照类型</th>
-					<th name="Theme" class="hover enable">驾驶证</th>
-					<th name="Theme" class="hover enable">车辆照片</th>
+					<th name="Theme" class="hover enable">商家名称</th>
+					<th name="Theme" class="hover enable">联系人姓名</th>
+					<th name="Theme" class="hover enable">联系人电话</th>
+					<th name="Theme" class="hover enable">勾选项</th>
 					<th name="Theme" class="hover enable">提交时间</th>
-					<!-- <th name="Theme" class="hover enable">操作</th> -->
+					<th name="Theme" class="hover enable">操作</th>
 				</tr>
 			</thead>
 			<tbody class='postTbody'>
@@ -50,17 +48,15 @@
 				<tr>
 					<td><div><{$v.uname}> / <{$v.usex}> / <{$v.uphone}> / <a href="javascript:void(0);" onclick="sendMsg(this,<{$v.uid}>)" data-name="<{$v.uname}>">发消息</a></div></td>
 					<td><div><{$v.name}></div></td>
-					<td><div><{$v.phone}></div></td>
 					<td><div><{$v.carnum}></div></td>
+					<td><div><{$v.phone}></div></td>
 					<td><div><{$v.license}></div></td>
-					<td><div><{if $v.is_jsz==1}><span style="color:#62ab62">有</span><{else}>无<{/if}></div></td>
-					<td><div><{if $v.is_clz==1}><span style="color:#62ab62">有</span><{else}>无<{/if}></div></td>
 					<td><div><{$v.addtime|truncate:10:''}></div></td>
-					<!-- <td>
+					<td>
 						<div class="btn-operate">
 						<a href="javascript:void(0);" onclick="delRow(event,'<{$v.id}>')" class="redactbtn">删除</a>
 						</div>
-					</td> -->
+					</td>
 				</tr>
 				<{/foreach}>
 				<!------------列表结束------------>

@@ -112,6 +112,11 @@ class SubUserAction extends CommonAction{
 				$data1['money']=$data['info']['money'];
 				$data1['desc']=$data['info']['desc'];
 				M('SubMoneyLog')->add($data1);
+				//发消息
+				$userRow=M('SubUser')->find($data1['uid']);
+				$fromuser=$userRow['fromuser'];
+				$content="您好".$userRow['nickname']."，云客驿站为您充值".$data1['money']."元钱，请前往“个人金库”查看。备注：".$data1['desc'];
+				D('CustomerConfig')->sendCustomerMsg($content,$fromuser);
 				
 				$this->success('保存成功',I('post.lastURL'));
 			}else{

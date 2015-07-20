@@ -106,17 +106,19 @@ class SubOutAction extends CommonAction{
 									 ->setCategory("Test result file");
 		// Add some data
 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(35);
 		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A2', '手机号')
-					->setCellValue('B2', '银行卡')
+					->setCellValue('B2', '银行名')
 					->setCellValue('C2', '金额(元)')
 					->setCellValue('D2', '银行卡')
 					->setCellValue('E2', '姓名')
 					->setCellValue('F2', '支付状态')
-					->setCellValue('G2', '时间');
+					->setCellValue('G2', '时间')
+					->setCellValue('H2', '开户行');
 		$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
@@ -125,6 +127,7 @@ class SubOutAction extends CommonAction{
 		$objPHPExcel->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
 
 		//数据库操作
 		$model=D($this->moduleName);
@@ -147,7 +150,8 @@ class SubOutAction extends CommonAction{
 			$listArr[$key]['username']=$uRow['username'];
 			$listArr[$key]['nickname']=$uRow['nickname'];
 			$listArr[$key]['bank_name']=$uRow['bank_name'];
-			$listArr[$key]['bank_card']=$uRow['bank_card'];
+			$listArr[$key]['contact_name']=$uRow['contact_name'];
+			$listArr[$key]['bank_card']=str_replace(array(' ','.','。'),'',$uRow['bank_card']);
 			$value['is_pay']==1 ? $listArr[$key]['pay_status']='已支付' : $listArr[$key]['pay_status']='未支付';
 		}
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $title);
@@ -159,7 +163,8 @@ class SubOutAction extends CommonAction{
 										  ->setCellValueExplicit('D' . $lj, $lv['bank_card'])
 										  ->setCellValue('E' . $lj, $lv['nickname'])
 										  ->setCellValue('F' . $lj, $lv['pay_status'])
-										  ->setCellValue('G' . $lj, $lv['addtime']);
+										  ->setCellValue('G' . $lj, $lv['addtime'])
+										  ->setCellValue('H' . $lj, $lv['contact_name']);
 		}
 											
 		// Rename worksheet

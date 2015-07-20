@@ -132,6 +132,7 @@
 		$phoneRow=$submitModel->where("name='".$data['str']['name']."' and phone='".$data['str']['phone']."'")->dataRow();
 		if($phoneRow) die('cf');
 		
+		if($data['license']) $data['info']['license']=implode(',',$data['license']);
 		$data['info']['uid']=$_SESSION['tyuser']['id'];
 		$res=$submitModel->add($data);
 		$res ? die('suc') : die('err');
@@ -227,7 +228,7 @@
 		$signModel=new Model_Subtable('sub_yimiao_sign');
 		$row=$signModel->where("uid='".$userRow['id']."'")->dataRow();
 		if(!$row){
-			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+			$smarty->assign('no_yimiao',1);
 		}
 		//疫苗任务
 		$yimiaoModel=D('sub_job_yimiao');

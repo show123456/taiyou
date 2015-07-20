@@ -104,19 +104,26 @@ class SubTaskAction extends CommonAction{
 									 ->setKeywords("office 2007 openxml php")
 									 ->setCategory("Test result file");
 		// Add some data
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(5);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
 		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A2', '姓名')
-					->setCellValue('B2', '性别')
-					->setCellValue('C2', '联系电话')
-					->setCellValue('D2', '身份证号');
+					->setCellValue('A3', '序号')
+					->setCellValue('B3', '姓名')
+					->setCellValue('C3', '性别')
+					->setCellValue('D3', '联系电话')
+					->setCellValue('E3', '身份证号')
+					->setCellValue('F3', '人员类别')
+					->setCellValue('G3', '结算方式')
+					->setCellValue('H3', '薪资');
 
 		//数据库操作
 		$model=D($this->moduleName);
 		$userModel=M('SubUser');
 		$tid=I('get.tid');
 		$taskRow=$model->find($tid);
+		$taskRow['pay_type']==1 ? $taskRow['pay_type_name']='现金日结' : $taskRow['pay_type_name']='转账日结';
 		
 		$listArr=M('SubSign')->where(" tid='{$tid}' and is_valid=1")->select();
 		if($listArr){
@@ -126,16 +133,23 @@ class SubTaskAction extends CommonAction{
 				$listArr[$key]['username']=$uRow['username'];
 				$listArr[$key]['cardnum']=$uRow['cardnum'];
 				$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
+				$uRow['is_v']==1 ? $listArr[$key]['type']='加v会员' : $listArr[$key]['type']='普通会员';
+				$listArr[$key]['xuhao']=$key+1;
 			}
 		}
 		
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $taskRow['title']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', '兼职日期'.substr($taskRow['work_time'],0,10));
 		foreach($listArr as $lk=>$lv){
-			$lj=$lk+3;
-			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['nickname'])
-										  ->setCellValue('B' . $lj, $lv['sex'])
-										  ->setCellValue('C' . $lj, $lv['username'])
-										  ->setCellValueExplicit('D' . $lj, $lv['cardnum']);
+			$lj=$lk+4;
+			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['xuhao'])
+										  ->setCellValue('B' . $lj, $lv['nickname'])
+										  ->setCellValue('C' . $lj, $lv['sex'])
+										  ->setCellValue('D' . $lj, $lv['username'])
+										  ->setCellValueExplicit('E' . $lj, $lv['cardnum'])
+										  ->setCellValue('F' . $lj, $lv['type'])
+										  ->setCellValue('G' . $lj, $taskRow['pay_type_name'])
+										  ->setCellValue('H' . $lj, $lv['fact_money']);
 		}
 											
 		// Rename worksheet

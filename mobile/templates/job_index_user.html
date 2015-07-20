@@ -23,6 +23,7 @@
 <div class="clearfix"></div>
 <section class="Main newsList">
     <div class='recommend'>
+		<{if $no_yimiao != 1}>
 		<div style="clear:both;"></div>
 		<!-- 疫苗 -->
 		<a href="index.php?m=job&a=lp_history" class="newsListLine">
@@ -34,6 +35,7 @@
 			   <p class="keywords" style="color:#999;"><{$yimiaoRow.content}></p>
 		   </div>
 		</a>
+		<{/if}>
 		<div style="clear:both;"></div>
 		<{foreach from=$list item="v"}>
 			<{if $v.is_shut==1}>
