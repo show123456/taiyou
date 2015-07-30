@@ -168,4 +168,10 @@ class SubUserAction extends CommonAction{
 			$this->display();
 		}
 	}
+	
+	public function del_group(){
+		$uid=I('get.uid');
+		M('SubUserExt')->where(array('uid'=>$uid))->delete(); 
+		$this->success('删除成功');
+	}
 }

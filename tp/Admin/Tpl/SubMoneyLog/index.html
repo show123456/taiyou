@@ -33,14 +33,14 @@
 <body>
 <div class="rightinfo">
 	<div class="tools">
-		<ul class="toolbar">
-			<li class="click" style="padding-left:5px;">默认导出当天的excel</li>
-		</ul>
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
 		<input type="hidden" name='uid' value="<{:I('get.uid')}>" />
 		<ul class="toolbar1"><li>
+			<!-- <span>
+				<input type="text" class="date_picker" name="work_date" placeholder="工作日期" value="<{:I('get.work_date')}>" />
+			</span> -->
 			<span>
 				<select name="type" style="margin-top:0;">
 					<option value="">请选择类别</option>
@@ -50,6 +50,7 @@
 					<option value="4" <{:$_GET['type']==4 ? 'selected' : ''}> >支付报名费</option>
 					<option value="5" <{:$_GET['type']==5 ? 'selected' : ''}> >退还报名费</option>
 					<option value="6" <{:$_GET['type']==6 ? 'selected' : ''}> >系统充值</option>
+					<option value="7" <{:$_GET['type']==7 ? 'selected' : ''}> >现金日结</option>
 				</select>
 			</span>
 			<span style="margin-top:0;">
@@ -101,6 +102,7 @@
 			<{$list['page']}>
 		</ul>
 	</div>
+	<if condition="$_GET['work_date'] neq ''"><div style="color:red;font-weight:bold;font-size:14px;"><{:I('get.work_date')}>总金额：￥<{$sum_money|default=0}></div></if>
 </div>
 <script type="text/javascript">
 function search(){

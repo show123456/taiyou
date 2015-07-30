@@ -7,6 +7,13 @@ class SubMoneyLogAction extends CommonAction{
 		//搜索条件
 		$where=array();
 		if($_GET['uid']) $where['uid']=$_GET['uid'];
+		//工作日期
+		if(I('get.work_date')){
+			$where['work_date']=I('get.work_date');
+		}
+		if(I('get.desc')){
+			$where['desc']=I('get.desc');
+		}
 		if($_GET['type']){
 			$_GET['type']=='3' ? $where['type']=array('in',array(0,3)) : $where['type']=$_GET['type'];
 		}
@@ -48,6 +55,24 @@ class SubMoneyLogAction extends CommonAction{
 		I('get.end_date') ? $end_date=I('get.end_date') : $end_date=date('Y-m-d');
 		$this->assign('start_date',$start_date);
 		$this->assign('end_date',$end_date);
+		$this->display();
+	}
+	
+	//中间页
+	public function mid(){
+		$start_date=I('get.start_date');
+		$end_date=I('get.end_date');
+		$total=0;
+		$model=D($this->moduleName);
+		$taskModel=M('SubTask');
+		$list=$model->field("*,sum(money) as sum_money")->where("work_date>'2014-01-01' and type='".I('get.type')."' and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59'")->group('`desc`')->order('work_date asc')->select();
+		foreach($list as $k=>$v){
+			$row=$taskModel->find($v['desc']);
+			$list[$k]['title']=$row['title'];
+			$total+=$v['sum_money'];
+		}
+		$this->assign('list',$list);
+		$this->assign('total',$total);
 		$this->display();
 	}
 	
@@ -139,6 +164,79 @@ class SubMoneyLogAction extends CommonAction{
 		$where_str6=" type=6 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
 		$row=$model->field("sum(money) as sum_money")->where($where_str6)->find();
 		$sum_row['type6']=$row['sum_money'];
+		//个人充值
+		$where_str1=" type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
+		$sum_row['type1']=$row['sum_money'];
+		
+		/* //支付报名费
+		$where_str4=" type=4 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$row=$model->field("sum(money) as sum_money")->where($where_str4)->find();
+		$sum_row['type4']=0-$row['sum_money'];
+		//退还报名费
+		$where_str5=" type=5 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$row=$model->field("sum(money) as sum_money")->where($where_str5)->find();
+		$sum_row['type5']=$row['sum_money']; */
+		
+		/* 金额日志记录 */
+		$start_date_where=$start_date.' 00:00:00';
+		$end_date_where=$end_date.' 23:59:59';
+		//现金日结
+		$where_str="type=7 and addtime >= '{$start_date_where}' and addtime <= '{$end_date_where}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type7_log']=$row['sum_money'];
+		//转账日结
+		$where_str="type=3 and addtime >= '{$start_date_where}' and addtime <= '{$end_date_where}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type3_log']=$row['sum_money'];
+		//提现
+		$where_str="type=2 and addtime >= '{$start_date_where}' and addtime <= '{$end_date_where}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type2_log']=0-$row['sum_money'];
+		
+		$this->assign('sum_row',$sum_row);
+		$this->display();
+	}
+	
+	//金额日志总览
+	public function log_all(){
+		$model=D($this->moduleName);
+		//日期条件
+		if(I('get.start_date')){
+			$start_date=I('get.start_date');
+			$end_date=I('get.end_date');
+		}else{
+			$start_date=date('Y-m-d');
+			$end_date=$start_date;
+		}
+		$this->assign('start_date',$start_date);
+		$this->assign('end_date',$end_date);
+		$start_date_where=$start_date.' 00:00:00';
+		$end_date_where=$end_date.' 23:59:59';
+		//现金日结
+		$where_str="type=7 and addtime >= '{$start_date}' and addtime <= '{$end_date}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type7']=$row['sum_money'];
+		//转账日结
+		$where_str="type=3 and addtime >= '{$start_date}' and addtime <= '{$end_date}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type3']=$row['sum_money'];
+		//提现
+		$where_str="type=2 and addtime >= '{$start_date}' and addtime <= '{$end_date}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type2']=$row['sum_money'];
+		//系统充值
+		$where_str="type=6 and addtime >= '{$start_date}' and addtime <= '{$end_date}'";
+		$row=$model->field("sum(money) as sum_money")->where($where_str)->find();
+		$sum_row['type6']=$row['sum_money'];
+		
+		$userModel=M('SubUser');
+		$taskModel=M('SubTask');
+		$signModel=M('SubSign');
+		$typeArr=get_money_type();//金额变动方式数组
+		//总计
+		$model=D($this->moduleName);
+		$sum_row=array();
 		//个人充值
 		$where_str1=" type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
 		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
@@ -407,5 +505,18 @@ class SubMoneyLogAction extends CommonAction{
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');
 		exit;
+	}
+	
+	//修改work_date
+	public function test(){
+		$model=D($this->moduleName);
+		$taskModel=M('SubTask');
+		$arr=$model->where("type in (3,7)")->select();
+		foreach($arr as $k=>$v){
+			$row=$taskModel->field('id,work_time')->find($v['desc']);
+			$data['id']=$v['id'];
+			$data['work_date']=substr($row['work_time'],0,10);
+			$model->save($data);
+		}
 	}
 }

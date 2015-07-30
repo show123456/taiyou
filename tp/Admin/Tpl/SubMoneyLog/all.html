@@ -56,18 +56,18 @@
 	<div style="height:10px;clear:both;"></div>
 	<if condition="$_GET['uid'] eq ''">
 		<div class="top_div">
-			工资
+			工资(需备用金额)
 			<br /><{$start_date}>
 			<br />至
 			<br /><{$end_date}>
-			<br /><a href="<{:U('SubTask/xj_index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">现金￥<{$sum_row['type7']|default=0}></a>
-			<br /><a href="<{:U('SubTask/zz_index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">转账￥<{$sum_row['type3']|default=0}></a>
+			<br /><a href="<{:U('SubTask/xj_index',array('start_date'=>$start_date,'end_date'=>$end_date,'total'=>$sum_row['type7']))}>">现金￥<{$sum_row['type7']|default=0}></a>
+			<br /><a href="<{:U('SubTask/zz_index',array('start_date'=>$start_date,'end_date'=>$end_date,'total'=>$sum_row['type3']))}>">转账￥<{$sum_row['type3']|default=0}></a>
 		</div>
 		<div class="top_div">
 			<{$start_date}>
 			<br />至
 			<br /><{$end_date}>
-			<br />提现
+			<br />实际提现
 			<br /><a href="<{:U('SubOut/all',array('start_date'=>$start_date,'end_date'=>$end_date))}>">￥<{$sum_row['type2']|default=0}></a>
 		</div>
 		<div class="top_div">
@@ -83,6 +83,39 @@
 			<br /><{$end_date}>
 			<br />个人充值
 			<br /><a href="<{:U('SubCz/index',array('start_date'=>$start_date,'end_date'=>$end_date))}>">￥<{$sum_row['type1']|default=0}></a>
+		</div>
+		
+		<div style="width:100%;height:10px;clear:both;border-bottom:1px solid;border-style:dashed;"></div>
+		<div style="color:#01B4EC;font-size:16px;font-weight:bold;margin:10px;">金额日志记录：</div>
+		
+		<div class="top_div" style="background-color:#01B4EC;">
+			工资(实发金额)
+			<br /><{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br /><a href="<{:U('SubMoneyLog/mid',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>7))}>">现金￥<{$sum_row['type7_log']|default=0}></a>
+			<br /><a href="<{:U('SubMoneyLog/mid',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>3))}>">转账￥<{$sum_row['type3_log']|default=0}></a>
+		</div>
+		<div class="top_div" style="background-color:#01B4EC;">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />请求提现
+			<br /><a href="<{:U('SubMoneyLog/index',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>2))}>">￥<{$sum_row['type2_log']|default=0}></a>
+		</div>
+		<div class="top_div" style="background-color:#01B4EC;">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />系统充值
+			<br /><a href="<{:U('SubMoneyLog/index',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>6))}>">￥<{$sum_row['type6']|default=0}></a>
+		</div>
+		<div class="top_div" style="background-color:#01B4EC;">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />个人充值
+			<br /><a href="<{:U('SubMoneyLog/index',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>1))}>">￥<{$sum_row['type1']|default=0}></a>
 		</div>
 	</if>
 </div>

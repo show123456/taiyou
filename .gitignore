@@ -5,3 +5,4 @@
 /tp/temp/
 /tp/ThinkPHP/
 .gitignore
+test.php

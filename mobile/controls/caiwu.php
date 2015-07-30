@@ -30,7 +30,7 @@
 		$logModel=new Model_Subtable('sub_money_log');
 		if(method_is('post')){
 			$data=$_POST;
-			$taskRow=$model->field('id,pay_type,is_js')->where("id=".$data['tid'])->dataRow();
+			$taskRow=$model->field('id,pay_type,is_js,work_time')->where("id=".$data['tid'])->dataRow();
 			//1现金日结，用户金额不增加
 			if($taskRow['pay_type']==1 && $taskRow['is_js']==0){
 				$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
@@ -41,6 +41,7 @@
 					$logData['info']['uid']=$v['uid'];
 					$logData['info']['money']=$v['fact_money'];
 					$logData['info']['desc']=$v['tid'];
+					$logData['info']['work_date']=substr($taskRow['work_time'],0,10);
 					$logModel->add($logData);
 				}
 			}
@@ -56,6 +57,7 @@
 					$logData['info']['uid']=$v['uid'];
 					$logData['info']['money']=$v['fact_money'];
 					$logData['info']['desc']=$v['tid'];
+					$logData['info']['work_date']=substr($taskRow['work_time'],0,10);
 					$logModel->add($logData);
 				}
 			}

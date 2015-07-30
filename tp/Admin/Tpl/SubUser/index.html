@@ -77,7 +77,11 @@
 				<td><{:$v['sex']==1 ? '男' : '女'}></td>
 				<td><{$group_row[$v['group_id']]}></td>
 				<td><{$v.dname}></td>
-				<td><a href="<{:U('add_group',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">修改角色</a></td>
+				<td>
+					<a href="<{:U('add_group',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">修改角色</a>
+					<if condition="$_GET['manage'] eq 1">| 
+					<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del_group',array('uid'=>$v['id']))}>')">删除角色</a></if>
+				</td>
 			</tr>
 			</foreach>
 		</tbody>
@@ -88,5 +92,10 @@
 		</ul>
 	</div>
 </div>
+<script type="text/javascript">
+function delRow(str){
+	if(confirm('确定要删除吗？')) window.location.href=str;
+}
+</script>
 </body>
 </html>

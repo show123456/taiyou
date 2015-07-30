@@ -95,7 +95,7 @@ margin: 0 2%;
 <{include file="footer.html"}>
 <script type="text/javascript">
 function tixian(){
-	if($('input[name="str[bank_card]"]').val().length<10){
+	if('<{$userRow.bank_name}>'=='' || '<{$userRow.contact_name}>'=='' || '<{$userRow.bank_card}>'==''){
 		alert("请先绑定银行卡");return;
 	}
 	var tx_money=$('#tx_input').val();

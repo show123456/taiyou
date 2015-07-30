@@ -7,7 +7,10 @@ if($_REQUEST['a']=='add'){
 		$banModel=new Model_Ban('ban');
 		$ban_res_say=$banModel->no_rights($userRow,2);
 		if($ban_res_say) die('err');
-		
+		//是否禁登录
+		$ban_res_login=$banModel->no_login_rights($userRow);
+		if($ban_res_login) die('err');
+			
 		$data=$_POST;
 		$data['info']['fromuser']=$_SESSION['picuser']['fromuser'];
 		$data['info']['name']=$_SESSION['picuser']['nickname'];
@@ -86,12 +89,9 @@ if($_REQUEST['a']=='reply'){
 		$banModel=new Model_Ban('ban');
 		$ban_res_say=$banModel->no_rights($userRow,2);
 		if($ban_res_say) die('err');
-		
-		if($ban_res_login){
-			setCookie('tyuid','',time()-1);
-			$smarty->assign('info','您的账号还有'.ceil($ban_res_login/3600).'小时解禁');
-			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
-		}
+		//是否禁登录
+		$ban_res_login=$banModel->no_login_rights($userRow);
+		if($ban_res_login) die('err');
 		
 		$memberModel=new Model_Member();
 		$data['num']['pid']=$_GET['pid'];
