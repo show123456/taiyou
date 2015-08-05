@@ -23,7 +23,7 @@
 	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
 .toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
-.toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+.toolbar1 li b,.send_btn{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
 	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
 </style>
 </head>
@@ -31,7 +31,7 @@
 <div class="rightinfo">
 	<div class="tools">
 		<ul class="toolbar">
-			<li class="click" onclick="location.href='<{:U('add',array('aid'=>I('get.aid')))}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加</li>
+			<li class="click" onclick="location.href='<{:U('add')}>'"><span><img src="__PUBLIC__/admin/images/t01.png" /></span>添加消息模板</li>
 		</ul>
 		<!-- <form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
@@ -55,23 +55,28 @@
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th width="200px;">rent</th>
-				<th>room</th>
-				<th>bed</th>
-				<th>windows</th>
-				<th>available</th>
+				<th>标题</th>
+				<th>主题内容</th>
+				<th>计划发送日期</th>
+				<th>发送日期</th>
+				<th>操作</th>
+				<th>群发此消息</th>
 			</tr>
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
 			<tr>
-				<td>￥<{$v.room_fee}></td>
-				<td><{$v.room_size}></td>
-				<td><{$v.bed_size}></td>
-				<td><{$v['is_window'] ? 'Yes' : 'No'}></td>
-				<td><a href="<{:U('add',array('id'=>$v['id'],'aid'=>I('get.aid')))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
+				<td><{:cut_str($v['a_title'],15)}></td>
+				<td><{:cut_str($v['content'],20)}></td>
+				<td><{$v.plan_date}></td>
+				<td id="send_date<{$v.id}>"><{:$v['send_date'] ? substr($v['send_date'],0,10) : ''}></td>
+				<td><a href="<{:U('add',array('id'=>$v['id']))}>" target="rightFrame" onFocus="this.blur()" class="add">编辑</a>
 				&nbsp;|&nbsp;
 				<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a></td>
+				<td>
+					<a class="send_btn" style="color:#fff;" onclick="send_kf('../home/msg/send_kf.php?id=<{$v.id}>')">测试发送</a>
+					<a class="send_btn" style="color:#fff;<{:$v['send_date'] ? 'background-color:#aaa' : ''}>" href="javascript:void(0);" onclick="send_confirm('../home/msg/daily.php?id=<{$v.id}>','<{$v.id}>',this)" data-status="<{:$v['send_date'] ? '1' : '0'}>"><{:$v['send_date'] ? '已发送' : '确认发送'}></a>
+				</td>
 			</tr>
 			</foreach>
 		</tbody>
@@ -86,6 +91,24 @@
 $('.imgtable tbody tr:odd').addClass('odd');
 function delRow(str){
 	if(confirm('确定要删除吗？')) window.location.href=str;
+}
+function send_confirm(str,id,obj){
+if($(obj).attr('data-status') == '0'){
+	if(confirm('确定要‘正式群发’吗？')){
+		window.open(str);
+		//更新发送时间
+		$.get("admin.php?m=SubDaily&a=update_date&id="+id,function(){
+			$('#send_date'+id).text('<{$now_date}>');
+			$(obj).html('已发送').attr('data-status','1');
+		});
+	}
+}
+}
+//测试发送
+function send_kf(str){
+	if(confirm('确定要发送该‘测试信息’吗？')){
+		window.open(str);
+	}
 }
 </script>
 </body>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+<style type="text/css">
+.imgtable tbody tr{height:50px;}
+/*搜索样式*/
+.toolbar1 li{border:0;}
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;
+	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
+.toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+</style>
+</head>
+<body>
+<div class="rightinfo">
+	<form action="" name="searchForm" method="get">
+	<input type="hidden" name='m' value='<{$moduleName}>' />
+	<input type="hidden" name='a' value="<{$actionName}>" />
+	<div class="tools">
+		<ul style="float:left;line-height:35px;">
+				日期:
+				<input type="text" class="date_picker" name="date" placeholder="日期" value="<{$date}>" style="border:1px solid #ccc;height:25px;line-height:25px;text-indent:1em;" />&nbsp;&nbsp;
+				<input type="text" id="money" placeholder="奖励金额" value="<{$money}>" style="border:1px solid #ccc;height:25px;line-height:25px;text-indent:1em;" />&nbsp;元/人&nbsp;&nbsp;
+				<input type="button" value="保存" onclick="save_moey();" style='padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px; border-radius:4px;font-family:"Microsoft Yahei","微软雅黑";' />
+		</ul>
+		<ul class="toolbar1"><li>
+			<span>
+				<select name="is_pay" style="margin-top:0;">
+					<option value="">支付状态</option>
+					<option value="2" <{:$_GET['is_pay']==2 ? 'selected' : ''}> >未支付</option>
+					<option value="1" <{:$_GET['is_pay']==1 ? 'selected' : ''}> >已支付</option>
+				</select>
+			</span>
+			<span>
+				<input type="text" name="phone" placeholder="推荐人手机号" value="<{:I('get.phone')}>" />
+			</span>
+			<b onclick="search()">搜索</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</li>
+		</ul>
+	</div>
+	</form>
+	<table class="imgtable">
+		<thead>
+			<tr>
+				<th>推荐人手机号</th>
+				<th>推荐人姓名</th>
+				<th>注册人数</th>
+				<th>注册日期</th>
+				<th>支付状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name="list" item='v'>
+			<tr style="height:25px;">
+				<td><{$v.tjr_phone}></td>
+				<td><{$v.tjr_name}></td>
+				<td><{$v.reg_num}></td>
+				<td><{$v.add_date}></td>
+				<td><{:$v['is_pay']==1 ? '<span style="color:#00a4ac;">已支付</span>' : '未支付'}></td>
+				<td>
+				<if condition="in_array($suserSession['type'],array(1,3))">
+				<a onclick="cz(this)" data-url="<{:U('cz',array('id'=>$v['tjr_uid'],'add_date'=>$v['add_date'],'num'=>$v['reg_num']))}>" target="rightFrame" onFocus="this.blur()" class="add">支付</a>
+				&nbsp;|&nbsp;
+				</if>
+				<a href="<{:U('reg_index',array('tjr_uid'=>$v['tjr_uid'],'add_date'=>$v['add_date']))}>" target="rightFrame" onFocus="this.blur()">查看注册用户</a></td>
+			</tr>
+			</foreach>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+function search(){
+	document.searchForm.submit();
+}
+function save_moey(){
+	if(confirm('确定要保存该日金额奖励吗？')){
+	if($('#money').val()!=''){
+		$.post("<{:U('set')}>",{k:$('.date_picker').val(),v:$('#money').val()},function(){
+			alert_tip('保存成功');
+			setTimeout(function(){window.location.href="admin.php?m=SubTjr&a=index&date="+$('.date_picker').val()},500);
+		})
+	}
+	}
+}
+function cz(obj){
+	if("<{$money}>"==""){
+		alert_tip('今日的奖励金额还未设置');return;
+	}
+	var data_url=$(obj).attr('data-url');
+	window.location.href=data_url;
+}
+</script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</body>
+</html>

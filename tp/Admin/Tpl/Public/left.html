@@ -66,6 +66,19 @@ $(function(){
 			</ul>
 		</dd>
 	</if>
+	<dd>
+		<div class="title">
+			<span><img src="__PUBLIC__/admin/images/leftico03.png" /></span>推荐人管理
+		</div>
+		<ul class="menuson">
+			<!-- <li><cite></cite>
+				<a href="<{:U('SubTjr/set')}>" target="rightFrame">推荐人奖励设置</a>
+			</li> -->
+			<li><cite></cite>
+				<a href="<{:U('SubTjr/index')}>" target="rightFrame">推荐人列表</a>
+			</li>
+		</ul>
+	</dd>
 	<if condition="$suserSession['type'] eq '1'">
 		<dd>
 			<div class="title">
@@ -180,6 +193,9 @@ $(function(){
 			<ul class="menuson">
 				<li><cite></cite>
 					<a href="../home/msg/index.php" target="rightFrame">微信群发</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('SubDaily/index')}>" target="rightFrame">每日群发</a>
 				</li>
 			</ul>
 		</dd>

@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="../public/css/sub-manage.css" media="all" />
+<style type="text/css">
+.cc_title_h4{border:1px solid #C9E4C3;height:35px;background-color:#E8FFE2;padding-left:25px;border-radius:4px;}
+.fg-upload span{color:#777;height:34px;line-height:34px}
+b{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content" style="min-height:1000px;height:auto;">
+<div class='inner'>
+<div class="manage-apply">
+<div class="apply-content">
+<div class="manage-menu">
+	<div class="msg_editer">
+		<div class="sub-list">
+			<div class="shop_sort_box">
+				<form id="memberform">
+					<h4 class='cc_title_h4'>发送消息时，请勿关闭页面。关闭页面即中断发送。</h4>
+			<div class="shop_sort">
+				<div class="shop_sort_title" style="width:5%;">
+					<h4 style="float:left;padding-left:0;">群发内容：</h4>
+				</div>
+				<div class="shop_sort_set">
+					<div class="shop_sort_text" id="content" style="width:400px;border:0;height:auto;"><{$content}></div>
+				</div>
+			</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+	<div class="list-table" style="padding:10px;font-size:15px;">余<span id="sy" style="color:red;font-weight:bold;"><{$listcount}></span>人。。。
+	</div>
+	<div id="info_from" style="visibility:hidden;">
+		<{foreach from=$list item=v}>
+			<span><{$v.fromuser}></span>
+		<{/foreach}>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- loading动画开始 -->
+<div id="loading" style="position:fixed;z-index:881213;display:none;width:100%;height:100px;top:0;"><img src="../task/images/loading.gif" style="display:block;margin:200px 550px;" /></div>
+<!-- loading动画结束 -->
+<script type="text/javascript">
+window.onbeforeunload = function(){ 
+	return "您确定发送完成了吗"; 
+}
+$(function(){
+	var bodyWidth = document.documentElement.clientWidth;
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+	
+	var send_content="<{$content}>";
+	if(send_content==''){
+		alert('信息内容不能为空');return;
+	}
+	$('#loading').show();
+	var total_num=parseInt('<{$listcount}>');
+	var sy_num=0;
+	var time_clock;
+	time_clock=setInterval(function(){
+		var fromuser=$('#info_from span').eq(0).text();
+		$.post('index.php',{content:send_content,fromuser:fromuser});
+		$('#info_from span').eq(0).remove();
+		sy_num=parseInt($('#info_from span').length);
+		$('#sy').text(sy_num);
+		if(sy_num == 0){
+			clearInterval(time_clock);
+			$('#loading').hide();
+		}
+	},1000);
+})
+</script>
