@@ -10,10 +10,14 @@ if($_REQUEST['a']=='do'){
 		echo 'codeerr';die;
 	}
 	$row=$model->where("username='".$data['username']."'")->dataRow();
-	//数据插入
+	//数据修改
 	$info['num']['id']=$row['id'];
 	$info['info']['pass']=md5($data['pass']);
-	$res=$model->add($info);
+	if($info['num']['id'] && $info['info']['pass']){
+		$res=$model->add($info);
+	}else{
+		$res=0;
+	}
 	if($res){
 		$_SESSION['mobile']='';
 		$_SESSION['mobile_code']='';

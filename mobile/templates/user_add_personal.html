@@ -31,6 +31,9 @@
 	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
 	<input type="hidden" id="picInput" name="str[pic]" value="<{$vo.pic}>" />
 	<div class="tabs_info">
+		<a href="index.php?m=user&a=bind_wxh">
+			<div class="register_end" style="width:60%;background-color:#ff7101;margin:10px auto -5px;font-size:13px;height:30px;line-height:30px;">绑定手机账号与微信号</div>
+		</a>
 		<!-- <{if $userRow.is_v==1}><img class="vip" src="images/vip.gif"/><{/if}> -->
 		<div class="input_group">
 			<input style="text-indent:4em;" type="text" name="str[nickname]" value="<{$vo.nickname}>" placeholder="请输入真实姓名，保证费用顺利结算" />
@@ -88,6 +91,9 @@
 	<a href="javascript:void(0);"><div class="register_end" style="width:96%;">已审核通过</div></a>
 	<{else}>
 	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>
+	<{/if}>
+	<{if $tjr_user_row}>
+	<div style="text-align:center;color:#ff7101;font-size:14px;margin-top:-8px;">我的推荐人：<{$tjr_user_row.nickname|default:'匿名'}></div>
 	<{/if}>
 </div><{include file="footer.html"}>
 <!-- 上传照片 -->

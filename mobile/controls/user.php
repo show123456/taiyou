@@ -33,6 +33,12 @@ if($_REQUEST['a']=='user_add_personal'){
 		//微信头像
 		$memberModel=new Model_Member();
 		$smarty->assign('headPic',$memberModel->getPic($userRow['fromuser']));
+		//我的推荐人
+		$tjrRow=D('sub_tjr')->where("reg_uid='".$userRow['id']."'")->dataRow();
+		if($tjrRow){
+			$tjr_user_row=$model->field('id,nickname')->where("id='".$tjrRow['tjr_uid']."'")->dataRow();
+			$smarty->assign('tjr_user_row',$tjr_user_row);
+		}
 		
 		$smarty->assign('vo',$model->find($userRow['id']));
 		$smarty->setLayout('')->setTpl('mobile/templates/user_add_personal.html')->display();die;
@@ -69,6 +75,10 @@ if($_REQUEST['a']=='user_index'){
 	if($userRow['type']==2){
 		$smarty->setLayout('')->setTpl('mobile/templates/user_index_company.html')->display();die;
 	}else{
+		//个人用户
+		$userExtModel=D('sub_user_ext');
+		$userExtRow=$userExtModel->where("uid='".$userRow['id']."'")->dataRow();
+		$smarty->assign('userExtRow',$userExtRow);
 		$smarty->setLayout('')->setTpl('mobile/templates/user_index_personal.html')->display();die;
 	}
 }
@@ -140,4 +150,26 @@ if($_REQUEST['a']=='get_person_info'){
 		$result=$res['nickname'].$res['username'];
 	}
 	$result ? die($result) : die('err');
+}
+
+//绑定微信号手机号
+if($_REQUEST['a']=='bind_wxh'){
+	if($_REQUEST['code'] && $fromuser==''){
+		$wx_code=$_REQUEST['code'];
+		$wx_user_json=file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$wx_code."&grant_type=authorization_code");
+		$wx_res=json_decode($wx_user_json);
+		if(!$wx_res->openid){
+			echo "<script>alert('绑定失败！');window.location.href='index.php?m=user&a=user_add_personal';</script>";
+		}
+		$fromuser=$wx_res->openid;
+		$user_data['info']['id']=$userRow['id'];
+		$user_data['info']['fromuser']=$fromuser;
+		$userModel->add($user_data);
+		echo "<script>alert('绑定成功！');window.location.href='index.php?m=user&a=user_add_personal';</script>";
+	}else{
+		if($fromuser==''){
+			$redirectUri=urlencode("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);//openid处理页面(当前页面)
+			echo '<script>window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$redirectUri.'&response_type=code&scope=snsapi_base&state=123#wechat_redirect"</script>';die;
+		}
+	}
 }

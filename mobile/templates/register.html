@@ -43,6 +43,11 @@
 		<input type="password" name="pass" placeholder="密码(6-15位字母数字组合)"/>
 		<input type="password" name="repass" placeholder="请再次输入密码"/>
 		
+		<{if $smarty.get.type!=2}>
+		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">推荐人登录用户名(手机号码)：</div>
+		<input type="text" name="tjr_phone" placeholder="此项可以为空"/>
+		<{/if}>
+		
 		<{if $smarty.get.type==2}>
 		<input type="hidden" id='bank_card' name='bank_card' value='' />
 		<div class="input_group" onclick="up_pic1()">
@@ -153,6 +158,13 @@ function save(){
 		if($('#pic').val()==''){
 			alert("法人身份证照片不能为空");return;
 		}
+	<{else}>
+		//推荐人验证
+		if($('input[name="tjr_phone"]').val()!=''){
+			if(!isMobil($('input[name="tjr_phone"]').val())){
+				alert("请填写正确的推荐人手机号");return;
+			}
+		}
 	<{/if}>
 	
 	if(!isPasswd($('input[name="pass"]').val())){
@@ -163,12 +175,18 @@ function save(){
 	}
 	$.post("register.php",$("#memInfo").serialize(),function(res){
 		if(res){
-			if(res=='exist'){
+			if(res=='cf'){
+				alert("推荐人不能是自己");
+			}else if(res=='wx_exist'){
+				alert("一个微信号只能注册一次");
+			}else if(res=='exist'){
 				alert("该手机账号已存在");
 			}else if(res=='codeerr'){
 				alert("手机验证码错误");
 			}else if(res=='wxerr'){
 				alert("微信身份标识丢失，请点击底部菜单，从推送的图文打开");
+			}else if(res=='no_tjr'){
+				alert("该推荐人不存在");
 			}else{
 				alert("恭喜您，注册成功");
 				<{if $smarty.get.type==2}>

@@ -11,6 +11,23 @@ if($_REQUEST['a']=='mid_reg'){
 //注册
 if($_REQUEST['a']=='doregister'){
 	$data=$_POST;
+	if($data['username']==$data['tjr_phone']){
+		echo 'cf';die;
+	}
+	//openid查重
+	$userRow=$model->where("fromuser='".$data['fromuser']."'")->dataRow();
+	if($userRow){
+		echo 'wx_exist';die;
+	}
+	//填写的推荐人是否存在
+	if($data['tjr_phone']){
+		$userRow=$model->where("username='".$data['tjr_phone']."'")->dataRow();
+		if(!$userRow){
+			echo 'no_tjr';die;
+		}else{
+			$tjr_uid=$userRow['id'];
+		}
+	}
 	//账号查重
 	$userRow=$model->where("username='".$data['username']."'")->dataRow();
 	if($userRow){
@@ -42,6 +59,13 @@ if($_REQUEST['a']=='doregister'){
 		$_SESSION['mobile_code']='';
 		//写登录session
 		$_SESSION['tyuser']=$model->field('id,username,pass,fromuser')->where("id={$res}")->dataRow();
+		//推荐人处理
+		if($data['tjr_phone']){
+			$tj_data['info']['tjr_uid']=$tjr_uid;
+			$tj_data['info']['reg_uid']=$res;
+			$tj_data['info']['add_date']=date('Y-m-d');
+			D('sub_tjr')->add($tj_data);
+		}
 	}
 	echo $res;die;
 }
