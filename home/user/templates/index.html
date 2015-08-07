@@ -56,11 +56,11 @@
 						<option value="<{$v.DistrictID}>" <{if $smarty.get.did==$v.DistrictID}>selected<{/if}> ><{$v.DistrictName}></option>
 					<{/foreach}>
 				</select>&nbsp;&nbsp;
-				<input name="username" class="keywords" placeholder="输入手机号" type="text" value="<{$smarty.get.username}>">&nbsp;&nbsp;
-				<!-- <input name="cardnum" class="keywords" placeholder="输入身份证号" type="text" value="<{$smarty.get.cardnum}>">&nbsp;&nbsp; -->
-				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>">&nbsp;&nbsp;
+				<input name="wx_nickname" class="keywords" placeholder="微信昵称" type="text" value="<{$smarty.get.wx_nickname}>" style="width:70px;" />&nbsp;&nbsp;
+				<input name="username" class="keywords" placeholder="输入手机号" type="text" value="<{$smarty.get.username}>" style="width:80px;" />&nbsp;&nbsp;
+				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>" style="width:80px;" />&nbsp;&nbsp;
 				<{/if}>
-				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>">&nbsp;&nbsp;
+				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>"  style="width:80px;" />&nbsp;&nbsp;
 				<input value="搜索" id="search" class="" title="搜索" type="submit">
 			</form>
 		</div>

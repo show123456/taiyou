@@ -32,7 +32,7 @@ class Model_Ban extends Model_Subtable{
 			$ban_row=$this->where($ban_where_str)->order('id desc')->dataRow();
 			if($ban_row){
 				$ban_end_time=strtotime($ban_row['end_time'].' 00:00:00')-time();
-				if($ban_end_time > 0){
+				if($ban_end_time > 0 || ($ban_row['end_time'] && strtotime($ban_row['end_time'].' 00:00:00')=='')){
 					return true;
 				}
 			}

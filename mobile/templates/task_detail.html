@@ -451,7 +451,7 @@ function alert_info(id){
 //点击头像删除报名
 function pic_del_sign(uid,nicheng,obj){
 	if('<{$userRow.id}>'=='1'){
-	if(confirm('确定要取消'+nicheng+'的报名啊')){
+	if(confirm('确定要取消'+nicheng+'的报名吗')){
 		$.get("index.php?m=task&a=cancel_sign&tid=<{$smarty.get.id}>&uid="+uid,function(res){
 			res=$.trim(res);
 			if(res=='suc'){

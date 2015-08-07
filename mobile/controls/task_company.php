@@ -76,8 +76,8 @@ if($_REQUEST['a']=='sign_index'){
 		$signModel->add($data1); */
 	}else{
 		$listArr=$signModel->where("tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
-		//已报名人数
-		$signRow=$signModel->field('count(*) as countnum')->where("tid=".$_GET['tid']." and is_valid!=2")->dataRow();
+		//通过报名人数
+		$signRow=$signModel->field('count(*) as countnum')->where("is_valid=1 and tid='".$_GET['tid']."'")->dataRow();
 		$smarty->assign('signNum',$signRow['countnum']);
 		
 		if($listArr){
@@ -89,6 +89,11 @@ if($_REQUEST['a']=='sign_index'){
 			
 				$listArr[$key]['username']=$uRow['username'];
 				$listArr[$key]['nickname']=$uRow['nickname'];
+				if($uRow['sex']==1){
+					$listArr[$key]['sex']='男';
+				}else{
+					$listArr[$key]['sex']='女';
+				}
 				//是否可看手机号
 				if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
 				//距离处理
@@ -118,6 +123,11 @@ if($_REQUEST['a']=='sign_index_ajax'){
 			
 			$listArr[$key]['username']=$uRow['username'];
 			$listArr[$key]['nickname']=$uRow['nickname'];
+			if($uRow['sex']==1){
+				$listArr[$key]['sex']='男';
+			}else{
+				$listArr[$key]['sex']='女';
+			}
 			//是否可看手机号
 			if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
 			//距离处理
@@ -178,9 +188,9 @@ if($_REQUEST['a']=='sign_js'){
 		$model->add($taskData);
 		die('suc');
 	}else{
-		$listArr=$signModel->where("is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
+		$listArr=$signModel->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
 		//应结算人数
-		$listRow=$signModel->field("count(*) as countnum")->where("is_qd=1 and tid=".$_GET['tid'])->dataRow();
+		$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->dataRow();
 		$smarty->assign('countnum',$listRow['countnum']);
 		
 		if($listArr){
@@ -280,9 +290,9 @@ if($_REQUEST['a']=='sign_qd'){
 		die('suc');
 	}else{
 		$listArr=$signModel->where("is_valid=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
-		//应到人数
-		$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and tid=".$_GET['tid'])->dataRow();
-		$smarty->assign('countnum',$listRow['countnum']);
+		//实到人数
+		$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->dataRow();
+		$smarty->assign('fact_qd_num',$listRow['countnum']);
 		
 		if($listArr){
 			foreach($listArr as $key=>$value){

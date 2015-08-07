@@ -35,7 +35,7 @@
 <body>
 <div class="bm5041">
 	<{if $list}>
-    <p class="bm5041_tit">应到<{$countnum}>人</p>
+    <p class="bm5041_tit">实到<span id="fact_qd_num"><{$fact_qd_num}></span>人</p>
     <div class="bm5041_con">
         <form action="" id='meminfo'>
 			<{foreach from=$list item=v}>
@@ -51,7 +51,6 @@
 			<{/foreach}>
         </form>
     </div>
-	<!-- <div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div> -->
 	<div class="register_end" onclick="save();">确认</div>
 	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的</div>
 	<{/if}>
@@ -77,8 +76,8 @@ function save(){
 		res=jQuery.trim(res);
 		if(res=='suc'){
 			alert('确认成功');
-			$('.bm5041_con_li').removeClass('redColor')
-			//window.location.href='index.php?m=task_company&a=sign_mid&tid=<{$smarty.get.tid}>';
+			//$('.bm5041_con_li').removeClass('redColor');
+			window.location.reload();
 		}else if(res=='err'){
 			alert('确认失败');
 		}
@@ -173,7 +172,7 @@ var pageNum=1;
 var page_ajax=true;
 $(document).ready(function(){
     $(window).scroll(function(){
-        var bot = 50; //bot是底部距离的高度
+        var bot = 150; //bot是底部距离的高度
         if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
 			if(page_ajax){
 				page_ajax=false;

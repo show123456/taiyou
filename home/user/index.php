@@ -168,6 +168,19 @@
 	if($_GET['nicheng']) $condition[]=" nicheng like '%".common_pg('nicheng')."%' ";
 	if($_GET['username']) $condition[]=" username = '".common_pg('username')."' ";
 	if($_GET['cardnum']) $condition[]=" cardnum = '".common_pg('cardnum')."' ";
+	//搜索微信昵称
+	if($_GET['wx_nickname']){
+		$memberArr=D('member')->where("nickname='".$_GET['wx_nickname']."'")->dataArr();
+		if($memberArr){
+			$fromuserArr=array();
+			foreach($memberArr as $mv){
+				$fromuserArr[]=$mv['fromuser'];
+			}
+			$condition[]=" fromuser in ('".implode("','",$fromuserArr)."') ";
+		}else{
+			$condition[]=" fromuser='no' ";
+		}
+	}
 	if($_GET['is_see']=='1'){
 		$condition[]=" is_see=1 ";
 	}elseif($_GET['is_see']=='2'){
