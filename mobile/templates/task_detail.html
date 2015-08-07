@@ -151,7 +151,7 @@
 		<div class="title">已报名人员<span style="color:#888;font-weight:normal;">（<{$signNum|default:'0'}>人）</span></div>
 		<div class="discuss_list">
 		<{foreach from=$signList item=v}>
-			<div class="user_icon" style="width:40px;height:60px;border:0;">
+			<div class="user_icon" onclick="pic_del_sign('<{$v.uid}>','<{$v.nicheng}>',this)" style="width:40px;height:60px;border:0;">
 				<img src="<{$v.head_pic|default:'images/men_icon.gif'}>" style="width:40px;height:40px;" />
 				<span style="font-size:12px;px;display:inline-block;width:100%;text-align:center;"><{$v.nicheng}></span>
 			</div>
@@ -416,7 +416,7 @@ function morePic(obj){
 			}else{
 				var goodsStr='';
 				$.each(res,function(i,item){
-					goodsStr+='<div class="user_icon" style="width:40px;height:60px;border:0;"><img src="'+item.head_pic+'" style="width:40px;height:40px;"/><span style="font-size:12px;px;display:inline-block;width:100%;text-align:center;">'+item.nicheng+'</span></div>';
+					goodsStr+='<div class="user_icon" onclick="pic_del_sign(\''+item.uid+'\',\''+item.nicheng+'\',this)" style="width:40px;height:60px;border:0;"><img src="'+item.head_pic+'" style="width:40px;height:40px;"/><span style="font-size:12px;px;display:inline-block;width:100%;text-align:center;">'+item.nicheng+'</span></div>';
 				})
 				$(obj).before(goodsStr);
 			}
@@ -446,6 +446,22 @@ function alert_info(id){
 			res=$.trim(res);
 			if(res!='err') alert(res);
 		})
+	}
+}
+//点击头像删除报名
+function pic_del_sign(uid,nicheng,obj){
+	if('<{$userRow.id}>'=='1'){
+	if(confirm('确定要取消'+nicheng+'的报名啊')){
+		$.get("index.php?m=task&a=cancel_sign&tid=<{$smarty.get.id}>&uid="+uid,function(res){
+			res=$.trim(res);
+			if(res=='suc'){
+				alert('操作成功');
+				$(obj).remove();
+			}else{
+				alert('操作失败');
+			}
+		});
+	}
 	}
 }
 </script>

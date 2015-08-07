@@ -111,6 +111,12 @@ if($_REQUEST['a']=='detail'){
 	strtotime($vo['start_time'].' '.$vo['start_hour'].':00') > time() ? $out_date=0 : $out_date=1;
 	$smarty->assign('out_date',$out_date);
 	$smarty->assign('vo',$vo);
+	//当前角色
+	if($_SESSION['tyuser']){
+		$userExtModel=D('sub_user_ext');
+		$userExtRow=$userExtModel->where("uid='".$userRow['id']."'")->dataRow();
+		$smarty->assign('userExtRow',$userExtRow);
+	}
 	$smarty->setLayout('')->setTpl('mobile/templates/task_detail.html')->display();die;
 }
 if($_REQUEST['a']=='detail_ajax'){
@@ -373,22 +379,29 @@ if($_REQUEST['a']=='ajax_reply'){
 
 if($_REQUEST['a']=='cancel_sign'){
 	$tid=$_GET['tid'];
-	$uid=$userRow['id'];
+	if($_GET['uid']){
+		$uid=$_GET['uid'];
+	}else{
+		$uid=$userRow['id'];
+	}
 	$taskRow=$model->find($tid);
 	if($taskRow['is_js']==1){
 		die('no');
 	}else{
-		$model->query("delete from sub_sign where tid=$tid and uid=$uid limit 1");
-		//返还申请费
-		if($taskRow['sq_fee']>0){
-			//用户金额增加
-			$model->query("update sub_user set money = money + ".$taskRow['sq_fee']." where id='".$userRow['id']."'");
-			//写金额日志
-			$data1['info']['type']=5;
-			$data1['info']['uid']=$userRow['id'];
-			$data1['info']['money']=$taskRow['sq_fee'];
-			$data1['info']['desc']=$tid;
-			D('sub_money_log')->add($data1);
+		if($tid && $uid){
+			$model->query("delete from sub_sign where tid='{$tid}' and uid='{$uid}' limit 1");
+			//返还申请费
+			if($taskRow['sq_fee']>0){
+				//用户金额增加
+				$model->query("update sub_user set money = money + ".$taskRow['sq_fee']." where id='".$uid."'");
+				//写金额日志
+				$data1['info']['type']=5;
+				$data1['info']['uid']=$uid;
+				$data1['info']['money']=$taskRow['sq_fee'];
+				$data1['info']['desc']=$tid;
+				D('sub_money_log')->add($data1);
+			}
+			die('suc');
 		}
 	}
 }
