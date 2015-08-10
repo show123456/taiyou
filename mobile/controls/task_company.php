@@ -1,5 +1,6 @@
 <?php
 $model=new Model_Subtable('sub_task');
+$assignModel=D('sub_assign');
 //企业的历史发布
 if($_REQUEST['a']=='index'){
 	$pageSize=10;//页大小
@@ -95,7 +96,7 @@ if($_REQUEST['a']=='sign_index'){
 					$listArr[$key]['sex']='女';
 				}
 				//是否可看手机号
-				if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
+				//if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
 				//距离处理
 				$listArr[$key]['distance'] > 500 ? $listArr[$key]['distance']='未知' : $listArr[$key]['distance']=$listArr[$key]['distance'].'km';
 				//序号处理
@@ -129,7 +130,7 @@ if($_REQUEST['a']=='sign_index_ajax'){
 				$listArr[$key]['sex']='女';
 			}
 			//是否可看手机号
-			if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
+			//if($userRow['is_see']==0) $listArr[$key]['username']=substr($listArr[$key]['username'],0,3).'***'.substr($listArr[$key]['username'],-4);
 			//距离处理
 			$listArr[$key]['distance'] > 500 ? $listArr[$key]['distance']='未知' : $listArr[$key]['distance']=$listArr[$key]['distance'].'km';
 			//序号处理
@@ -188,11 +189,70 @@ if($_REQUEST['a']=='sign_js'){
 		$model->add($taskData);
 		die('suc');
 	}else{
-		$listArr=$signModel->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
-		//应结算人数
-		$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->dataRow();
-		$smarty->assign('countnum',$listRow['countnum']);
-		
+		$assignRow=$assignModel->where("tid='".$_GET['tid']."'")->dataArr();
+		//若为分拨任务
+		if($assignRow){
+			$listArr=$signModel->where("is_js=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
+			//应结算人数
+			$listRow=$signModel->field("count(*) as countnum")->where("is_js=1 and tid=".$_GET['tid'])->dataRow();
+			$smarty->assign('countnum',$listRow['countnum']);
+			
+			if($listArr){
+				foreach($listArr as $key=>$value){
+					//从快照中获取用户信息
+					$value['user_json'] ? $uRow=unserialize($value['user_json']) : $uRow=$userModel->find($value['uid']);
+					
+					$listArr[$key]['username']=$uRow['username'];
+					$listArr[$key]['nickname']=$uRow['nickname'];
+					$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
+					//是否可看手机号
+					//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+					//序号处理
+					$listArr[$key]['xuhao']=$key+1;
+					//督导信息
+					$dudaoRow=$userModel->field("id,username,nickname")->where("id='".$value['dudao_uid']."'")->dataRow();
+					$listArr[$key]['dudao_username']=$dudaoRow['username'];
+					$listArr[$key]['dudao_nickname']=$dudaoRow['nickname'];
+				}
+			}else{
+				$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+			}
+			$smarty->assign('list',$listArr);
+			$smarty->setLayout('')->setTpl('mobile/templates/sign_js_new.html')->display();die;
+		}else{
+			$listArr=$signModel->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit('30')->dataArr();
+			//应结算人数
+			$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->dataRow();
+			$smarty->assign('countnum',$listRow['countnum']);
+			
+			if($listArr){
+				foreach($listArr as $key=>$value){
+					//从快照中获取用户信息
+					$value['user_json'] ? $uRow=unserialize($value['user_json']) : $uRow=$userModel->find($value['uid']);
+					
+					$listArr[$key]['username']=$uRow['username'];
+					$listArr[$key]['nickname']=$uRow['nickname'];
+					$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
+					//是否可看手机号
+					//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+					//序号处理
+					$listArr[$key]['xuhao']=$key+1;
+				}
+			}else{
+				$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+			}
+			$smarty->assign('list',$listArr);
+			$smarty->setLayout('')->setTpl('mobile/templates/sign_js.html')->display();die;
+		}
+	}
+}
+if($_REQUEST['a']=='sign_js_ajax'){
+	$signModel=new Model_Subtable('sub_sign');
+	$pageSize=30;$p=$_GET['p'];$limitStr = ($p-1)*$pageSize.','.$pageSize;
+	$assignRow=$assignModel->where("tid='".$_GET['tid']."'")->dataArr();
+	//若为分拨任务
+	if($assignRow){
+		$listArr=$signModel->where("is_js=1 and tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
 		if($listArr){
 			foreach($listArr as $key=>$value){
 				//从快照中获取用户信息
@@ -202,37 +262,37 @@ if($_REQUEST['a']=='sign_js'){
 				$listArr[$key]['nickname']=$uRow['nickname'];
 				$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
 				//是否可看手机号
-				if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+				//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
 				//序号处理
-				$listArr[$key]['xuhao']=$key+1;
+				$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
+				//督导信息
+				$dudaoRow=$userModel->field("id,username,nickname")->where("id='".$value['dudao_uid']."'")->dataRow();
+				$listArr[$key]['dudao_username']=$dudaoRow['username'];
+				$listArr[$key]['dudao_nickname']=$dudaoRow['nickname'];
 			}
+			echo json_encode($listArr);die;
 		}else{
-			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+			echo json_encode('err');die;
 		}
-		$smarty->assign('list',$listArr);
-		$smarty->setLayout('')->setTpl('mobile/templates/sign_js.html')->display();die;
-	}
-}
-if($_REQUEST['a']=='sign_js_ajax'){
-	$signModel=new Model_Subtable('sub_sign');
-	$pageSize=30;$p=$_GET['p'];$limitStr = ($p-1)*$pageSize.','.$pageSize;
-	$listArr=$signModel->where("is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
-	if($listArr){
-		foreach($listArr as $key=>$value){
-			//从快照中获取用户信息
-			$value['user_json'] ? $uRow=unserialize($value['user_json']) : $uRow=$userModel->find($value['uid']);
-				
-			$listArr[$key]['username']=$uRow['username'];
-			$listArr[$key]['nickname']=$uRow['nickname'];
-			$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
-			//是否可看手机号
-			if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
-			//序号处理
-			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
-		}
-		echo json_encode($listArr);die;
 	}else{
-		echo json_encode('err');die;
+		$listArr=$signModel->where("is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
+		if($listArr){
+			foreach($listArr as $key=>$value){
+				//从快照中获取用户信息
+				$value['user_json'] ? $uRow=unserialize($value['user_json']) : $uRow=$userModel->find($value['uid']);
+					
+				$listArr[$key]['username']=$uRow['username'];
+				$listArr[$key]['nickname']=$uRow['nickname'];
+				$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
+				//是否可看手机号
+				//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+				//序号处理
+				$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
+			}
+			echo json_encode($listArr);die;
+		}else{
+			echo json_encode('err');die;
+		}
 	}
 }
 //ajax是否正常发放
@@ -266,6 +326,16 @@ if($_REQUEST['a']=='sign_mid'){
 		$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
 	}else{
 		$smarty->assign('tid',$_GET['tid']);
+		//督导是否全部提报
+		$assignModel=D('sub_assign');
+		$assignRow=$assignModel->where("tid='".$_GET['tid']."'")->dataArr();
+		$assignRow1=$assignModel->where("tid='".$_GET['tid']."' and isnull(final_pic)")->dataRow();
+		if($assignRow){
+			$smarty->assign('is_fb',1);//属于分拨任务
+		}
+		if($assignRow && empty($assignRow1)){
+			$smarty->assign('is_tb',1);
+		}
 		$smarty->setLayout('')->setTpl('mobile/templates/sign_mid.html')->display();die;
 	}
 }
@@ -303,7 +373,7 @@ if($_REQUEST['a']=='sign_qd'){
 				$listArr[$key]['nickname']=$uRow['nickname'];
 				$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
 				//是否可看手机号
-				if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+				//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
 				//序号处理
 				$listArr[$key]['xuhao']=$key+1;
 			}
@@ -325,7 +395,7 @@ if($_REQUEST['a']=='sign_qd_ajax'){
 			$listArr[$key]['nickname']=$uRow['nickname'];
 			$uRow['sex']==1 ? $listArr[$key]['sex']='男' : $listArr[$key]['sex']='女';
 			//是否可看手机号
-			if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
+			//if($userRow['is_see']==0) $listArr[$key]['username']=substr($uRow['username'],0,3).'***'.substr($uRow['username'],-4);
 			//序号处理
 			$listArr[$key]['xuhao']=($p-1)*$pageSize+$key+1;
 		}
