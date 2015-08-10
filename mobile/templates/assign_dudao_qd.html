@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>签到管理</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="cleartype" content="on">
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/global.css"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<script src="js/jquery.min.js"></script>
+    <style>
+	.bm5041{width:100%;height: auto;overflow-x: hidden;}
+	.bm5041_tit{font-size:1em;color:#990000;height:1.5em;line-height:1.5em;text-align: center;
+	-webkit-margin-before:0.5em;-webkit-margin-after:0.5em;}
+	.bm5041_con{width:98%;height: auto;overflow: hidden;margin:0 auto;text-align: center;}
+	.bm5041_con_li{width: 100%;height: 1.8em;line-height: 1.8em;font-size: 0.9em;border-bottom: 1px solid #CDCDCD;margin-top:5px;margin-bottom:15px;padding-bottom:15px;height: 1.5em;
+	line-height: 1.5em;font-size:1em;text-align: center;color:#323232;}
+	.bm5041_con_li div{float:left;}
+	.bm5041_con_li_1{width:25%;margin-left:2%;}
+	.bm5041_con_li_2{width:10%;}
+	.bm5041_con_li_3{width:40%;}
+	.bm5041_con_li_4{width:20%;}
+	.bm5041_con_li_5{width:15%;}
+	.bm5041_con_li_6{width:15%;margin-top:5px;height:1.5rem;line-height:1.5rem;}
+	.refuceBtn{background-color:#aaa;}
+	.bm5041_con_sub{border-radius: 5px;font-weight:bold;width:30%;  height: 2em;
+	line-height: 2em;text-align: center;  border: 1px solid #009DD9;
+	background: #009DD9;color:#fff;font-size: 1em;margin:1em auto;}
+	.bm5041_con_li_6 img{width:100%;}
+	.register_end{height:35px;line-height:35px;font-size:16px;width:90%;margin-top:5px;}
+	.redColor{color:red;}
+	#qunfa_confirm{width:100px;height:35px;line-height:35px;color:#fff;margin-top:10px;
+    border-radius:5px;background-color:#01B4EC;text-align:center;float:right;margin-right:5%;}
+    </style>
+</head>
+<body>
+<div class="bm5041">
+	<{if $list}>
+    <p class="bm5041_tit">实到<span id="fact_qd_num"></span>人</p>
+    <div class="bm5041_con">
+        <form action="" id='meminfo'>
+			<{foreach from=$list item=v}>
+            <div class="bm5041_con_li <{if $v.is_qd == '0'}>redColor<{/if}>">
+                <div class="bm5041_con_li_1"><{$v.xuhao}>-<{$v.nickname}></div>
+                <div class="bm5041_con_li_2"><{$v.sex}></div>
+                <div class="bm5041_con_li_3"><a href="tel:<{$v.username}>"><{$v.username}></a></div>
+				<div class="bm5041_con_li_6">
+					<img onclick="refuse(this);" src="images/qd_<{if $v.is_qd == '2' }>off<{else}>on<{/if}>.png" />
+					<input type="hidden" name="info[qd_<{$v.id}>]" value='<{$v.is_qd}>' class="qd_input" />
+				</div>
+            </div>
+			<{/foreach}>
+        </form>
+    </div>
+	<div class="register_end" onclick="save();">确认</div>
+	<div style="color:#777;text-align:center;"><span style='color:#323232'>黑色</span>代表已经确认过的，<span style='color:red'>红色</span>代表待确认的<br />确认之后才可以追加报名</div>
+	<{/if}>
+	<div style="height:10px;"></div>
+	<div class="register_end" id="addSign" style="height:35px;line-height:35px;font-size:16px;width:90%;">追加报名</div>
+	<div style="height:10px;"></div>
+	<div class="register_end" id="qunfa_btn" onclick="qunfa(this)" style="height:35px;line-height:35px;font-size:16px;width:90%;">群发消息</div>
+	<div id="qunfa_div" style="display:none;" data-status='0'>
+		<textarea id="qunfa_con" style="display:block;width:90%;margin:5px auto;height:100px;resize:none;padding:0.5em 0;"></textarea>
+		<div id="qunfa_confirm">确认</div>
+	</div>
+</div>
+<{include file="footer.html"}>
+<!--弹出层-->
+<div id="fullbg" class="fullbg"></div>
+<div class="box_pop">
+	<input type="text" id="add_sign_phone" placeholder="请输入会员手机账号"/>
+	<div class="db_btn">
+		<div class="ensure">确定</div><div class="cancel">取消</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--弹出层 end-->
+<script type="text/javascript">
+function save(){
+	$.post('index.php?m=task_company&a=sign_qd',$('#meminfo').serialize(),function(res){
+		res=jQuery.trim(res);
+		if(res=='suc'){
+			alert('确认成功');
+			//$('.bm5041_con_li').removeClass('redColor')
+			window.location.reload();
+		}else if(res=='err'){
+			alert('确认失败');
+		}
+	});
+}
+//拒绝报名
+function refuse(obj){
+	if($(obj).next('input').val()=='2'){
+		$(obj).next('input').val('1');
+		$(obj).attr('src','images/qd_on.png');
+	}else{
+		$(obj).next('input').val('2');
+		$(obj).attr('src','images/qd_off.png');
+	}
+}
+
+function qunfa(obj){
+	if($('#qunfa_div').attr('data-status')=='0'){
+		$('#qunfa_div').css('display','block').attr('data-status','1');
+		$(obj).text('关闭');
+	}else{
+		$('#qunfa_div').css('display','none').attr('data-status','0');
+		$(obj).text('群发消息');
+		$('#qunfa_div textarea').val('');
+	}
+}
+$(function(){
+	//追加报名
+	var bh = $("body").height()*1.2; 
+	var bw = $("body").width(); 
+	$("#addSign").click(function(){
+		//是否确认
+		if($('.redColor').length > 0){
+			alert('请先点击‘确认’按钮');return;
+		}
+		//计算我的带队人数与实际非拒绝报名人数的差值
+		var dd_num=parseInt('<{$aRow.num}>');//带队人数
+		var input_length=$('.qd_input').length;
+		var fact_num=0;
+		for(var i=0;i<input_length;i++){
+			if(parseInt($('.qd_input').eq(i).val()) != 2) fact_num++;
+		}
+		if(dd_num-fact_num <= 0){
+			alert('您没有追加的名额');return;
+		}
+		
+		$(".fullbg").css({height:bh,width:bw,display:"block"});
+		$(".box_pop").show();
+	});
+	$(".ensure").click(function(){
+		var add_phone=$('#add_sign_phone').val();
+		if(!isMobil(add_phone)){
+			alert("请填写正确的手机账号");return;
+		}
+		$.get('index.php?m=assign&a=sign_zj&tid=<{$aRow.tid}>&phone='+add_phone+'&dudao_uid=<{$userRow.id}>',function(res){
+			res=jQuery.trim(res);
+			if(res=='no'){
+				alert('该账号不存在或信息不完善');
+			}else if(res=='ybm'){
+				alert('已申请过该职位');
+			}else if(res=='chongfu'){
+				alert('该工作日已报名了其它职位！');
+			}else if(res=='suc'){
+				alert('追加成功');
+				window.location.reload();
+			}else if(res=='err'){
+				alert('追加失败！');
+			}
+			$('#add_sign_phone').val('');
+		})
+		$(".fullbg").hide();
+		$(".box_pop").hide(); 
+	});
+	$(".cancel").click(function(){
+		$(".fullbg").hide();
+		$(".box_pop").hide(); 
+	});
+	//实到人数
+	var fact_qd_num=0;
+	for(var i=0;i<$('.qd_input').length;i++){
+		if($('.qd_input').eq(i).val()=='1') fact_qd_num++;
+	}
+	$('#fact_qd_num').text(fact_qd_num);
+	//群发消息
+	$('#qunfa_confirm').click(function(){
+		if($('.redColor').length > 0){
+			alert('您还未确认所有的签到人员');return;
+		}
+		var qunfa_con=$('#qunfa_con').val();
+		if(qunfa_con==''){
+			alert('内容不能为空');return;
+		}
+		$('#loading').show();
+		$.post('index.php?m=assign&a=dudao_qd_qunfa',{aid:"<{$smarty.get.aid}>",content:qunfa_con},function(){
+			$('#loading').hide();
+			alert('发送成功');
+			$('#qunfa_div').css('display','none').attr('data-status','0');
+			$('#qunfa_btn').text('群发消息');
+			$('#qunfa_div textarea').val('');
+		})
+	})
+})
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body>
+</html>

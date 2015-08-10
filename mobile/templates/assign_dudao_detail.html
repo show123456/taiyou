@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>任务分拨-详情</title>
+<{include file="header.html"}>
+</head>
+<style type="text/css">
+.discuss .w_discuss{float:right;margin-right:4%;color:#666;font-weight:normal;}
+.discuss .w_discuss span{color:#01b4ec;margin-right:3px;}
+.discuss .discuss_btn{width:100px;height:35px;line-height:35px;color:#fff;border-radius: 5px;background-color: #01B4EC; text-align:center;float:right;margin-bottom:5px;margin-right:2%;}
+.register_end{height:35px;line-height:35px;font-size:16px;width:90%;}
+.add_edit_div{background-color:#01B4EC;width:100%;height:25px;line-height:25px;font-size:14px;color:#fff;}
+.add_edit_div a{display:block;width:48%;text-align:center;color:#fff;height:25px;line-height:25px;}
+#atName{font-size:14px;color:#888;padding-left:5px;display:none;}
+</style>
+<body>
+<div class="main">  
+	<div class="job_detail">
+		<div class="item_list">
+			<div class="list_title">
+				<div class="job_title"><{$task_row.title}></div>
+				<div class="clear" style="height:10px;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="job_info">
+		<div class="info_list">
+			<p style="color:red;">工资待遇：</p><span><{$task_row.money}>元</span>
+			<div class="clear_3"></div>
+		</div>
+		<div class="info_list">
+			<p style="color:red;">结算方式：</p>
+			<span><{if $task_row.pay_type==1}>现金日结<{else}>转账日结<{/if}></span>
+			<div class="clear_3"></div>
+		</div>
+		<div class="info_list">
+			<p>工作时间：</p>
+			<span><{$vo.work_date}></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>带队人数：</p>
+			<span><{$vo.num}>人</span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p style="color:red;">集合时间：</p>
+			<span><{$vo.dudao_jihe_time}></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>行动路线图：</p>
+			<span><a href="index.php?m=assign&a=pic&aid=<{$vo.id}>" style="color:#01B4EC;">查看</a></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>文字说明：</p>
+			<div class='clear'></div>
+			<span style="text-indent:2em;float:none;"><{$vo.pic_text}></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>注意事项：</p>
+			<div class='clear'></div>
+			<span style="text-indent:2em;float:none;"><{$vo.notice}></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>工作重点：</p>
+			<div class='clear'></div>
+			<span style="text-indent:2em;float:none;"><{$vo.work_key}></span>
+			<div class="clear_3"></div>			
+		</div>
+		<div class="info_list">
+			<p>集合时间&地点：</p>
+			<div class='clear'></div>
+			<span style="text-indent:2em;float:none;"><{$vo.jihe}></span>
+			<div class="clear_3"></div>			
+		</div>
+	</div>
+	<{if $task_row.jingli_queren==0}>
+	<div class="register_end" onclick="window.location.href='index.php?m=assign&a=dudao_qd&aid=<{$vo.id}>'">签到管理</div>
+	<div style="clear:both;height:3px;"></div>
+	<div class="register_end" onclick="window.location.href='index.php?m=assign&a=dudao_js&aid=<{$vo.id}>'">结束提报</div>
+	<div style="clear:both;"></div>
+	<{/if}>
+</div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+</script>
+</body>
+</html>

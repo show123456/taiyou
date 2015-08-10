@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>任务分拨</title>
+<{include file="header.html"}>
+<link rel="stylesheet" type="text/css" href="css/assign.css"/>
+</head>
+<body>
+<form action="index.php?m=assign&a=main_save" id="meminfo">
+<input type="hidden" name="tid" value="<{$smarty.get.tid}>" />
+<div class="main">  
+	<div class="Task_title">
+		<b><{$vo.title}>-<{$vo.num}>人</b>
+	</div>
+	<!-- <div class="team">分组：<input type="text" id='group_num' />组</div> -->
+	<{if $list}>
+	<{foreach from=$list item='lv'}>
+	<div class="task_group">
+		<input type="hidden" name="id<{$lv.xuhao}>" value="<{$lv.id}>" />
+		<div class="form_g_0715">第<b class="order_num"><{$lv.xuhao}></b>组</div>
+		<div class="form_g_0715">
+			<select id="dudao_option" name="dudao_uid<{$lv.xuhao}>">
+				<option>选择督导</option>
+				<{foreach from=$dudao_list item='v'}>
+				<option value='<{$v.uid}>' <{if $v.uid==$lv.dudao_uid}>selected<{/if}> ><{$v.nickname}></option>
+				<{/foreach}>
+			</select>
+		</div>
+		<div class="form_g_0715"><input type="text" class="num_input" onkeyup="num_input_change()" name="num<{$lv.xuhao}>" value="<{$lv.num}>" placeholder="带队人数" /></div>
+		<div class="form_g_0715">
+			<div class="title">指定人员：</div>
+			<div class="choice_btn choice" onclick="chose_zd(<{$lv.xuhao}>)">选择</div>
+			<div class="clear"></div>
+			<ul class="member_list zd_list<{$lv.xuhao}>">
+				<{if $lv.zd_list}>
+				<{foreach from=$lv.zd_list key='zdk' item='zdv'}>
+				<li><{$zdv}><input type="hidden" name="zd<{$lv.xuhao}>[]" value="<{$zdk}>"><div class="close" onclick="$(this).parent().remove();"><img src="images/close.png"></div></li>
+				<{/foreach}>
+				<{/if}>
+			</ul>
+		</div>
+		<div class="form_g_0715">
+			<input type="hidden" name="pic<{$lv.xuhao}>" value="<{$lv.pic}>" class="upload_pic_input<{$lv.xuhao}>" />
+			<div class="title">行动路线：</div>
+			<div class="choice_btn">上传图片<input type="button" onclick="upload_pic(<{$lv.xuhao}>)" /></div>
+			<div class="clear"></div>
+			<img class="upload_demo upload_pic_img<{$lv.xuhao}>" src="../data/image_c/<{$lv.pic}>" style="display:block;" />
+			<textarea name="pic_text<{$lv.xuhao}>" placeholder="文字说明" style="margin-top:10px;"><{$lv.pic_text}></textarea>
+		</div>
+		<div class="form_g_0715"><input type="text" name="dudao_jihe_time<{$lv.xuhao}>" value="<{$lv.dudao_jihe_time}>" placeholder="督导集合时间"></div>
+		<div class="form_g_0715"><textarea name="notice<{$lv.xuhao}>" placeholder="注意事项"><{$lv.notice}></textarea></div>	
+		<div class="form_g_0715"><textarea name="work_key<{$lv.xuhao}>" placeholder="工作重点"><{$lv.work_key}></textarea></div>	
+		<div class="form_g_0715"><textarea name="jihe<{$lv.xuhao}>" placeholder="集合时间&地点"><{$lv.jihe}></textarea></div>
+		<div class="group_hr"></div>
+	</div>
+	<{/foreach}>
+	<{else}>
+	<div class="task_group">
+		<div class="form_g_0715">第<b class="order_num">1</b>组</div>
+		<div class="form_g_0715">
+			<select id="dudao_option" name="dudao_uid1">
+				<option>选择督导</option>
+				<{foreach from=$dudao_list item='v'}>
+				<option value='<{$v.uid}>'><{$v.nickname}></option>
+				<{/foreach}>
+			</select>
+		</div>
+		<div class="form_g_0715"><input type="text" class="num_input" onkeyup="num_input_change()" name="num1" placeholder="带队人数" /></div>
+		<div class="form_g_0715">
+			<div class="title">指定人员：</div>
+			<div class="choice_btn choice" onclick="chose_zd(1)">选择</div>
+			<div class="clear"></div>
+			<ul class="member_list zd_list1"></ul>
+		</div>
+		<div class="form_g_0715">
+			<input type="hidden" name="pic1" class="upload_pic_input1" />
+			<div class="title">行动路线：</div>
+			<div class="choice_btn">上传图片<input type="button" onclick="upload_pic(1)" /></div>
+			<div class="clear"></div>
+			<img class="upload_demo upload_pic_img1" src="" style="display:none;" />
+			<textarea name="pic_text1" placeholder="文字说明" style="margin-top:10px;"></textarea>
+		</div>
+		<div class="form_g_0715"><input type="text" name="dudao_jihe_time1" placeholder="督导集合时间"></div>
+		<div class="form_g_0715"><textarea name="notice1" placeholder="注意事项"></textarea></div>	
+		<div class="form_g_0715"><textarea name="work_key1" placeholder="工作重点"></textarea></div>	
+		<div class="form_g_0715"><textarea name="jihe1" placeholder="集合时间&地点"></textarea></div>
+		<div class="group_hr"></div>
+	</div>
+	<{/if}>
+	<div id="group_btn">
+		<div style="text-align:center;" id="note_div"></div>
+		<div style="clear:both;"></div>
+		<{if $userExtRow.group_id==3}>
+		<a><div class="add_group_btn" onclick="add_group()">增加一组</div></a>
+		<a><div class="save_group_btn" onclick="save()">保存</div></a>
+		<{else}>
+		<div class="save_group_btn" onclick="jingli_sh()">审核通过</div>
+		<{/if}>
+		<div style="clear:both;"></div>
+	</div>
+</div>
+</form>
+<{include file="footer.html"}>
+<{include file="upload_pic.html"}>
+<!-- 指定人员弹出层开始 -->
+<div id="TB_overlayBG" class="TB_overlayBG"></div>
+<div class="box"><div class="form_group">
+	<ul>
+		<{foreach from=$zhiding_list item='zv'}>
+		<li><label><input type="checkbox" value="<{$zv.uid}>" data-name='<{$zv.nickname}>' class="zd_input" /><{$zv.nickname}></label></li>
+		<{/foreach}>
+		<div class="clear"></div>
+	</ul>
+	<div class="pop_btn"><div class="cancel">取消</div><div class="submit">确定</div><div class="clear"></div></div>		
+</div></div>
+<!-- 指定人员弹出层结束 -->
+<script type="text/javascript">
+function save(){
+	$('#group_btn').before('<input type="hidden" name="group_number" value="'+$('.task_group').length+'" />');
+	$('#loading').show();
+	$.post('index.php?m=assign&a=main_save',$('#meminfo').serialize(),function(res){
+		$('#loading').hide();
+		res=$.trim(res);
+		if(res=='suc'){
+			alert('保存成功');
+			window.history.go(-1);
+		}else{
+			alert('保存失败');
+		}
+	});
+}
+//增加一组
+function add_group(){
+	var group_num=parseInt($('.task_group').length);
+	group_num++;//所增加组的序号
+	var group_str='';
+	group_str+='<div class="task_group">';
+	group_str+='<div class="form_g_0715">第<b class="order_num">'+group_num+'</b>组<div onclick="remove_group(this)" class="remove_group"><img src="images/close.png"></div></div>';
+	group_str+='<div class="form_g_0715"><select name="dudao_uid'+group_num+'">'+$('#dudao_option').html()+'</select></div>';
+	group_str+='<div class="form_g_0715"><input type="text" class="num_input" onkeyup="num_input_change()" name="num'+group_num+'" placeholder="带队人数" /></div>';
+	group_str+='<div class="form_g_0715"><div class="title">指定人员：</div><div class="choice_btn choice" onclick="chose_zd('+group_num+')">选择</div><div class="clear"></div><ul class="member_list zd_list'+group_num+'"></ul></div>';
+	group_str+='<div class="form_g_0715"><input type="hidden" name="pic'+group_num+'" class="upload_pic_input'+group_num+'" /><div class="title">行动路线：</div><div class="choice_btn">上传图片<input type="button" onclick="upload_pic('+group_num+')" /></div><div class="clear"></div><img class="upload_demo upload_pic_img'+group_num+'" src="" style="display:none;" /><textarea name="pic_text'+group_num+'" placeholder="文字说明" style="margin-top:10px;"></textarea></div>';
+	group_str+='<div class="form_g_0715"><input type="text" name="dudao_jihe_time'+group_num+'" placeholder="督导集合时间"></div>';	
+	group_str+='<div class="form_g_0715"><textarea name="notice'+group_num+'" placeholder="注意事项"></textarea></div>';	
+	group_str+='<div class="form_g_0715"><textarea name="work_key'+group_num+'" placeholder="工作重点"></textarea></div>';	
+	group_str+='<div class="form_g_0715"><textarea name="jihe'+group_num+'" placeholder="集合时间&地点"></textarea></div>';	
+	group_str+='<div class="group_hr"></div></div>';
+	
+	$('#group_btn').before(group_str);
+}
+//删除一个组
+function remove_group(obj){
+	if(confirm('确定要删除这组吗？')){
+		$(obj).parents('.task_group').remove();
+	}
+}
+//选择指定人员
+function chose_zd(order_num){
+	//如果是区主管
+	if('<{$userExtRow.group_id}>'=='3'){
+		active_order=order_num;
+		$("#TB_overlayBG").css({display:"block",height:$(document).height()});$(".box").css({display:"block"});
+		$('.zd_input').prop('checked',false);//清除指定人员弹出层选中状态
+	}
+}
+//填写带队人数时
+function num_input_change(){
+	//已分配组数
+	var gnumber=$('.task_group').length;
+	//已分配人数
+	var person_num_ok=0;
+	for(var i=0;i<gnumber;i++){
+		person_num_ok+=parseInt($('.num_input').eq(i).val());
+	}
+	//剩余人数
+	var person_num_remain=parseInt('<{$vo.num}>')-person_num_ok;
+	var note_div_text="已分配"+gnumber+"组，已分配"+person_num_ok+"人，余"+person_num_remain+"人";
+	$('#note_div').text(note_div_text);
+}
+//经理审核
+function jingli_sh(){
+	if(confirm('已确认无误了吗？')){
+		$.get('index.php?m=assign&a=jingli_sh&tid=<{$smarty.get.tid}>',function(){
+			alert('审核成功');
+			window.history.go(-1);
+		})
+	}
+}
+$(document).ready(function(){
+	$(".cancel").click(function(){
+		$("#TB_overlayBG").css("display","none");$(".box").css("display","none");
+	});	
+	$(".submit").click(function(){
+		$("#TB_overlayBG").css("display","none");$(".box").css("display","none");
+		var zd_length=$('.zd_input:checked').length;var i;var zd_str='';
+		for(i=0;i<zd_length;i++){
+			zd_str+='<li>'+$('.zd_input:checked').eq(i).attr('data-name')+'<input type="hidden" name="zd'+active_order+'[]" value="'+$('.zd_input:checked').eq(i).val()+'"/><div class="close" onclick="$(this).parent().remove();"><img src="images/close.png"></div></li>'
+		}
+		$('.zd_list'+active_order).html(zd_str);
+	});
+	//如果是区经理
+	if('<{$userExtRow.group_id}>'=='4'){
+		$("input").attr("readonly",true);
+		$("textarea").attr("readonly",true);
+	}
+});
+</script>
+</body>
+</html>

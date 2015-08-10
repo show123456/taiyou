@@ -1,0 +1,35 @@
+.Task_title{font-size:16px;text-align:center;padding:8px 0;border-bottom:1px dashed #01B4EC;margin-bottom:10px;}
+.team{line-height:25px;margin:0 auto;text-align:center;margin:8px 0;}
+.team input{width:3rem;height:25px;margin:0 5px 0 0;}
+.task_group{padding:0 3%;margin-top:10px;}
+.form_g_0715{width:100%;overflow:hidden;margin-bottom:10px;font-size:14px;}
+.form_g_0715 select{font-size:14px;padding:0;height:35px;width:100%;margin:0;}
+.form_g_0715 input{font-size:14px;padding:0;height:35px;width:99.6%;margin:0;}
+.form_g_0715 .title{float:left;line-height:35px;}
+.form_g_0715 .choice_btn{height:35px;color:#fff;width:100px;background:#FF9C00;float:left;text-align:center;line-height:35px;position:relative;border-radius:3px;}
+.form_g_0715 input[type=button]{display:block;width:100px;height:35px;position:absolute;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
+.member_list{list-style-type:none;display:block;margin:0 0 15px 0;padding:0;}
+.member_list li{display:block;float:left;padding:5px 12px;border:1px solid #01B4EC;border-radius:3px;margin-right:12px;margin-top:15px;position:relative;}
+.member_list li span{color:#01B4EC;font-size:18px;}
+.member_list .close{height:16px;width:16px;background:#01B4EC;border-radius:50%;position:absolute;right:-6px;top:-8px;text-align:center;}
+.member_list .close img{width:100%;display:block;}
+#TB_overlayBG{background-color:#666;position:absolute;z-index:99;left:0;top:0;display:none;width:100%;height:100%;opacity:0.5;filter: alpha(opacity=50);-moz-opacity: 0.5;}
+.box{width:86%;height:60%;overflow-y:auto;background-color:#fff;position:fixed !important;top:20%;left:50%;border-radius:3px; display:none; z-index:1001; margin-left:-43%;}
+.box .form_group{padding:10px;}
+.form_group ul{list-syle-type:none;display:block;margin:0;padding:0;}
+.form_group ul li{list-syle-type:none;display:block;margin:0 8px 10px 0;padding:0;float:left;}
+.form_group input[type=checkbox]{vertical-align:middle;}
+.form_group label{vertical-align:middle;}
+.pop_btn .cancel{height:30px;line-height:30px;background:#e1e1e1;width:47%;float:right;color:#acacac;font-size:16px;text-align:center;border-radius:3px;border:1px solid #d6d6d6;}
+.pop_btn .submit{height:30px;line-height:30px;background:#01B4EC;width:47%;float:left;color:#fff;font-size:16px;text-align:center;border-radius:3px;border:1px solid #01B4EC;}
+.upload_demo{width:68%;display:block;margin:10px auto;}
+.form_g_0715 textarea{width:99.6%;height:60px;margin-top:0;font-size:14px;}
+.add_group_btn{width:70%;height:30px;line-height:30px;background-color:#FF9C00;text-align:center;
+	color: #fff;letter-spacing:1px;font-size:14px;border-radius:5px;margin:10px auto}
+.save_group_btn{width:70%;height:30px;line-height:30px;background-color:#01B4EC;text-align:center;
+	color: #fff;letter-spacing:1px;font-size:14px;border-radius:5px;margin:10px auto;}
+.group_hr{height:5px;background-color:#fff;clear:both;border-top:2px dashed #01B4EC;}
+.order_num{background-color:#FF9C00;display:inline-block;padding:0 5px;padding-top:2px;border-radius:50%;color:#fff;
+	margin-left:3px;margin-right:3px;}
+#group_btn a{display:block;width:50%;height:40px;float:left;}
+.remove_group{float:right;width:18px;height:18px;}

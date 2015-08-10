@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>任务分拨</title>
+<{include file="header.html"}>
+</head>
+<style type="text/css">
+.no_sign{width:100%; background-color:#fffbe7;}
+.no_sign .other_status{color:#ff6f28;}
+.no_sign .special{background-color:#ff9c00;border:1px solid #dc8700;border-radius:3px;color:#fff;font-size:12px;font-weight:normal;padding:0 3px; margin-left:5px;}
+.city{list-style-type:none;display:block; margin:0; padding:0; height:40px;background-color:#fff;width:100%;color:#666;border-top:1px solid #DDDDDD;}
+.city li{list-style-type:none;display:block;width:32%;border-right:1px solid #DDDDDD; height:40px;float:left;line-height:40px;text-align:center;padding-right:1%;}
+.city li:last-child{border-right:none;}
+.city select{border:none;box-shadow:none;margin-top:0;height:33px;border-radius:0;width:100%;font-size:14px; background:url(images/down.gif) no-repeat right center;}
+.city option{font-size:14px;}
+.history .item_list{display:block;}
+.history .item_list ul{margin:0;}
+.history .item_list .job_adress{padding-top:5px;}
+.history .item_list ul li{height:35px;line-height:35px;}
+.register_end{height:35px;line-height:35px;font-size:16px;width:96%;}
+</style>
+<body>
+<div class="main">
+	<div class="history" style="border-bottom:none;">
+		<div style="font-size:18px;font-weight:bold;color:#666;padding-top:8px;padding-bottom:8px;text-align:center;background-color:#fffbe7;border-bottom:1px dashed #aaa;">出 勤 任 务</div>
+		<div class="no_sign">
+		<{foreach from=$list item=v}>
+			<a href="index.php?m=assign&a=dudao_detail&aid=<{$v.id}>" class="item_list">
+				<div class="list_title">
+					<div class="job_title"><{$v.title}></div>
+					<div class="price">&nbsp;&nbsp;</div>
+					<div class="clear"></div>
+				</div>
+				<div class="job_adress">工作时间：<{$v.work_date}>
+					<div style="float:right;margin-right:10px;">
+						<{if $v.final_pic}>
+							<span style="color:#01B4EC;">已提报</span>
+						<{else}>
+							<span style="color:#ff6f28;">未提报</span>
+						<{/if}>
+					</div>
+				</div>
+			</a>
+		<{/foreach}>
+		</div>
+	</div>
+</div>
+<{include file="footer.html"}>
+</body>
+</html>

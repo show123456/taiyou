@@ -1,0 +1,34 @@
+<div style="visibility:hidden;">
+	<iframe name='img-frame' id="img-frame" style="visibility:hidden;height:1px"></iframe>
+	<form id="img-form" action="upload_road_img.php" encType="multipart/form-data" method="post" target="img-frame">
+		<input type="file" name="imgfile" value="" id="img-file" onchange="changeValImg()"/>
+	</form>
+</div>
+<script type="text/javascript">
+var active_order;//处于活跃状态的序号（全局变量）
+function upload_pic(order_num){
+	active_order=order_num;
+	$('#img-file').click();
+}
+$(document).ready(function(){
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["img-frame"].document.body.innerText;}
+    	try{
+			$('#loading').hide();
+			var result = $.parseJSON(html);
+			if(result.success==1){
+				$(".upload_pic_img"+active_order).attr('src',"/data/image_c/"+result.data.path);
+				$(".upload_pic_img"+active_order).css('display','block');
+				$(".upload_pic_input"+active_order).val(result.data.path);
+			}else{
+				alert("照片太大或其他错误");
+			}
+    	}catch(e){}
+    });
+})
+function changeValImg(){
+	$('#loading').show();
+	$('#img-form').submit();
+}
+</script>

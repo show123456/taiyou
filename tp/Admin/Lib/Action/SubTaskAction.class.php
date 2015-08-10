@@ -88,6 +88,47 @@ class SubTaskAction extends CommonAction{
 		$this->display('see');
 	}
 	
+	//任务分拨
+	public function daily(){
+		I('get.start_date') ? $start_date=I('get.start_date') : $start_date=date('Y-m-d');
+		I('get.end_date') ? $end_date=I('get.end_date') : $end_date=$start_date;
+		if($start_date==$end_date){
+			$where_str_task="left(work_time,10) = '".$start_date."'";
+		}else{
+			$where_str_task="left(work_time,10) >= '".$start_date."' and left(work_time,10) <= '".$end_date."'";
+		}
+		
+		$list=D('SubTask')->getPager($where_str_task,10,'id asc');
+		//foreach($list['data'] as $k=>$v){
+			
+		//}
+		$this->assign('list',$list);
+		$this->display();
+	}
+	
+	//任务分拨
+	public function detail(){
+		$userModel=M('SubUser');
+		$tid=I('get.tid');
+		$list=M('SubAssign')->where(array('tid'=>$tid))->select();
+		foreach($list as $k=>$v){
+			$dudao_row=$userModel->find($v['dudao_uid']);
+			$list[$k]['dudao_name']=$dudao_row['nickname'];
+			$list[$k]['xuhao']=$k+1;
+			if($v['zd']){
+				$zd_name_arr=array();
+				$zd_arr=explode(',',$v['zd']);
+				$zd_array=$userModel->where(array('id'=>array('in',$zd_arr)))->select();
+				foreach($zd_array as $zv){
+					$zd_name_arr[]=$zv['nickname'];
+				}
+				$list[$k]['zd_name_str']=implode(',',$zd_name_arr);
+			}
+		}
+		$this->assign('list',$list);
+		$this->display();
+	}
+	
 	//数据导出
 	public function daochu(){
 		ini_set('display_errors', FALSE);
@@ -157,6 +198,97 @@ class SubTaskAction extends CommonAction{
 		$objPHPExcel->setActiveSheetIndex(0);
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="'.$taskRow['title'].'.xls"');
+		header('Cache-Control: max-age=0');
+		header('Cache-Control: max-age=1');
+		header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+		header ('Cache-Control: cache, must-revalidate');
+		header ('Pragma: public');
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+		exit;
+	}
+	
+	//任务分拨导出
+	public function daily_daochu(){
+		ini_set('display_errors', FALSE);
+		date_default_timezone_set('Europe/London');
+		if (PHP_SAPI == 'cli') die('This example should only be run from a Web Browser');
+		require_once '../home/task/Classes/PHPExcel.php';
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
+									 ->setLastModifiedBy("Maarten Balliauw")
+									 ->setTitle("Office 2007 XLSX Test Document")
+									 ->setSubject("Office 2007 XLSX Test Document")
+									 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+									 ->setKeywords("office 2007 openxml php")
+									 ->setCategory("Test result file");
+		// Add some data
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(5);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A3', '客户名称')
+					->setCellValue('B3', '人数')
+					->setCellValue('C3', '工作')
+					->setCellValue('D3', '结算方式')
+					->setCellValue('E3', '集合地点')
+					->setCellValue('F3', '工作时间')
+					->setCellValue('G3', '工资')
+					->setCellValue('H3', '备注');
+
+		//数据库操作
+		$model=D($this->moduleName);
+		$assignModel=M('SubAssign');
+		if(I('get.start_date')){
+			$start_date=I('get.start_date');
+			$end_date=I('get.end_date');
+		}else{
+			$start_date=$end_date=date('Y-m-d');
+		}
+		$list=$model->where("left(work_time,10) >= '{$start_date}' and left(work_time,10) >= '{$end_date}'")->select();
+		foreach($list as $k=>$v){
+			$v['pay_type']==1 ? $list[$k]['pay_type_name']='现金日结' : $list[$k]['pay_type_name']='转账日结';
+			/* $assign_arr=$assignModel->where(array('tid'=>$tid))->select();
+			foreach($list as $k=>$v){
+				$dudao_row=$userModel->find($v['dudao_uid']);
+				$list[$k]['dudao_name']=$dudao_row['nickname'];
+				$list[$k]['xuhao']=$k+1;
+				if($v['zd']){
+					$zd_name_arr=array();
+					$zd_arr=explode(',',$v['zd']);
+					$zd_array=$userModel->where(array('id'=>array('in',$zd_arr)))->select();
+					foreach($zd_array as $zv){
+						$zd_name_arr[]=$zv['nickname'];
+					}
+					$list[$k]['zd_name_str']=implode(',',$zd_name_arr);
+				}
+			} */
+		}
+		
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', '任务分拨');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $start_date.'~'.$start_date);
+		foreach($list as $lk=>$lv){
+			$lj=$lk+4;
+			$objPHPExcel->getActiveSheet()->setCellValue('A' . $lj, $lv['company_name'])
+										  ->setCellValue('B' . $lj, $lv['num'])
+										  ->setCellValue('C' . $lj, $lv['title'])
+										  ->setCellValue('D' . $lj, $lv['pay_type_name'])
+										  ->setCellValueExplicit('E' . $lj, $lv['jihe_address'])
+										  ->setCellValue('F' . $lj, substr($lv['work_time'],0,10))
+										  ->setCellValue('G' . $lj, $lv['money'])
+										  ->setCellValue('H' . $lj, '无');
+		}
+											
+		// Rename worksheet
+		$objPHPExcel->getActiveSheet()->setTitle('统计数据');
+		$objPHPExcel->setActiveSheetIndex(0);
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="任务分拨.xls"');
 		header('Cache-Control: max-age=0');
 		header('Cache-Control: max-age=1');
 		header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

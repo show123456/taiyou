@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>每日任务</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<style type="text/css">
+.no_sign{width:100%; background-color:#fffbe7;margin-top:-10px;}
+.no_sign .other_status{color:#ff6f28;}
+.no_sign .special{background-color:#ff9c00;border:1px solid #dc8700;border-radius:3px;color:#fff;font-size:12px;font-weight:normal;padding:0 3px; margin-left:5px;}
+.city{list-style-type:none;display:block; margin:0; padding:0; height:40px;background-color:#fff;width:100%;color:#666;border-top:1px solid #DDDDDD;}
+.city li{list-style-type:none;display:block;width:32%;border-right:1px solid #DDDDDD; height:40px;float:left;line-height:40px;text-align:center;padding-right:1%;}
+.city li:last-child{border-right:none;}
+.city select{border:none;box-shadow:none;margin-top:0;height:33px;border-radius:0;width:100%;font-size:14px; background:url(images/down.gif) no-repeat right center;}
+.city option{font-size:14px;}
+
+.history .item_list ul{margin:0;}
+.history .item_list .job_adress{padding-top:5px;}
+.history .item_list ul li{height:35px;line-height:35px;}
+.register_end{height:35px;line-height:35px;font-size:16px;width:96%;}
+.assign_title{float:left;font-size:16px;font-weight:bold;padding-top:10px;
+	padding-bottom:10px;color:#444;}
+.lq_btn{font-size:14px;float:right;margin-top:5px;margin-right:10px;
+	background-color:#01B4EC;border-radius:3px;color:#fff;padding:1px 8px;}
+</style>
+<body>
+<div class="main" style="background-color:#fffbe7;border-bottom:1px solid #ccc;">
+	<div class="assign_title" style="margin-left:10px;">每日发布的职位:</div>
+	<form action="" name="date_form" method='get'>
+		<input type="hidden" name='m' value='assign' />
+		<input type="hidden" name='a' value='task_index' />
+		<input type="date" placeholder="请选择日期" name="date" value="<{$date}>" style='display:block;width:30%;height:25px;line-height:25px;float:left;margin:5px 10px 10px 10px;'/>
+		<span class="lq_btn" style="float:left;margin-top:8px;" onclick="document.date_form.submit()">查询</span>
+	</form>
+	<div style="clear:both;"></div>
+	<div class="history" style="border-bottom:none;">
+		<div class="no_sign">
+		<{if $list}>
+		<{foreach from=$list item=v}>
+			<div class="item_list">
+				<div class="list_title">
+					<a href="index.php?m=assign&a=main&tid=<{$v.id}>"><div class="job_title"><{$v.title}>-<!-- <{if $v.pay_type==1}>现金<{else}>转账<{/if}>日结- --><{$v.num}>人</div></a>
+					<div class="price">&nbsp;&nbsp;</div>
+					<div class="clear"></div>
+				</div>
+				<div class="job_adress">
+					发布时间:<{$v.addtime|truncate:10:''}>
+					<{if $v.is_dudao==1}><span class="lq_btn" onclick="window.location.href='index.php?m=assign&a=pic_dudao&tid=<{$v.id}>'" style="background-color:#FF9C00">查看照片</span><{/if}>
+					<span class="lq_btn" onclick="window.location.href='index.php?m=task_company&a=sign_mid&tid=<{$v.id}>'">报名管理</span>
+				</div>
+				<div style='clear:both;'></div>
+				<div class="job_adress">
+					<div style="">
+						<{if $v.is_fb==1}>
+							<span style="color:#01B4EC;">已分拨 -</span>
+						<{else}>
+							<span style="color:#ff6f28;">未分拨 -</span>
+						<{/if}>
+						<{if $v.is_qujingli==1}>
+							<span style="color:#01B4EC;">经理已审核 -</span>
+						<{else}>
+							<span style="color:#ff6f28;">经理未审核 -</span>
+						<{/if}>
+						<{if $v.is_dudao==1}>
+							<span style="color:#01B4EC;">督导已提报-</span>
+						<{else}>
+							<span style="color:#ff6f28;">督导未提报-</span>
+						<{/if}>
+						<{if $v.is_js==1}>
+							<span style="color:#01B4EC;">财务已结算</span>
+						<{elseif $v.jingli_queren==1}>
+							<span style="color:#333;">财务结算中</span>
+						<{else}>
+							<span style="color:#ff6f28;">财务未结算</span>
+						<{/if}>
+					</div>
+				</div>
+			</div>
+		<{/foreach}>
+		<{/if}>
+		</div>
+	</div>
+</div>
+<{include file="footer.html"}>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>行动路线图</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+</head>
+<body style="background-color:#eeeeee;">
+<div class="main">
+	<div class="register_end" onclick="window.history.go(-1)" style="width:60px;height:30px;line-height:30px;font-size:15px;margin:8px;">返回</div>
+	<{if $list}>
+	<{foreach from=$list item=v}>
+	<span style="color:#ff6f28"><{$v.nickname}>：</span><br />
+	<img src="../data/image_c/<{$v.final_pic}>" style="min-width:100%;" alt="提报图" /><br />
+	<{/foreach}>
+	<{else}>
+	<img src="../data/image_c/<{$vo.pic}>" style="min-width:100%;" alt="行动路线图" />
+	<{/if}>
+</div>
+<{include file="footer.html"}>
+</body>
+</html>

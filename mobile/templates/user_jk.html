@@ -40,6 +40,8 @@ margin: 0 2%;
 .xjk_tp_p1{height:50px;line-height:50px;color:#fff;font-size:1.5em;text-align:center;}
 .xjk_tp_btm_p1_sp1{height:30px;line-height:30px;padding:0 2%;font-size:14px;}
 .xjk_tp_btm_p1_sp2{color:#FF6632;font-size:25px;padding:10px 2%;}
+.xjk_tp_btm_p1_sp2 b{display:inline-block;color:#fff;background-color:#FF6632;border-radius:5px;
+	font-size:25px;padding:6px 8px;font-size:16px;font-weight:normal;margin-left:20px;}
 .bd_btn{position:absolute; width:19%;height:42px;line-height:42px;color:#fff;background-color:#FF6632;border-radius:5px; text-align:center;right:2%; bottom:1px;}
 
 #cz_input,#tx_input{text-indent:0.5em;width:75%;margin:0 2%;display:block;float:left;}
@@ -55,7 +57,10 @@ margin: 0 2%;
 	</div>
 	<div style="background-color:#fff;">
 		<div class="xjk_tp_btm_p1_sp1">余额：</div>
-		<div class="xjk_tp_btm_p1_sp2"><span style='inline-block;border:2px solid #01B4EC;border-radius:5px;padding-left:10px;padding-right:10px;'><{$userRow.money|default:0}>.00</span></div>
+		<div class="xjk_tp_btm_p1_sp2">
+			<span style='inline-block;border:2px solid #01B4EC;border-radius:5px;padding-left:10px;padding-right:10px;'><{$userRow.money|default:0}>.00</span>
+			<!-- <b>我的账单</b> -->
+		</div>
 	</div>
 	<div>
 		<input id="cz_input" type="text" name="money" value="" placeholder="请输入金额(数值型，单位元)" />
@@ -89,7 +94,7 @@ margin: 0 2%;
 		<div class="tixian" style="width:13%;float:right;margin-right:2%;" onclick="tixian()">提现</div>
 	</div>
 	<div style="height:10px;clear:both;"></div>
-	<div style="font-size:14px;color:#666;text-align:center;">申请提现成功后，将在24小时内转入你的绑定银行账户</div>
+	<div style="font-size:14px;color:#666;text-align:center;width:90%;margin:0 auto;">申请提现成功后，将在24小时内转入你的绑定银行账户，遇节假日顺延至工作日到账</div>
 </div>
 </form>
 <{include file="footer.html"}>

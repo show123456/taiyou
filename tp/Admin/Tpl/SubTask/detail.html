@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+<style type="text/css">
+.imgtable tbody tr{height:50px;}
+/*搜索样式*/
+.toolbar1 li{border:0;}
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;
+	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
+.toolbar1 li b,.see_btn{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+div{font-size:15px;}
+div span{color:#428bca;font-weight:bold;display:inline;font-size:15px;}
+</style>
+</head>
+<body>
+<div class="rightinfo">
+<if condition="$list eq ''">
+<div style="padding:10px;15px;"><span>暂无数据</span></div>
+<else />
+<foreach name="list" item='v'>
+	<div style="padding:10px;15px;">
+		<div style="font-size:17px;"><span>第<{$v.xuhao}>组：</span></div>
+		<div><span>督导：</span><{$v.dudao_name}>&nbsp;&nbsp;&nbsp;带队<{$v.num}>人</div>
+		<div><span>指定人员：</span><{$v.zd_name_str}></div>
+		<div><span>行动路线：</span><button class='see_btn' onclick="see_pic('<{$v.pic}>')">查看</button></div>
+		<div><span>文字说明：</span><{$v.pic_text}></div>
+		<div><span>督导集合时间：</span><{$v.dudao_jihe_time}></div>
+		<div><span>注意事项：</span><{$v.notice}></div>
+		<div><span>工作重点：</span><{$v.work_key}></div>
+		<div><span>集合时间&地点：</span><{$v.jihe}></div>
+		<div><span>提报照片：</span><button class='see_btn' onclick="see_pic('<{$v.final_pic}>')">查看</button></div>
+	</div>
+</foreach>
+</if>
+</div>
+<div id="pic_layer" style="position:absolute;z-index:881213;display:none;background-color:#fff;top:100px;left:300px;width:500px;">
+	<div style="text-align:right;padding:5px;background-color:#ededed;cursor:pointer;" onclick="$(this).parent().hide()">X</div>
+	<div style="clear:both;"></div>
+	<img src="" alt="" style="display:block;width:100%;" />
+</div>
+<script type="text/javascript">
+$(function(){
+	var bodyHeight = document.documentElement.clientHeight;
+	$('#loading').css({height:bodyHeight+'px'});
+})
+//查看图片
+function see_pic(str){
+	$('#pic_layer').show();
+	if(str) $('#pic_layer img').attr('src','../data/image_c/'+str);
+}
+</script>
+</body>
+</html>

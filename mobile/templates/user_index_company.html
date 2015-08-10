@@ -22,7 +22,7 @@
 		<div class="personal_img">
 		<img src="<{if $headPic}><{$headPic}><{else}>images/people.png<{/if}>" style="border:none;" />
 		</div>
-		<p><{$userRow.nickname|default:'匿名'}></p>
+		<p><{$userRow.nickname|default:'匿名'}><{if $userRow.id==1}>-10000号<{/if}></p>
 	</div>
 	<div class="personal_list">
 		<ol>

@@ -34,7 +34,7 @@
 		<div class="personal_img">
 		<img src="<{if $headPic}><{$headPic}><{else}>images/people.png<{/if}>" style="border:none;" />
 		</div>
-		<p><{if $userRow.type==3}>客服-<{/if}><{$userRow.nickname|default:'匿名'}></p>
+		<p><{$userRow.nickname|default:'匿名'}><{if $userExtRow.group_id==2}>-督导<{elseif $userExtRow.group_id==3}>-区主管<{elseif $userExtRow.group_id==4}>-区经理<{/if}></p>
 	</div>
 	<{if $userRow.is_v==1}><img class="vip" src="images/vip.gif"/><{/if}>
 	<!-- 财务界面 -->
@@ -60,24 +60,50 @@
 					<div class="next"><span class="fa fa-chevron-right" ></span></div>
 				</li>
 			</a>
-			<{if $userRow.type==1}>
-			<a href="index.php?m=sign_history&a=index">
-			<li>
-				<div class="list_info">历史报名</div>
-				<div class="next"><span class="fa fa-chevron-right" ></span></div>
-			</li>
-			</a>
-			<a href="javascript:void(0);">
-			<li>
-				<div class="list_info">我的积分&nbsp;&nbsp;&nbsp;<span style="color:#ff7101"><{$userRow.score}></span></div>
-			</li>
-			</a>
-			<a href="index.php?m=user&a=jk">
-			<li>
-				<div class="list_info">我的金库</div>
-				<div class="next"><span class="fa fa-chevron-right" ></span></div>
-			</li>
-			</a>
+			<!-- 如果是区主管或区经理 -->
+			<{if $userExtRow.group_id==3}>
+				<a href="index.php?m=assign&a=task_index">
+				<li>
+					<div class="list_info">任务分拨</div>
+					<div class="next"><span class="fa fa-chevron-right" ></span></div>
+				</li>
+				</a>
+			<{elseif $userExtRow.group_id==4}>
+				<a href="index.php?m=assign&a=task_index">
+				<li>
+					<div class="list_info">任务分拨审核</div>
+					<div class="next"><span class="fa fa-chevron-right" ></span></div>
+				</li>
+				</a>
+			<{else}>
+				<{if $userRow.type==1}>
+				<a href="index.php?m=sign_history&a=index">
+				<li>
+					<div class="list_info">历史报名</div>
+					<div class="next"><span class="fa fa-chevron-right" ></span></div>
+				</li>
+				</a>
+				<a href="javascript:void(0);">
+				<li>
+					<div class="list_info">我的积分&nbsp;&nbsp;&nbsp;<span style="color:#ff7101"><{$userRow.score}></span></div>
+				</li>
+				</a>
+				<a href="index.php?m=user&a=jk">
+				<li>
+					<div class="list_info">我的金库</div>
+					<div class="next"><span class="fa fa-chevron-right" ></span></div>
+				</li>
+				</a>
+				<{/if}>
+			<{/if}>
+			<!-- 如果是督导 -->
+			<{if $userExtRow.group_id == 2}>
+				<a href="index.php?m=assign&a=dudao_index">
+				<li>
+					<div class="list_info">兼职任务</div>
+					<div class="next"><span class="fa fa-chevron-right" ></span></div>
+				</li>
+				</a>
 			<{/if}>
 			<a href="index.php?m=job&a=index_user">
 			<li>
@@ -91,6 +117,9 @@
 				<div class="next"><span class="fa fa-chevron-right" ></span></div>
 			</li>
 			</a>
+			<{if $userExtRow.group_id==2}>
+			<div class="register_end" onclick="chuqin()" style="height:35px;line-height:35px;font-size:16px;width:40%;background-color:#ff7101;">出勤提报</div>
+			<{/if}>
 			<div class="register_end" onclick="logout()" style="height:35px;line-height:35px;font-size:16px;width:90%;background-color:#ff7101;">退出登录</div>
 		</ol>
 	</div>
@@ -127,6 +156,19 @@ function logout(){
 	if(confirm('确定要退出吗？')){
 		$.get('index.php?m=user&a=logout',function(){
 			window.location.href="login.php";
+		})
+	}
+}
+//报出勤
+function chuqin(){
+	if(confirm('你确定明天能出勤吗？')){
+		$.get("index.php?m=assign&a=dudao_attend",function(res){
+			res=$.trim(res);
+			if(res=='err'){
+				alert('您已经报告明天可以出勤');
+			}else{
+				alert(res);
+			}
 		})
 	}
 }

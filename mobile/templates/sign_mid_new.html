@@ -24,16 +24,12 @@
 	<div style="height:10px;"></div>
 	<div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_index&tid=<{$tid}>'" style="height:35px;line-height:35px;font-size:16px;width:90%;">报名管理</div>
 	<div style="height:10px;"></div>
-	<{if $is_fb==1}>
-		<{if $is_tb==1}>
-		<div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_js&tid=<{$tid}>'" style="height:35px;line-height:35px;font-size:16px;width:90%;">结算管理</div>
-		<{else}>
-		<div class="register_end" style="height:35px;line-height:35px;font-size:16px;width:90%;">督导还未全部提报</div>
-		<{/if}>
-	<{else}>
-	<div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_qd&tid=<{$tid}>'" style="height:35px;line-height:35px;font-size:16px;width:90%;">签到管理</div>
-	<div style="height:10px;"></div>
+	<!-- <div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_qd&tid=<{$tid}>'" style="height:35px;line-height:35px;font-size:16px;width:90%;">签到管理</div>
+	<div style="height:10px;"></div> -->
+	<{if $is_tb==1}>
 	<div class="register_end" onclick="window.location.href='index.php?m=task_company&a=sign_js&tid=<{$tid}>'" style="height:35px;line-height:35px;font-size:16px;width:90%;">结算管理</div>
+	<{else}>
+	<div class="register_end" style="height:35px;line-height:35px;font-size:16px;width:90%;">督导还未全部提报</div>
 	<{/if}>
 </div>
 <{include file="footer.html"}>
