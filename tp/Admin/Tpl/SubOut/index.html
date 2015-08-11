@@ -100,7 +100,7 @@
 	</div>
 	<div style="color:red;font-size:16px;font-weight:bold;">
 		<if condition="$sum_row['search'] eq 1">
-			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总充值额为:￥<{$sum_row['sum_money']|default=0}>
+			<{:I('get.start_date')}> ~ <{:I('get.end_date')}>&nbsp;&nbsp;总额:￥<{$sum_row['sum_money']|default=0}>
 			<a href="<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date'),'is_pay'=>I('get.is_pay')))}>">导出到excel</a>
 		</if>
 	</div>

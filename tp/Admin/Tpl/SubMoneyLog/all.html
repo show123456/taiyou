@@ -117,6 +117,14 @@
 			<br />个人充值
 			<br /><a href="<{:U('SubMoneyLog/index',array('start_date'=>$start_date,'end_date'=>$end_date,'type'=>1))}>">￥<{$sum_row['type1']|default=0}></a>
 		</div>
+		<div class="top_div" style="background-color:#01B4EC;">
+			<{$start_date}>
+			<br />至
+			<br /><{$end_date}>
+			<br />累计提现
+			<br /><a href="<{:U('SubOut/index',array('start_date'=>$start_date,'end_date'=>$end_date,'is_pay
+			'=>2))}>">￥<{$sum_row['out_add']|default=0}></a>
+		</div>
 	</if>
 </div>
 <script type="text/javascript">
