@@ -139,6 +139,13 @@ if($_REQUEST['a']=='kf'){
 	$res=$model->add($data);
 	echo $res;die();
 }
+//是否允许提报电话
+if($_REQUEST['a']=='phone'){
+	$data['info'][is_phone]=(int)$_GET['type'];
+	$data['info'][id]=(int)$_GET['id'];
+	$res=$model->add($data);
+	echo $res;die();
+}
 //兼职用户列表
 if($_REQUEST['a']=='sign'){
 	//职位标题

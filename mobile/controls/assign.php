@@ -193,6 +193,7 @@
 		$smarty->assign('aRow',$aRow);
 		//我被指定的非追加的人数
 		$zd_sign_row_my=$signModel->field("count(id) as count_num")->where("is_valid=1 and tid='".$aRow['tid']."' and dudao_uid='".$userRow['id']."' and is_zj=0")->dataRow();
+		
 		//查询其他id较小的督导从即非指定也非追加的人员池里拿走了多少人数
 		$assign_arr=$assignModel->where("tid='".$aRow['tid']."'")->dataArr();
 		$out_num=0;

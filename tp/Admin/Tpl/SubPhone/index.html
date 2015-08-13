@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+<style type="text/css">
+.imgtable tbody tr{height:50px;}
+/*搜索样式*/
+.toolbar1 li{border:0;}
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;
+	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
+.toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+</style>
+</head>
+<body>
+<div class="rightinfo">
+	<form action="" name="searchForm" method="get">
+	<input type="hidden" name='m' value='<{$moduleName}>' />
+	<input type="hidden" name='a' value="<{$actionName}>" />
+	<div class="tools">
+		<ul class="toolbar1"><li>
+			<span>
+				<input type="text" name="title" placeholder="职位标题" value="<{:I('get.title')}>" />
+			</span>
+			<span>
+				<select name="is_important" style="margin-top:0;">
+					<option value="">客户级别</option>
+					<option value="2" <{:$_GET['is_important']==2 ? 'selected' : ''}> >普通</option>
+					<option value="1" <{:$_GET['is_important']==1 ? 'selected' : ''}> >重要</option>
+				</select>
+			</span>
+			<span style="margin-top:0;">
+				日期:
+				<input type="text" class="date_picker" name="date" placeholder="日期" value="<{$date}>" />
+			</span>
+			<b onclick="search()">搜索</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</li>
+		</ul>
+	</div>
+	</form>
+	<table class="imgtable">
+		<thead>
+			<tr>
+				<th>序号</th>
+				<th>手机号</th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>客级别户</th>
+				<th>提报人</th>
+				<th>职位(标题-工作时间)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name="list" item='v'>
+			<tr style="height:25px;">
+				<td><{$v.xuhao }></td>
+				<td><{$v.phone}></td>
+				<td><{$v.name}></td>
+				<td><{:$v['is_sex']==1 ? '男' : '女'}></td>
+				<td><{:$v['is_important']==1 ? '重要' : '普通'}></td>
+				<td><{$v.tjr_name}>-<{$v.tjr_phone}></td>
+				<td><{$v.title}>-<{$v.work_date}></td>
+			</foreach>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+function search(){
+	document.searchForm.submit();
+}
+</script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</body>
+</html>

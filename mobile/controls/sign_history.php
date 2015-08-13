@@ -85,7 +85,7 @@ if($_REQUEST['a']=='index'){
 		
 		$dmodel=new Model_Subtable('s_district');
 		foreach($listArr as $key=>$value){
-			$listArr[$key]['title']=cut_str(deletehtml($value['title']),5);
+			$listArr[$key]['title']=cut_str(deletehtml($value['title']),15);
 			$drow=$dmodel->where("DistrictId='".$value['did']."'")->dataRow();
 			$listArr[$key]['addr']=$drow['DistrictName'];
 			//所属公司
@@ -94,6 +94,7 @@ if($_REQUEST['a']=='index'){
 			//我的报名审核状态
 			$signRow=$signModel->where("tid=".$listArr[$key]['id']." and uid=".$userRow['id'])->dataRow();
 			$listArr[$key]['is_valid']=$signRow['is_valid'];
+			$listArr[$key]['is_qd']=$signRow['is_qd'];
 		}
 	}else{
 		$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
@@ -106,8 +107,12 @@ if($_REQUEST['a']=='index'){
 			echo json_encode('err');die;
 		}
 	}else{
-		$smarty->assign('list',$listArr);
-		$smarty->setLayout('')->setTpl('mobile/templates/sign_history.html')->display();die;
+		if($listArr){
+			$smarty->assign('list',$listArr);
+			$smarty->setLayout('')->setTpl('mobile/templates/sign_history.html')->display();die;
+		}else{
+			$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
+		}
 	}
 }
 

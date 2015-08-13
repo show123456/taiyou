@@ -122,8 +122,7 @@
 			<br />至
 			<br /><{$end_date}>
 			<br />累计提现
-			<br /><a href="<{:U('SubOut/index',array('start_date'=>$start_date,'end_date'=>$end_date,'is_pay
-			'=>2))}>">￥<{$sum_row['out_add']|default=0}></a>
+			<br /><a href="<{:U('SubOut/index',array('is_pay'=>2))}>">￥<{$sum_row['out_add']|default=0}></a>
 		</div>
 	</if>
 </div>

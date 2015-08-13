@@ -42,7 +42,7 @@
         <form action="" id='meminfo'>
 			<{foreach from=$list item=v}>
             <div class="bm5041_con_li <{if $v.is_qd == '0'}>redColor<{/if}>">
-                <div class="bm5041_con_li_1"><{$v.xuhao}>-<{$v.nickname}><{if $v.dudao_uid!=0}><span style="font-size:12px;">(指定)</span><{/if}></div>
+                <div class="bm5041_con_li_1"><{$v.xuhao}>-<{$v.nickname}><{if $v.dudao_uid!=0 && $v.is_zj==0}><span style="font-size:12px;">(指定)</span><{/if}></div>
                 <div class="bm5041_con_li_2"><{$v.sex}></div>
                 <div class="bm5041_con_li_3"><a href="tel:<{$v.username}>"><{$v.username}></a></div>
 				<div class="bm5041_con_li_6">

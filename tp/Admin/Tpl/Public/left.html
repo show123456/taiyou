@@ -79,7 +79,7 @@ $(function(){
 			</li>
 		</ul>
 	</dd>
-	<if condition="$suserSession['type'] eq '1'">
+	<if condition="in_array($suserSession['type'],array(1,4))">
 		<dd>
 			<div class="title">
 				<span><img src="__PUBLIC__/admin/images/leftico03.png" /></span>角色管理
@@ -94,7 +94,7 @@ $(function(){
 			</ul>
 		</dd>
 	</if>
-	<if condition="in_array($suserSession['type'],array(1,2))">
+	<if condition="in_array($suserSession['type'],array(1,2,4))">
 		<dd>
 			<div class="title">
 				<span><img src="__PUBLIC__/admin/images/leftico02.png" /></span>用户模块
@@ -150,6 +150,9 @@ $(function(){
 				</li>
 				<li><cite></cite>
 					<a href="<{:U('SubJobHospital/index')}>" target="rightFrame">疫苗医院</a>
+				</li>
+				<li><cite></cite>
+					<a href="<{:U('SubPhone/index')}>" target="rightFrame">每日电话提报</a>
 				</li>
 			</ul>
 		</dd>

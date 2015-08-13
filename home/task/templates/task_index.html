@@ -10,9 +10,9 @@
 	.sendBtn{padding:1px 2px;border:1px solid #4DA300;cursor:pointer;width:85px;
 	background:none repeat scroll 0% 0% #53B000;border-radius:3px;color:#FFF;margin:0 auto}
 	
-	.kfTypeDiv span{cursor:pointer;}
-	.kfSpan{color:#ccc;}
-	.isKf{color:#428bca;}
+	.kfTypeDiv span,.phone_div span{cursor:pointer;}
+	.kfSpan,.phone_span{color:#ccc;}
+	.isKf,.is_phone{color:#428bca;}
 </style>
 <div class="main-content">
 	<div class='inner'>
@@ -38,6 +38,7 @@
 										<th class="enable">标题-方式-工作时间</th>
 										<th class="enable">报名数</th>
 										<th class="enable">浏览量</th>
+										<th class="enable">提报电话</th>
 										<th class="enable">是否关闭</th>
 										<th class="enable">添加时间</th>
 										<th class="enable">向兼职用户</th>
@@ -52,6 +53,10 @@
 										<td><div><{if $v.uid==1}>(平台)<{else}><span style='color:red'>(企业)</span><{/if}><{$v.title}>-<{if $v.pay_type==1}>现金<{else}><span style='color:red'>转账</span><{/if}>-<{$v.work_time|truncate:10:''}></div></td>
 										<td><div><{$v.countnum}></div></td>
 										<td><div><{$v.see_num}></div></td>
+										<td><div class="phone_div">
+											<span class="phone_span <{if $v.is_phone==1}>is_phone<{/if}>" data-status='1' data-id='<{$v.id}>'>允许</span> | 
+											<span class="phone_span <{if $v.is_phone==0}>is_phone<{/if}>" data-status='0' data-id='<{$v.id}>'>不允许</span>
+										</div></td>
 										<td><div class="kfTypeDiv">
 											<span class="kfSpan <{if $v.is_shut==1}>isKf<{/if}>" data-status='1' data-id='<{$v.id}>'>关闭</span> | 
 											<span class="kfSpan <{if $v.is_shut==0}>isKf<{/if}>" data-status='0' data-id='<{$v.id}>'>开放</span>
@@ -121,6 +126,18 @@ $(document).ready(function(){
 			var kf_type=$(this).attr('data-status');
 			var open_act_id=$(this).attr('data-id');
 			$.get('task.php',{a:'kf',id:open_act_id,type:kf_type},function(res){
+				if(res){
+					window.location.reload();
+				}
+			})
+		}
+	})
+	//是否允许提报电话
+	$('.phone_span').click(function(){
+		if(confirm('确定要执行此操作吗？')){
+			var phone_type=$(this).attr('data-status');
+			var open_act_id=$(this).attr('data-id');
+			$.get('task.php',{a:'phone',id:open_act_id,type:phone_type},function(res){
 				if(res){
 					window.location.reload();
 				}

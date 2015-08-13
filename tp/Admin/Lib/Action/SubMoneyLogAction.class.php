@@ -161,7 +161,7 @@ class SubMoneyLogAction extends CommonAction{
 		$row=M('SubOut')->field("sum(money) as sum_money")->where($where_str2)->find();
 		$sum_row['type2']=$row['sum_money'];
 		//累计未支付的体现
-		$where_str_outadd=" is_pay=0 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$where_str_outadd=" is_pay=0 ";
 		$row=M('SubOut')->field("sum(money) as sum_money")->where($where_str_outadd)->find();
 		$sum_row['out_add']=$row['sum_money'];
 		//系统充值
