@@ -41,10 +41,10 @@
 		<hr /> -->
 		<div id="content_div">
 		<{foreach from=$list item=v}>
-			<div class="item_list" onclick="window.location.href='<{if $v.is_phone==1 && $v.is_qd==1}>index.php?m=phone&a=add&tid=<{else}>index.php?m=task&a=detail&id=<{/if}><{$v.id}>'">
+			<div class="item_list" onclick="window.location.href='index.php?m=task&a=detail&id=<{$v.id}>'">
 				<div class="list_title">
 					<div class="job_title"><{$v.title}></div>
-					<div class="price"><{if $v.is_phone==1 && $v.is_qd==1}>可提报电话<{/if}></div>
+					<div class="price"><{$v.money}>元</div>
 					<div class="clear"></div>
 				</div>
 				<div class="job_adress"><{$v.addr}>
@@ -81,11 +81,7 @@ $(document).ready(function(){
 				}else{
 					var goodsStr='';
 					$.each(res,function(i,item){
-						if(item.is_phone==1 && item.is_qd==1){
-							goodsStr+='<div class="item_list" onclick=\'window.location.href="index.php?m=phone&a=add&tid='+item.id+'"\'><div class="list_title"><div class="job_title">'+item.title+'</div><div class="price">可提报电话</div><div class="clear"></div></div><div class="job_adress">'+item.addr;
-						}else{
-							goodsStr+='<div class="item_list" onclick=\'window.location.href="index.php?m=task&a=detail&id='+item.id+'"\'><div class="list_title"><div class="job_title">'+item.title+'</div><div class="price">'+item.money+'元 </div><div class="clear"></div></div><div class="job_adress">'+item.addr;
-						}
+						goodsStr+='<div class="item_list" onclick=\'window.location.href="index.php?m=task&a=detail&id='+item.id+'"\'><div class="list_title"><div class="job_title">'+item.title+'</div><div class="price">'+item.money+'元 </div><div class="clear"></div></div><div class="job_adress">'+item.addr;
 						if(item.is_valid==0){
 							goodsStr+='<div style="float:right;">审核中</div>';
 						}else if(item.is_valid==1){

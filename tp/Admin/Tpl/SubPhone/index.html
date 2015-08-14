@@ -35,6 +35,9 @@
 	<div class="tools">
 		<ul class="toolbar1"><li>
 			<span>
+				<input type="text" name="username" placeholder="提报人电话" value="<{:I('get.username')}>" />
+			</span>
+			<span>
 				<input type="text" name="title" placeholder="职位标题" value="<{:I('get.title')}>" />
 			</span>
 			<span>
@@ -45,10 +48,15 @@
 				</select>
 			</span>
 			<span style="margin-top:0;">
-				日期:
-				<input type="text" class="date_picker" name="date" placeholder="日期" value="<{$date}>" />
+				开始日期:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
 			</span>
-			<b onclick="search()">搜索</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span style="margin-top:0;">
+				结束日期:
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
+			</span>
+			<b onclick="search()">搜索</b>
+			<b onclick="daochu()">导出到excel</b>
 		</li>
 		</ul>
 	</div>
@@ -62,26 +70,53 @@
 				<th>性别</th>
 				<th>客级别户</th>
 				<th>提报人</th>
-				<th>职位(标题-工作时间)</th>
+				<th>职位标题</th>
+				<th>职位工作时间</th>
+				<th>提报时间</th>
 			</tr>
 		</thead>
 		<tbody>
-			<foreach name="list" item='v'>
+			<foreach name="list['data']" item='v'>
 			<tr style="height:25px;">
 				<td><{$v.xuhao }></td>
 				<td><{$v.phone}></td>
 				<td><{$v.name}></td>
-				<td><{:$v['is_sex']==1 ? '男' : '女'}></td>
+				<td><{:$v['sex']==1 ? '男' : '女'}></td>
 				<td><{:$v['is_important']==1 ? '重要' : '普通'}></td>
 				<td><{$v.tjr_name}>-<{$v.tjr_phone}></td>
-				<td><{$v.title}>-<{$v.work_date}></td>
+				<td><{$v.title}></td>
+				<td><{$v.work_date}></td>
+				<td><{$v.addtime}></td>
 			</foreach>
 		</tbody>
 	</table>
+	<div class="pagin">
+		<ul class="paginList">
+			<{$list['page']}>
+		</ul>
+	</div>
 </div>
 <script type="text/javascript">
 function search(){
+	if($("input[name='start_date']").val()=='' && $("input[name='end_date']").val()!=''){
+		alert_tip('请选择开始日期');return;
+	}
+	if($("input[name='start_date']").val()!='' && $("input[name='end_date']").val()==''){
+		alert_tip('请选择结束日期');return;
+	}
+	var start_date_val=parseInt($("input[name='start_date']").val().replace(/-/g,""));
+	var end_date_val=parseInt($("input[name='end_date']").val().replace(/-/g,""));
+	if(start_date_val > end_date_val){
+		alert_tip('开始日期不能大于结束日期');return;
+	}
 	document.searchForm.submit();
+}
+//导出
+function daochu(){
+	if('<{$Think.get.start_date}>'=='' || '<{$Think.get.end_date}>'==''){
+		alert_tip('请选择开始日期、结束日期，并点击搜索');return;
+	}
+	window.open("<{:U('daochu',array('start_date'=>I('get.start_date'),'end_date'=>I('get.end_date'),'username'=>I('get.username'),'title'=>I('get.title'),'is_important'=>I('get.is_important')))}>");
 }
 </script>
 <!-- 日期插件开始 -->

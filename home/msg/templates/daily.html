@@ -51,8 +51,8 @@ $(function(){
 	var bodyHeight = document.documentElement.clientHeight;
 	$('#loading').css({height:bodyHeight+'px'});
 	
-	var send_content="<{$content}>";
-	if(send_content==''){
+	var send_content="<{$id}>";
+	if('<{$id}>'==''){
 		alert('信息内容不能为空');return;
 	}
 	$('#loading').show();
@@ -61,7 +61,7 @@ $(function(){
 	var time_clock;
 	time_clock=setInterval(function(){
 		var fromuser=$('#info_from span').eq(0).text();
-		$.post('index.php',{content:send_content,fromuser:fromuser});
+		$.post('daily.php',{content:send_content,fromuser:fromuser});
 		$('#info_from span').eq(0).remove();
 		sy_num=parseInt($('#info_from span').length);
 		$('#sy').text(sy_num);

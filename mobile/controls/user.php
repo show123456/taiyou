@@ -79,6 +79,16 @@ if($_REQUEST['a']=='user_index'){
 		$userExtModel=D('sub_user_ext');
 		$userExtRow=$userExtModel->where("uid='".$userRow['id']."'")->dataRow();
 		$smarty->assign('userExtRow',$userExtRow);
+		//今天参加职位情况
+		$taskModel=D('sub_task');
+		$signModel=D('sub_sign');
+		$signRow=$signModel->where("uid='".$userRow['id']."' and is_qd=1 and task_date='".date('Y-m-d')."'")->dataRow();
+		if($signRow){
+			$taskRow=$taskModel->find($signRow['tid']);
+			$smarty->assign('is_phone',$taskRow['is_phone']);
+			$smarty->assign('tid',$signRow['tid']);
+		}
+		
 		$smarty->setLayout('')->setTpl('mobile/templates/user_index_personal.html')->display();die;
 	}
 }
