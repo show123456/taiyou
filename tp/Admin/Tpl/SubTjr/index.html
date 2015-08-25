@@ -41,6 +41,13 @@
 		</ul>
 		<ul class="toolbar1"><li>
 			<span>
+				<select name="is_zj" style="margin-top:0;">
+					<option value="">推荐人类别</option>
+					<option value="2" <{:$_GET['is_zj']==2 ? 'selected' : ''}> >普通用户</option>
+					<option value="1" <{:$_GET['is_zj']==1 ? 'selected' : ''}> >中介</option>
+				</select>
+			</span>
+			<span>
 				<select name="is_pay" style="margin-top:0;">
 					<option value="">支付状态</option>
 					<option value="2" <{:$_GET['is_pay']==2 ? 'selected' : ''}> >未支付</option>
@@ -60,6 +67,7 @@
 			<tr>
 				<th>推荐人手机号</th>
 				<th>推荐人姓名</th>
+				<th>推荐人类别</th>
 				<th>注册人数</th>
 				<th>注册日期</th>
 				<th>支付状态</th>
@@ -71,6 +79,7 @@
 			<tr style="height:25px;">
 				<td><{$v.tjr_phone}></td>
 				<td><{$v.tjr_name}></td>
+				<td><{:$v['is_zj']==1 ? '中介' : '普通用户'}></td>
 				<td><{$v.reg_num}></td>
 				<td><{$v.add_date}></td>
 				<td><{:$v['is_pay']==1 ? '<span style="color:#00a4ac;">已支付</span>' : '未支付'}></td>

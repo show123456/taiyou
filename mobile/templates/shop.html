@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商城</title>
+	<meta name="description" content="微信">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<script src="js/jquery.min.js"></script>
+	<style>
+		.noDisPrice{margin-left:0.9em;line-height:2em;text-decoration:line-through;}
+	</style>
+</head>
+<body class='white'>
+<section class="Main shop">
+    <div class='nav' style="background-color:#01B4EC;">
+        <div id="scroll_img">
+            <div>
+				<{foreach from=$picList key='pic_key' item='pic_val'}>
+					<a href='<{$pic_val.piclink}>' class='<{if $pic_key==0}>current<{/if}>' ><img src='/data/image_c/<{$pic_val.pic}>' /></a>
+				<{/foreach}>
+            </div>
+        </div>
+        <ul class="scroll_position" id='scroll_position'>
+			<{foreach from=$picList key='pic_key' item='pic_val'}>
+				<li class='<{if $pic_key==0}>current<{/if}>'></li>
+			<{/foreach}>
+        </ul>
+    </div>
+	<form action="" class="actform">
+	<input type="hidden" name="m" value="<{$smarty.get.m}>" />
+	<input type="hidden" name="a" value="<{$smarty.get.a}>" />
+	<input type="hidden" name="clicknum" value="<{$smarty.get.clicknum}>" />
+	<input type="hidden" name="outnum" value="<{$smarty.get.outnum}>" />
+    <div class='searchBar'>
+        <input class='searchInput' type='text' placeholder="请输入商品名称" id='search' name="keyword" value='<{$smarty.get.keyword}>' />
+        <a href='javascript:void(0);' class='searchBtn' onclick="form_submit()"></a>
+    </div>
+    <div class='filterBar'>
+        <div class='filterSelect'>
+            <select name='cid' onchange="$('.actform').submit()">
+                <option value="">产品分类</option>
+                <{foreach from=$cateList item=v}>
+				<option value="<{$v.id}>" <{if $v.id==$smarty.get.cid}>selected<{/if}> ><{$v.name}></option>
+				<{/foreach}>
+            </select>
+        </div>
+		<a href='javascript:peopleOrder();' class='filterBtn border current people' <{if $smarty.get.clicknum}>style="background-color:#01B4EC;color:#fff"<{/if}> >人气
+		<span class="fa fa-angle-down" style="font-size:1.1em;color:<{if $smarty.get.clicknum}>#fff<{else}>#01B4EC<{/if}>;float:right;padding-top:0.5em;padding-right:0.5em;"></span>
+		</a>
+        <a href='javascript:saleOrder();' class='filterBtn border sale' <{if $smarty.get.outnum}>style="background-color:#01B4EC;color:#fff"<{/if}> >销量
+		<span class="fa fa-angle-down" style="font-size:1.1em;color:<{if $smarty.get.outnum}>#fff<{else}>#01B4EC<{/if}>;float: right;padding-top:0.5em;padding-right:0.5em;"></span>
+		</a>
+		<a href='./index.php?m=trolley&a=index'>
+		<span class="fa fa-shopping-cart" style="color:#01B4EC;font-size:1.2em;padding-left:7%;padding-top:0.2em;"><span style="font-size:0.9rem"><{$totalNum}></span></span>
+		</a>
+    </div>
+	</form>
+    <div class='resultList'>
+		<{foreach from=$list item="v"}>
+		<a href='index.php?m=goods&a=detail&id=<{$v.id}>' class='resultBlock'>
+            <div class='resultPhoto' style="vertical-align:middle;margin-top:0.8em;">
+                <img src="/data/image_c/<{$v.pic}>" style="vertical-align:middle;" />
+            </div>
+            <div class='resultInfo'>
+                <p><{$v.name}></p>
+                <div class="clearfix"></div>
+				<span style="color:#888888;font-size:80%;line-height:1.2em;display:block;padding-top:5px;">
+					<!-- <{$v.content}> -->
+					销量：<{$v.outnum}>
+				</span>
+            </div>
+            <div class='resultPrice'>
+                <p style="margin-left:0.9em">￥<{$v.fact_price}></p>
+                <div class="clearfix"></div>
+                <p class="noDisPrice" style="color:#888;">￥<{$v.price}></p>
+            </div>
+            <div class="clearfix"></div>
+        </a>
+		<{/foreach}>
+    </div>
+	<div style="height:50px;"></div>
+</section>
+<div class="clearfix" style="height:45px;"></div>
+<{include file="footer.html"}>
+<script src='js/hhSwipe.js'></script>
+<script>
+//幻灯片
+var slider = Swipe(document.getElementById('scroll_img'), {
+	auto: 3000,
+	continuous: true,
+	callback: function(pos) {
+		var i = bullets.length;
+		while (i--) {
+			bullets[i].className = ' ';
+		}
+		bullets[pos].className = 'current';
+	}
+});
+var bullets = document.getElementById('scroll_position').getElementsByTagName('li');
+
+function form_submit(){
+	$(".actform").submit();
+}
+function peopleOrder(){
+	if($("input[name='clicknum']").val()==1){
+		$("input[name='clicknum']").val('');
+	}else{
+		$("input[name='outnum']").val('');
+		$("input[name='clicknum']").val(1);
+	}
+	$(".actform").submit();
+}
+function saleOrder(){
+	if($("input[name='outnum']").val()==1){
+		$("input[name='outnum']").val('');
+	}else{
+		$("input[name='clicknum']").val('');
+		$("input[name='outnum']").val(1);
+	}
+	$(".actform").submit();
+}
+//分页
+var pageNum=1;
+var page_ajax=true;
+$(document).ready(function(){
+    $(window).scroll(function(){
+        var bot = 50; //bot是底部距离的高度
+        if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+			if(page_ajax){
+				page_ajax=false;
+				pageNum++;
+				$('#loading').show();
+				
+				var get_url='index.php?m=goods&a=index&keyword=<{$smarty.get.keyword}>&cid=<{$smarty.get.cid}>&clicknum=<{$smarty.get.clicknum}>&outnum=<{$smarty.get.outnum}>&p='+pageNum;
+				$.get(get_url,function(res){
+					$('#loading').hide();
+					if(res){
+						if(res=='err'){
+						}else{
+							var goodsStr='';
+							$.each(res,function(i,item){
+								goodsStr+='<a href="index.php?m=goods&a=detail&id='+item.id+'" class="resultBlock"><div class="resultPhoto" style="vertical-align:middle;margin-top:1em;"><img src="/data/image_c/'+item.pic+'" style="vertical-align:middle;" /></div><div class="resultInfo"><p>'+item.name+'</p><div class="clearfix"></div><span style="color:#888888;font-size:80%;line-height:1.2em;display:block;">'+item.content+'</span></div><div class="resultPrice"><p style="margin-left:0.9em">￥'+item.fact_price+'</p><div class="clearfix"></div><p class="noDisPrice" style="color:#888;">￥'+item.price+'</p></div><div class="clearfix"></div></a>';
+							})
+							$('.resultList').append(goodsStr);
+							page_ajax=true;
+						}
+					}
+				},'json');
+			}
+        }
+    });
+});
+</script>
+</body>
+</html>

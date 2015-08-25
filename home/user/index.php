@@ -168,6 +168,7 @@
 	if($_GET['nicheng']) $condition[]=" nicheng like '%".common_pg('nicheng')."%' ";
 	if($_GET['username']) $condition[]=" username = '".common_pg('username')."' ";
 	if($_GET['cardnum']) $condition[]=" cardnum = '".common_pg('cardnum')."' ";
+	if($_GET['industry_id']) $condition[]=" industry_id = '".common_pg('industry_id')."' ";
 	//搜索微信昵称
 	if($_GET['wx_nickname']){
 		$memberArr=D('member')->where("nickname='".$_GET['wx_nickname']."'")->dataArr();

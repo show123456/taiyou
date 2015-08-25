@@ -75,6 +75,6 @@ function get_ban_type(){
 
 //角色类别
 function get_group(){
-	return array(1=>'普通用户',2=>'督导',3=>'区域主管',4=>'区域经理');
+	return array(1=>'普通用户',2=>'督导',3=>'区域主管',4=>'区域经理',5=>'云淘账号');
 }
 ?>

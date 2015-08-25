@@ -17,7 +17,7 @@ if(method_is('post')){
 	$smarty->assign('content',$content);
 	$smarty->assign('id',$id);
 
-	$listArr=$userModel->field('fromuser')->where("username in ('15631183141','18013085978','13814812590')")->dataArr();
+	$listArr=$userModel->field('fromuser')->where("username in ('15631183141','18013085978','13814812590','18351519983')")->dataArr();
 	$smarty->assign('list',$listArr);
 	$smarty->assign('listcount',count($listArr));
 	$smarty->setTpl('msg/templates/send_kf.html')->display();die();

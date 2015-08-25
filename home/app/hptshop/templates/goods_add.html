@@ -1,0 +1,246 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" media="all" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+	.input_span_extra{height:35px;line-height:35px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li><a href="slide.php">首页幻灯片</a></li>
+						<li><a href="cate.php">商品分类</a></li>
+						<li class="select"><a href="index.php">商品列表</a></li>
+						<li><a href="order.php">订单列表</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<h4 style="margin-bottom:0"><{if $vo.id}>修改<{else}>添加<{/if}><{$cateName}></h4>
+						<div style="height:0px;border-top:1px dashed #DBDBDB;margin:0 10px;"></div>
+					</div>
+					<form id="memberform" style="margin-top:10px">
+						<input type="hidden" name='a' value='add' />
+						<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+						<input type="hidden" id="info_pic" name="info[pic]" value="<{$vo.pic}>" />
+						<input type="hidden" id="detail_pic" name="info[detail_pic]" value="<{$vo.detail_pic}>" />
+						<div class="shop_sort_box">
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>商品分类：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<select name="num[cid]" class="shop_sort_text" style='width:auto'>
+										<option value="">-请选择商品分类-</option>
+										<{foreach from=$cateList item=v}>
+										<option value="<{$v.id}>" <{if $v.id==$vo.cid}>selected<{/if}> ><{$v.name}></option>
+										<{/foreach}>
+									</select>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>商品名称：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[name]" value="<{$vo.name}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>图片：</h4></div>
+								<div class="shop_sort_set">				  
+									<div class="form-group">
+									<div class="fg-upload" onclick="$('#img-file').click()">
+										<input id="local-image" type="text" class="form-control shop_sort_text" value='' style="padding-left:70px;" />
+										<a href="#" class="btn-upload"><i class="icons icons-upload"></i>上传</a>
+										<span>&nbsp;&nbsp;&nbsp;(建议:640px*340px)</span>
+									</div>
+									</div>
+									<div id="logo_image" class="editer_img cover" style="display:<{if $vo.pic}><{else}>none<{/if}>">
+									<img id="logo_url" src="../../../data/image_c/<{$vo.pic}>" height="70" width="100" />
+									<span>
+										<a id="logo_delete" href="#" onclick="dele_pic(event);return false">删除</a>
+									</span>
+								</div>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>原价：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[price]" value="<{$vo.price|default:'0'}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>现价：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[fact_price]" value="<{$vo.fact_price|default:'0'}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
+								</div>
+							</div>
+							<!-- <div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>库存：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="num[store]" value="<{$vo.store|default:0}>" type="text" style="width:80px" >
+								</div>
+							</div> -->
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>简介：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea name="str[content]" class="shop_sort_text" style="height:100px;"><{$vo.content}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>详细描述：</h4></div>
+								<div class="shop_sort_set">				  
+									<div class="form-group">
+									<div class="fg-upload" onclick="$('#img-file1').click()">
+										<input type="text" class="form-control shop_sort_text" style="padding-left:70px;" />
+										<a href="javascript:void(0);" class="btn-upload"><i class="icons icons-upload"></i>上传</a>
+									</div>
+									<div style="clear:both;"></div>
+									</div>
+									<div class="editer_img" style="display:<{if $vo.detail_pic}>block<{else}>none<{/if}>">
+										<img id="detail_img" src="/data/image_c/<{$vo.detail_pic}>" style="height:200px;" />
+										<a href="javascript:void(0);" onclick="dele_detail_pic(event,this)">删除</a>
+									</div>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>序号：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="num[ordernum]" value="<{$vo.ordernum|default:0}>" type="text" style="width:45px" /><span class="input_span_extra" style="color:red">&nbsp;&nbsp;注：序号越大，位置越靠前</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+	<iframe name='img-frame1' id="img-frame1" style="display:none"></iframe>
+	<form id="img-form1" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame1" >
+		<input type="file" name="imgfile" value="" id="img-file1" onchange="$('#img-form1').submit();"/>
+	</form>
+</div>
+<script type="text/javascript" src="/includes/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/includes/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+//初始化编辑器
+$(function(){
+	UE.getEditor('goods_intro');
+});
+function save(event,obj){
+	//防止表单重复提交
+	var subFromFlag=$(obj).attr("subFromFlag");
+	if(subFromFlag==0){
+		/*var store=$("input[name='num[store]']").val();
+		var patrn=/^[1-9][0-9]*$/;
+		if (!patrn.exec(store)){
+			note_info('所填库存必须为整数', 'warn', event);
+			return false;
+		}*/
+		if($("input[name='str[name]']").val()==''){
+			note_info('名称不能为空', 'warn', event);
+			return;
+		}
+		//$("input[name='count_num']").val($('.postage').length);
+		$(obj).attr("subFromFlag",1);
+		$.ajax({
+			url:"index.php",
+			data:$('#memberform').serializeArray(),
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res=='success'){
+					note_info("保存成功","success",event);
+					setTimeout("window.location.href='index.php'",300);
+				}else{
+					$(obj).attr("subFromFlag",0);
+					note_info('保存失败','warn',event);
+				}
+			}
+		});
+	}
+}
+$(document).ready(function(){
+	//图片处理
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["img-frame"].document.body.innerText;}
+    	try{
+    	    var result = $.parseJSON(html);
+    	    if(result.success==1){
+    	    	$('#info_pic').val(result.data.path);
+				$('#logo_url').attr('src','/data/image_c/'+result.data.path);
+				$('#logo_image').show();
+    	    }
+    	}catch(e){ }
+    });
+	$('#img-frame1').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["img-frame1"].document.body.innerText;}
+    	try{
+    	    var result = $.parseJSON(html);
+    	    if(result.success==1){
+    	    	$('#detail_pic').val(result.data.path);
+				$('#detail_img').attr('src','/data/image_c/'+result.data.path);
+				$('#detail_img').parent().show();
+    	    }
+    	}catch(e){ }
+    });
+})
+//删除图片
+function dele_pic(event){
+	note_info("只有点击保存才能真正删除图片哦",'success',event);
+	$('#info_pic').val('');
+	$('#logo_image').hide();
+}
+//删除商品详情图
+function dele_detail_pic(event,obj){
+	note_info("只有点击保存才能真正删除图片哦",'success',event);
+	$('#detail_pic').val('');
+	$(obj).parent().hide();
+}
+//添加标签和属性
+function insert_tag(event){
+	tag_num = $('.postage').length;
+	$("#taglist").append("<div class='postage'><div class='shop_tag_icon'><input name='tag_name"+tag_num+"' class='shop_tag_name_test' placeholder='标签名：如颜色' style='width:150px;' type='text'></div><div class='shop_tag_name'><input name='tag_content"+tag_num+"' class='shop_tag_per_test' placeholder='标签属性：如红色，白色' type='text'></div><div class='shop_tag_property'><a class='deletag' onclick='deletag(this);return false;' href='#' title='删除本条属性'>删除</a></div></div>");
+	$('input').click(function(){
+		$(this).select();
+	});
+}
+//删除标签和属性
+function deletag(obj){
+	$(obj).parent().parent().remove();
+}
+</script>

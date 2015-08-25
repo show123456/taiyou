@@ -1,0 +1,1178 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v1.0 | 2013/11/23
+   by Bany
+   QQ: 21362281
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    outline:none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+    font: normal 100% Helvetica, Arial, sans-serif;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+a{
+    text-decoration: none;
+}
+.clearfix:after {	visibility:hidden;	display:block;	font-size:0;	content:" ";	clear:both;	height:0;}
+.clearfix {	zoom:1;}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+img{
+    width: 100%;
+}
+/* VM */
+html{
+    height:100%;
+}
+body{
+    background: #dedddd;
+    height: 100%;
+    width:100%;
+    font-size: 100%;
+    font-family: "Microsoft YaHei";
+}
+body.white{
+    background: #fff;
+}
+/*基准尺寸*/
+/*960 1380  3*/
+/*800 1150  2.5*/
+/*640 920  2*/
+/*480 690  1.5*/
+/*320 460  1*/
+/*160 230  0.5*/
+
+
+@media screen and (min-width: 310px) {
+    body{
+        font-size: 100%;
+        height: 460px;
+    }
+}
+@media screen and (min-width: 470px) {
+    body{
+        font-size: 150%;
+        height: 690px;
+    }
+}
+@media screen and (min-width: 630px) {
+    body{
+        font-size: 200%;
+        height: 920px;
+    }
+}
+@media screen and (min-width: 790px) {
+    body{
+        font-size: 250%;
+        height: 1150px;
+    }
+}
+@media screen and (min-width: 950px) {
+    body{
+        font-size: 300%;
+        height: 1380px;
+    }
+}
+header{
+    width:100%;
+    height:2.5em;
+    background-color:#46b0e0;
+}
+header .menu{
+    height: 100%;
+    width:100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+header .menu a{
+    float: left;
+    width:33%;
+    height:100%;
+    display: block;
+}
+header .menu1{
+    background-image: url("../images/head01.png");
+}
+header .menu2{
+    background-image: url("../images/head02.png");
+}
+header .menu3{
+    background-image: url("../images/head03.png");
+}
+header h2{
+    line-height: 2.5em;
+    height: 2.5em;
+    background: #0185b2;
+    color:#fff;
+}
+header h2 a{
+    width:2em;
+    height:100%;
+    background: url("../images/arrowLeft.jpg") no-repeat center center;
+    background-size: 0.7em;
+    display: block;
+    float: left;
+}
+.Main{
+    width:100%;
+    height:73.804%;
+    position: relative;
+}
+footer .support{
+    background: #eee;
+    color:#737373;
+    padding-top: 2.5em;
+    line-height: 2em;
+    width:100%;
+    text-align: center;
+    display: block;
+    font-size: 0.8em;
+}
+
+/*shop.html*/
+.shop .nav{
+    width:100%;
+    position: relative;
+    height:11em;
+    overflow: hidden;
+}
+.shop .nav a{
+    position: relative;
+    float: left;
+}
+.shop .nav a.current{
+    display: block;
+}
+.shop .nav a,.Main .nav a img{
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+.shop .nav .scroll_position_right{
+    position: absolute;
+    top:10%;
+    right:5%;
+    width: 80%;
+}
+.shop .nav ul{
+    position: absolute;
+    top:10%;
+    right:5%;
+}
+.shop .nav ul li{
+    width:0.5em;
+    height:0.5em;
+    background-color: #46b0e0;
+    border-radius: 50%;
+    float: left;
+    margin-right:0.5em;
+}
+.shop .nav ul li.current{
+    background-color: #fff;
+}
+.shop .searchBar{
+    height:2em;
+    width:100%;
+    background: #0185b2;
+    border:1px solid #6cb3cb;
+    border-left:none;
+    border-right:none;
+    color:#ffffff;
+}
+.shop .searchBar .searchInput::-webkit-input-placeholder {
+    color:    #fff;
+}
+.shop .searchBar .searchInput{
+    height:100%;
+    width:70%;
+    color:#ffffff;
+    border:none;
+    background-color: #0185b2;
+    float: left;
+    padding: 0 0 0 0.5em;
+    font-size: 0.8em;
+}
+.shop .searchBar .searchBtn{
+    width:25%;
+    height:100%;
+    float: left;
+    display: block;
+    background: url("../images/search.jpg") no-repeat center center;
+    background-size: 100% 100%;
+}
+.shop .filterBar{
+    height:1.6em;
+    width:100%;
+    border-bottom: 1px solid #d5d5d5;
+    color:#0185b2;
+}
+.shop .filterBar .filterSelect{
+    width:30%;
+    height:100%;
+    float:left;
+    font-size: 0.8em;
+    background: url("../images/searchBar.png") no-repeat;
+    background-size: 0.8em;
+    background-position: 5% center;
+	border-right: 1px solid #d5d5d5;
+}
+.shop .filterBar select{
+    width: 100%;
+    height: 100%;
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border:none;
+    color:#0185b2;
+    background: url("../images/arrowDown.png") no-repeat;
+    background-size: 0.8em;
+    background-position: 97% center;
+    float: left;
+    padding-left: 1.5em;
+    border-radius: 0;
+    font-size: 1em;
+}
+.shop .filterBar .filterSelect p{
+    float: left;
+    padding-left:0.5em;
+    line-height: 2em;
+}
+.shop .filterBar .filterBtn{
+    width:25%;
+    height:100%;
+    display: block;
+    float:left;
+    /*background: url("../images/arrowDown.png") no-repeat  85% center;
+    background-size: 0.8em;*/
+    color:#0185b2;
+    font-size: 0.8em;
+    line-height: 2em;
+    text-align: center;
+}
+.shop .filterBar .filterBtn.border{
+    border-right:1px solid #d5d5d5;
+    border-top:none;
+    border-bottom: none;
+}
+.shop .filterBar .filterBtn.current{
+    /*background-image: url("../images/arrowDown.png");*/
+}
+
+.resultBlock{
+    height:auto;
+    width:100%;
+    display: block;
+    border-bottom: 1px solid #e4e4e4;
+}
+.resultList .resultPhoto{
+    margin:0.5em;
+    width:23%;
+    float: left;
+}
+.resultList .resultPhoto img{
+    max-height: 100%;
+    max-width: 100%;
+    border:1px solid #d2d2d2;
+}
+.resultList .resultInfo{
+    margin:0.8em 0 0 0;
+    width:55%;
+    float: left;
+    color:#3d3d3d;
+}
+.resultList .resultInfo .delete{
+    color:#888888;
+    text-decoration:line-through;
+    font-size: 90%;
+}
+.resultList .resultPrice{
+    margin:0.8em 0 0 0;
+    width:16%;
+    float: left;
+}
+.resultList .resultPrice p{
+    font-size: 90%;
+    color:#ff4400;
+}
+.resultList .resultPrice span{
+    font-size: 90%;
+    background:#ff4400;
+    padding:0.2em;
+    border-radius: 0.2em;
+    color:#ffffff;
+    margin: 13% 11%;
+    display: block;
+	text-align:center;
+}
+
+/*personal.html*/
+section.personal{
+    background:#6eb0c6;
+    height: auto;
+}
+section.personal .photo{
+    width: 100%;
+    height: 13em;
+    display: block;
+    position: relative;
+}
+section.personal .photoBorder{
+    width: 7em;
+    height: 7em;
+    border:1px solid #fff;
+    background: #0185b2;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top:9%;
+    left:50%;
+    margin-left:-3.6em;
+}
+section.personal .photoshop{
+    width:90%;
+    height:90%;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top:5%;
+    left:5%;
+    background: #fff;
+}
+section.personal .photoshop img{
+    width: 90%;
+    height: 90%;
+    margin: 5%;
+    border-radius: 50%;
+}
+section.personal .userName{
+    width:100%;
+    font-size: 1.2em;
+    color:#fff;
+    text-align: center;
+    line-height: 1.8em;
+    position: absolute;
+    bottom:15%;
+}
+
+section.personal .myFunctions{
+    width:100%;
+    overflow: hidden;
+}
+section.personal .myFunctions a{
+    font-size: 1em;
+    color:#585858;
+    line-height: 2.5em;
+    border-bottom: 1px solid #bdbdbd;
+    background: #fff;
+    width:100%;
+    padding-left:3em;
+    display: block;
+    background-size: 1.2em;
+    background-position: 1.0em 0.6em;
+    background-repeat: no-repeat;
+    position: relative;
+}
+section.personal .myFunctions a:after{
+    content: '';
+    width: 0.7em;
+    height: 1.5em;
+    background: url("../images/arrowRight.png") no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    right: 20%;
+    top: 28%;
+}
+
+section.personal .myFunctions a.myactive1{
+    background-image: url("../images/personal1.png");
+}
+section.personal .myFunctions a.myactive2{
+    background-image: url("../images/personal2.png");
+}
+section.personal .myFunctions a.myactive3{
+    background-image: url("../images/personal3.png");
+}
+section.personal .myFunctions a.myactive4{
+    background-image: url("../images/personal4.png");
+}
+section.personal .myFunctions a.myactive5{
+    background-image: url("../images/personal5.png");
+}
+section.personal .myFunctions a.myactive6{
+    background-image: url("../images/personal6.png");
+}
+
+/*booking.html*/
+.booking .filterBar .filterSelect{
+    width:33%;
+    background: #ffffff;
+    border-right: 1px solid #e2e2e2;
+}
+.booking .filterBar .filterBtn{
+    background-image: none;
+    width:33%;
+    background-color: #f6f5f5;
+}
+.booking .filterBar .filterBtn.current{
+   background: url("../images/arrowDown.png") no-repeat  100% center #f6f5f5;
+    background-size: 0.8em;
+}
+.booking .resultList .resultInfo{
+    width:70%;
+    float: left;
+    margin-top:0.4em;
+}
+.booking .resultList .resultInfo h3{
+    font-size: 120%;
+}
+.booking .resultList .resultInfo p{
+    font-size: 90%;
+}
+.booking .resultList .resultInfo .bookingDetail p{
+    padding-left:1.5em;
+    line-height: 1.5em;
+    margin-top: 0.2em;
+    color:#ff4400;
+    float: left;
+}
+.booking .resultList .resultInfo .bookingDetail p.people{
+    background: url("../images/bookingPeople.png") center left no-repeat;
+    background-size: 1em;
+    margin-right:0.5em;
+}
+.booking .resultList .resultInfo .bookingDetail p.distance{
+    background: url("../images/bookingDistance.png") center left no-repeat;
+    background-size: 1em;
+}
+
+/*bookinglist.html*/
+.hospitalImage{
+    width:100%;
+    height:7em;
+}
+.hospitalImage img{
+    max-width: 100%;
+    max-height:100%;
+}
+.bookinglist .hospitalMenu{
+    height: 1.5em;
+    width: 100%;
+    background: url("../images/bookingHead.jpg") no-repeat top center;
+    background-size: 100% 100%;
+    border-top: 1px solid #d2d2d2;
+}
+.bookinglist .hospitalMenu a{
+    width:50%;
+    height:100%;
+    float: left;
+}
+.docList{
+    width:100%;
+    font-size: 120%;
+}
+.docList .docBlock{
+    width:100%;
+    padding:1em 0;
+    border-bottom: 1px solid #eaeaea;
+}
+.docList .docBlock .docInfo{
+    width: 69%;
+    margin-left: 1em;
+    float: left;
+}
+.docList .docBlock .docInfo h3{
+    font-size: 1.2em;
+}
+.docList .docBlock .docInfo h3 span{
+    font-size: 0.7em;
+    padding-left: 0.7em;
+}
+.docList .docBlock .docInfo p{
+    font-size: 0.7em;
+    color:#888888;
+}
+.docList .docBlock .docInfo p a{
+    color:#0185b2;
+}
+.docList .docBlock .order{
+    width: 22%;
+    height: 2.5em;
+    line-height: 2.5em;
+    font-size: 0.7em;
+    float: left;
+    background: #04bdfe;
+    text-align: center;
+    border-radius: 0.5em;
+    margin-top: 1em;
+    color: #fff;
+}
+
+/*delivery.html*/
+.delivery{
+    background: #dedddd;
+    height: auto;
+}
+.deliveryMain{
+    width:95%;
+    margin-left:2.5%;
+    padding-top:  1.5em ;
+}
+.deliveryMain .tips{
+    height: 2.5em;
+    line-height: 2.5em;
+    border:1px solid #d2d2d2;
+    border-radius: 0.2em;
+    background: #fff7c6;
+    color:#a7944a;
+    width:100%;
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+.deliveryMain .deliveryForm{
+    width:100%;
+}
+.deliveryMain .deliveryForm table{
+    width:100%;
+    border:1px solid #dadada;
+    border-radius: 0.4em;
+    background: #efeeee;
+}
+.deliveryMain .deliveryForm table tr{
+    height: 2.5em;
+    line-height: 2.5em;
+    border-bottom: 1px solid #d2d2d2;
+}
+.deliveryMain .deliveryForm .title{
+    width:5em;
+    text-align: center;
+    color:#737373;
+}
+.deliveryMain .deliveryForm .deliveryFormInput{
+    border:none;
+    background: none;
+    height:100%;
+    width:100%;
+    color:#737373;
+}
+.deliveryMain .deliveryForm p{
+    line-height: 2em;
+    padding-left: 1em;
+    color:#000;
+}
+.submitForm{
+    width: 70%;
+    margin: 10% 0 0 15%;
+}
+.submitForm .submitBtn{
+    line-height: 2em;
+    height: 2em;
+    border:1px solid #c13c0b;
+    border-radius: 0.5em;
+    display: block;
+    background: url("../images/btn-red.png") repeat-x center center;
+    background-size: auto 100%;
+    line-height: 1.9em;
+    color: #fff;
+    width:100%;
+    font-size: 1em;
+}
+.submitForm p{
+    color:#ff4400;
+    width:100%;
+    text-align: center;
+    line-height: 2.5em;
+    font-size: 80%;
+}
+
+/*detail.html*/
+.detail{
+    height: auto;
+}
+.detailImage{
+    width:100%;
+   /* height:10.6em;*/
+}
+.detailImage image{
+    width:100%;
+    height:100%;
+    max-width:100%;
+    max-height:100%;
+}
+.detailMain .productName{
+    height: 2em;
+    line-height: 2em;
+    font-size: 1em;
+    border-bottom: 1px solid #d2d2d2;
+    color:#000;
+}
+.detailMain .productName h3{
+    padding-left: 1em;
+}
+.detailMain .productPrice p{
+    padding-left: 1em;
+    line-height: 2em;
+    color: #ff4400;
+    float: left;
+}
+.detailMain .productPrice .delete{
+    color: #737373;
+    text-decoration:line-through;
+}
+.detailMain .orderNumber p{
+    color: #737373;
+    background: url("../images/arrowDown2.png") no-repeat 29% center;
+    background-size: 0.5em;
+    padding-left: 1em;
+    margin-bottom: 1em;
+}
+.detailMain .orderNumber span{
+    font-size: 0.8em;
+    line-height: 2.5em;
+    padding-left: 2em;
+    color:#737373;
+}
+.detailMain .minus{
+    margin-left:1em;
+}
+.detailMain .orderChange{
+    line-height: 2em;
+    height: 2em;
+    width:2em;
+    background: #f0f0f0;
+    border: 1px solid #f0f0f0;
+    float: left;
+    text-align: center;
+    color:#737373;
+}
+.detailMain .orderNumberInput{
+    width:5em;
+    text-align: center;
+    color:#737373;
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border-radius: 0;
+    line-height: 2em;
+    height: 2em;
+    border: 1px solid #f0f0f0;
+    border-right: none;
+    border-left: none;
+    background: #fff;
+    font-size: 1em;
+    float: left;
+    padding:0;
+}
+.detailMain .detailForm{
+    margin-top: 1.5em;
+    border-bottom: 1px solid #d2d2d2;
+    padding-bottom: 0.5em;
+    width: 100%;
+}
+.detailMain .detailFormBtn{
+    line-height: 2em;
+    height: 2em;
+    border-radius: 0.5em;
+    border: none;
+    display: block;
+    line-height: 1.9em;
+    color: #fff;
+    width:8em;
+    font-size: 0.9em;
+    float: left;
+    margin-right: 1em;
+}
+.detailMain .addBtn{
+    background: url("../images/btn-red.png") repeat-x center center;
+    background-size: auto 100%;
+    margin-left: 1em;
+}
+.detailMain .submitBtn{
+    background: url("../images/btn-black.png") repeat-x center center;
+    background-size: auto 100%;
+}
+.detailMain .productDescription{
+    line-height: 1.5em;
+    font-size: 1em;
+    color:#737373;
+    padding: 1em 0 0 1em;
+}
+
+/*trolley.html*/
+.trolley{
+    height: auto;
+}
+.trolleyTitle{
+    width:100%;
+    height:2.5em;
+    line-height:2.5em;
+    text-align: center;
+    color:#000;
+    background: #ebebeb;
+}
+.trolleyBlock{
+    width:94%;
+    margin-left:2.5%;
+    margin-top: 4%;
+    border:1px solid #d8d7d7;
+    border-radius: 0.5em;
+    background: #efeeee;
+    overflow: hidden;
+}
+.trolleyBlock .trolleyBlockTop{
+    line-height: 2.5em;
+    height: 2.5em;
+    font-size: 0.9em;
+    width: 100%;
+    position: relative;
+    background: #e7e6e6;
+    color:#000;
+}
+.trolleyBlockTop .orderChange{
+    line-height: 2em;
+    height: 2em;
+    width:2em;
+    background: #f0f0f0;
+    border: 1px solid #f0f0f0;
+    float: left;
+    text-align: center;
+    color:#737373;
+	margin-top:0.2em;
+}
+.trolleyBlockTop .minus{
+    margin-left:1em;
+}
+.trolleyBlock .trolleyBlockTop p,.trolleyBlock .trolleyBlockTop .trolleyBlockInput{
+    float: left;
+}
+.trolleyBlock .trolleyBlockTop .trolleyBlockInput{
+    width:3em;
+    text-align: center;
+    color:#737373;
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border-radius: 0;
+    line-height: 2em;
+    height: 2em;
+    border: 1px solid #f0f0f0;
+    border-right: none;
+    border-left: none;
+    background: #fff;
+    font-size: 1em;
+    float: left;
+    padding:0;
+    margin-top: 0.2em;
+}
+.trolleyBlock .trolleyBlockTop p.topHead{
+    padding-left: 0.5em;
+}
+.trolleyBlock .trolleyBlockTop .money{
+    color:#ff4400;
+    position: absolute;
+    top:0;
+    right:3.5em;
+}
+.trolleyBlock .trolleyBlockTop .deleteProduct{
+    color:#000;
+    position: absolute;
+    width:3em;
+    text-align: center;
+    top:0;
+    right:0;
+}
+.trolleyBlock .trolleyMain{
+    width:100%;
+    height:5.5em;
+}
+.trolleyBlock .imageDescription{
+    margin:0.5em 0 0 1em;
+    width: 5em;
+    height: 5em;
+    float: left;
+}
+.trolleyBlock .imageDescription image{
+    max-height: 100%;
+    max-width: 100%;
+}
+.trolleyBlock .textDescription{
+    margin:0.3em 0 0 1em;
+    float: left;
+}
+.trolleyBlock .textDescription h3{
+    color:#737373;
+}
+.trolleyCount{
+    width:70%;
+    margin-left:14%;
+    font-size: 80%;
+    margin-top: 5%;
+}
+.trolleyCount p{
+    width:50%;
+    float: left;
+    color:#000;
+    text-align: center;
+}
+.trolleyCount p.money{
+    color:#ff4400;
+}
+.trolleyCount p.money{
+    color:#ff4400;
+}
+.trolleyCount .detailFormBtn{
+    height: 2em;
+    border-radius: 0.5em;
+    border: none;
+    display: block;
+    line-height: 1.9em;
+    color: #fff;
+    width:45%;
+    font-size: 120%;
+    float: left;
+    margin-top: 1em;
+}
+.trolleyCount .addBtn{
+    background: url("../images/btn-red.png") repeat-x center center;
+    background-size: auto 100%;
+    margin-right: 5%;
+}
+.trolleyCount .submitBtn{
+    background: url("../images/btn-black.png") repeat-x center center;
+    background-size: auto 100%;
+}
+.mainShow{
+	width:90%;
+	margin:5%;
+	border:1px solid #ebebeb;
+}
+.mainShowFirst{
+	width:90%;
+	height:100px;
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:5%;
+	margin-bottom:1%;
+}
+.Xian{
+	margin-top:3%;
+	margin-bottom:5px;
+	width:100%;
+	height:1px;
+	background-color:#ebebeb;
+	
+}
+.mainShowZou{
+	width:70%;
+	height:100%;
+	float:left;
+}
+.mainShowYou{
+	width:20%;
+	height:100%;
+	margin-left:10%;
+	float:left;
+}
+.mainShowShang{
+	width:100%;
+	height:40%;
+	color:#1c90b8;
+	font-size:70%;
+	
+}
+.mainShowXia{
+	width:100%;
+	height:40%;
+	color:#aaaaaa;
+	font-size:50%;
+	margin-top:3%;
+}
+.mainShowOne{
+	width:35%;
+	height:100%;
+	color:#aaaaaa;
+	font-size:50%;
+	float:left;
+}
+.mainShowTow{
+	width:30%;
+	height:100%;
+	color:#aaaaaa;
+	font-size:50%;
+	float:left;
+	margin-left:1%;
+}
+.mainShowOneImg{
+	width:25%;
+	height:100%;
+	float:left;
+}
+.mainShowOneImg img{
+	margin-top:3%;
+	width:100%;
+	height:90%;
+}
+.mainShowOneText{
+	margin-left:10%;
+	margin-top:5%;
+	font-size:10%;
+	width:65%;
+	height:85%;
+	float:left;
+}
+.ypx{
+	width:100%;
+	height:33%;
+	font-size:10%;
+	color:#1c90b8;
+}
+.wpx{
+	width:100%;
+	height:33%;
+	font-size:10%;
+	color:#CC0000;
+}
+.ygq{
+	width:100%;
+	height:33%;
+	font-size:10%;
+}
+.mainShowZout{
+	width:70%;
+	height:100%;
+	float:left;
+}
+.mainShowYout{
+width:18%;
+	height:100%;
+	margin-left:1%;
+	float:left;
+}
+.head{
+	width:100%;
+	height:10%;
+	float:left;
+}
+.headMain{
+	width:100%;
+	height:80%;
+	margin-top:0.8%;
+	margin-bottom:10%;
+	float:left;
+}
+.headImg{
+	margin-top:3%;
+	margin-left:3%;
+	width:10%;
+	height:50%;
+	float:left;
+}
+.headImg img{
+	width:100%;
+	height:100%;
+}
+.headText{
+	margin-top:2%;
+	margin-left:3%;
+	width:30%;
+	height:50%;
+	float:left;
+	
+	color:#ffffff;
+}
+.bigImg{
+	width:100%;
+	height:10%;
+}
+.bigImg img{
+	width:100%;
+	height:30%;
+}
+.banner{
+	width:100%;
+	height:100PX;
+	
+	margin-top:-10PX;
+}
+.YYJS{
+	margin-top:-2PX;
+	width:50%;
+	height:100PX;
+	text-align:center;
+	background-color:#0086b3;
+	color:#FFFFFF;
+	float:left;
+}
+.YYZJ{
+	margin-top:-2PX;
+	width:50%;
+	height:100PX;
+	text-align:center;
+	background-color:#ffffff;
+	color:#ebebeb;
+	float:left;
+}
+.YYJSContent{
+	width:100%;
+	font-size:10pt;
+	background-color:#ffffff;
+}
+.YYJSContentText{
+	margin-top:10px;
+	width:90%;
+	margin-left:5%;
+	margin-right:20px;
+	font-size:10pt;
+	background-color:#ffffff;
+	float:left;
+}
+.YYZJContent{
+	width:100%;
+	font-size:10pt;
+	background-color:#ffffff;
+	display:none;
+}
+.ContentMain{
+	width:90%;
+	margin-top:2%;
+	margin-left:5%;
+	margin-right:5%;
+	border:1px solid #ebebeb;
+	float:left;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	 -webkit-border-radius:10px;
+}
+.MyFirst{
+	width:90%;
+	height:60px;
+	margin-top:2%;
+	margin-bottom:2%;
+	margin-left:5%;
+	margin-right:5%;
+}
+.MyFirstLeft{
+	width:48%;
+	background-color:#E53D00;
+	text-align:center;
+	float:left;
+	color:#ffffff;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	 -webkit-border-radius:5px;
+}
+.MyFirstRight{
+	width:48%;
+	margin-left:4%;
+	background-color:#0186B3;
+	text-align:center;
+	float:left;
+	color:#ffffff;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	 -webkit-border-radius:5px;
+}
+.MyFirstLeftt{
+	margin:11px;
+}
+.MySecond{
+	width:90%;
+	height:120PX;
+	margin-top:2%;
+	margin-bottom:2%;
+	margin-left:5%;
+	margin-right:5%;
+}
+.MySecondLeft{
+	width:30%;
+	height:100%;
+	text-align:center;
+	float:left;
+	color:#ffffff;
+}
+.MySecondLeft img{
+	width:100%;
+	border:1px solid #ebebeb;
+}
+.MySecondRight{
+	width:66%;
+	height:120px;
+	margin-left:4%;
+	line-height:300%;
+	float:left;
+	font-size:10pt;
+}
+.MySecondLeftt{
+	width:100%;
+}
+.MySecondH{
+	width:40%;
+	color:#666;
+	float:left;
+}
+.MySecondR{
+	width:60%;
+	color:#FF3333;
+	float:left;
+}
+.FanHui{
+	width:100%;
+	height:65px;
+	background-color:#E53D00;
+	margin-top:20px;
+	color:#fff;
+	font-size:1.2em;
+	text-align:center;
+	line-height:65px;
+	border:1px solid #982E0A;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	 -webkit-border-radius:5px;
+	Alpha(Opacity=25, FinishOpacity=50, Style=1, StartX=0, StartY=1, FinishX=200, FinishY=100;)
+	 
+	
+}
+.FanHuiContent{
+	text-align:center;
+	width:100%;
+	float:left;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>购物车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+</head>
+<body>
+<div class="clearfix"></div>
+<section class="Main trolley">
+    <div class='trolleyMain'>
+        <h3 class='trolleyTitle'>购 物 车</h3>
+		<div style="text-align:center;color:#ff4400;margin-bottom:-0.5em;font-size:0.9em;">邮费￥<{$yunfei}>，满<{$moneyToFree}>即可包邮</div>
+        <form action="javascript:void(0);">
+		<{foreach from=$list item="v"}>
+		<div class='trolleyBlock'>
+            <div class="trolleyBlockTop">
+                <p class='topHead'>数量：</p>
+                <input type='number' class='trolleyBlockInput' name="num[]" value="<{$v.num}>" onchange="trolleyNum(this,'<{$v.id}>')" />
+                <p>&nbsp;件</p>
+                <p class='money'>小计：￥<{$v.money}></p>
+                <a href='#' class='deleteProduct' onclick="delRow(this,'<{$v.id}>')">删除</a>
+            </div>
+            <div class='trolleyMain' style="height:4.5em;">
+                <div class='imageDescription' style="height:4em;">
+                    <img src="/data/image_c/<{$v.pic}>" />
+                </div>
+                <div class='textDescription'>
+                    <h3 style="color:#333;"><{$v.name}></h3>
+                    <p style="color:#777;">单价：￥<{$v.fact_price}></p>
+                </div>
+            </div>
+        </div>
+		<{/foreach}>
+        <div class='trolleyCount'>
+            <p style="width:90%;float:none;margin-bottom:5px;">您购买了<{$totalNum}>件产品</p>
+            <p class='money' style="width:90%;float:none;font-weight:bold;font-size:14px;">总价：￥<{$totalMoney}> + <{$fact_yunfei}>（邮费）= <{$finalMoney}></p>
+            <div class="clearfix"></div>
+            <button type="button" class='addBtn detailFormBtn' onclick="goToPay()">去结账</button>
+            <button type="button" class='submitBtn detailFormBtn' onclick="javascript:window.location.href='index.php?m=goods&a=index'">继续挑选</button>
+            <div class="clearfix"></div>
+        </div>
+        </form>
+    </div>
+</section>
+<div class="clearfix"></div>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+//去结账
+function goToPay(){
+	var totalNum="<{$totalNum}>";
+	if(totalNum=='0'){
+		window.location.href='index.php?m=goods&a=index';
+		return;
+	}
+	if('<{$no_login}>'=='1'){
+		if(confirm('您还未登录，去登录？')){
+			window.location.href='login.php';
+		}
+		return;
+	}
+	window.location.href='index.php?m=order&a=delivery';
+}
+function delRow(obj,id){
+	$.ajax({
+		url:"index.php?m=trolley&a=del",
+		data:{id:id},
+		type:"post",
+		dataType:'json',
+		async:false,
+		success:function(res) {
+			if(res){
+				window.location.reload();
+			}
+		}
+	});
+}
+function trolleyNum(obj,id){
+	var num=$(obj).val();
+	if(num<1){
+		$(obj).val('1');
+		num=1;
+	}
+	$.ajax({
+		url:"index.php?m=trolley&a=changeNum",
+		data:{id:id,num:num},
+		type:"post",
+		dataType:'json',
+		async:false,
+		success:function(res) {
+			if(res){
+				window.location.reload();
+			}
+		}
+	});
+}
+//绑定折扣
+function bindDiscount(){
+	var docName=$('#docName').val();
+	if(docName=='') return;
+	$.ajax({
+		url:"index.php?m=trolley&a=bind_discount",
+		data:{docName:docName},
+		type:"post",
+		dataType:'json',
+		async:false,
+		success:function(res) {
+			if(res=='is'){
+				alert('绑定成功');
+				window.location.reload();
+			}else if(res=='not'){
+				alert('该医生不存在');
+			}
+		}
+	});
+}
+</script>
+</body>
+</html>
+

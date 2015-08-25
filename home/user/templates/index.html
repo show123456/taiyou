@@ -28,9 +28,6 @@
 		<{else}>
 		<span style='float:left;line-height:35px;font-weight:bold;'>企业用户人数：<{$countnum}></span>
 		<{/if}>
-		<!-- <div>
-			<button style="float:right;" onclick="javascript:location.href='/home/news/index.php?a=add'">发布资讯</button>
-		</div> -->
 		<div class="pull-right" style="margin-right:8px">
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
@@ -59,6 +56,13 @@
 				<input name="wx_nickname" class="keywords" placeholder="微信昵称" type="text" value="<{$smarty.get.wx_nickname}>" style="width:70px;" />&nbsp;&nbsp;
 				<input name="username" class="keywords" placeholder="输入手机号" type="text" value="<{$smarty.get.username}>" style="width:80px;" />&nbsp;&nbsp;
 				<input name="nicheng" class="keywords" placeholder="输入昵称" type="text" value="<{$smarty.get.nicheng}>" style="width:80px;" />&nbsp;&nbsp;
+				<{else}>
+				<select name="industry_id" style="height:25px;line-height:25px;">
+					<option value="">所属行业</option>
+					<{foreach from=$darr item="v"}>
+						<option value="<{$v.DistrictID}>" <{if $smarty.get.did==$v.DistrictID}>selected<{/if}> ><{$v.DistrictName}></option>
+					<{/foreach}>
+				</select>&nbsp;&nbsp;
 				<{/if}>
 				<input name="keywords" class="keywords" placeholder="输入名称" type="text" value="<{$smarty.get.keywords}>"  style="width:80px;" />&nbsp;&nbsp;
 				<input value="搜索" id="search" class="" title="搜索" type="submit">

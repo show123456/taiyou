@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2015-06-17 13:57:23
+<?php /* Smarty version 2.6.19, created on 2015-08-21 15:11:05
          compiled from footer.html */ ?>
 <style type="text/css">
 .bottom_bar { position: fixed; z-index: 99999; bottom: 0; left: 0; right: 0;}
@@ -7,6 +7,9 @@
 .bottom_menu div{width:32%;float:left;text-align:center;color:#fff;font-size: 12px;height: 25px;line-height: 25px;}
 </style>
 <div style="height:45px;"></div>
+<a href="index.php?m=goods&a=index" style="display:block;width:40px;height:40px;position:fixed;z-index:2888;bottom:60px;left:15px;">
+	<i class="fa fa-shopping-cart" style="font-size:40px;opacity:0.9;color:#01B4EC;"></i>
+</a>
 <div class="bottom_bar">
     <div class="bottom_menu" style="height:18px;">
 		<div onclick="window.location.href='index.php?m=pic&a=index'" <?php if ($_GET['m'] == 'pic'): ?>class="select"<?php endif; ?> style="height:18px;">

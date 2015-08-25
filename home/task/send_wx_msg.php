@@ -33,7 +33,8 @@ if($_REQUEST['a']=='send_msg_confirm'){
 			$uRow=$userModel->field('id,nickname,fromuser')->where("id='{$value['uid']}'")->dataRow();
 			if($uRow['fromuser']){
 				//$post_data="您好".$uRow['nickname']."，您已成功报名".$taskRow['title']."，请于".$taskRow['jihe_time']."到".$taskRow['jihe_address']."集合！";
-				$post_data="您好".$uRow['nickname']."，您报名的".$taskRow['title']."，客户因特殊原因而取消！";
+				$post_data="您好".$uRow['nickname']."，您报名的".$taskRow['title']."，因明天天气有雨，盛泽长安府派单取消！";
+				//$post_data="您好".$uRow['nickname']."，您报名的".$taskRow['title']."，因得到客户通知，明天照常派单哦！";
 				$configModel->sendCustomerMsg($post_data,$uRow['fromuser']);
 				usleep(100000);
 			}

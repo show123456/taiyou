@@ -117,6 +117,7 @@ function tixian(){
 		$.post('index.php?m=user&a=tx',{fee:tx_money},function(res){
 			res=jQuery.trim(res);
 			if(res=='suc'){
+				alert('提现成功，系统将在24小时内转入您的绑定银行账户，遇周末、假期顺延至工作日到账');
 				window.location.reload();
 			}else if(res=='err'){
 				alert('提现失败');

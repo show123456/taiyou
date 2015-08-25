@@ -319,7 +319,7 @@ if($_REQUEST['a']=='index'){
 		$shWhere='t.sh_status=1';
 	}
 	
-	$listArr = $model->fetchAll("SELECT t.*,left(t.addtime,10) as new_addtime,CASE WHEN COUNT( s.tid ) < t.num THEN 0 ELSE 1 END AS man_status,CASE WHEN t.jiezhi_time < unix_timestamp(now()) THEN 1 ELSE 0 END AS gq_status FROM `sub_task` AS t LEFT JOIN `sub_sign` AS s ON t.id = s.tid AND s.is_valid !=2 where $shWhere $didWhere $typeWhere GROUP BY IFNULL( s.tid, UUID() ) ORDER BY new_addtime desc ,gq_status ASC, t.is_shut ASC,man_status ASC ,  t.is_recommend DESC , t.id DESC LIMIT $limitStr");
+	$listArr = $model->fetchAll("SELECT t.*,left(t.addtime,10) as new_addtime,CASE WHEN COUNT( s.tid ) < t.num THEN 0 ELSE 1 END AS man_status,CASE WHEN t.jiezhi_time < unix_timestamp(now()) THEN 1 ELSE 0 END AS gq_status FROM `sub_task` AS t LEFT JOIN `sub_sign` AS s ON t.id = s.tid AND s.is_valid !=2 where $shWhere $didWhere $typeWhere GROUP BY IFNULL( s.tid, UUID() ) ORDER BY t.is_recommend DESC, new_addtime desc ,gq_status ASC, t.is_shut ASC,man_status ASC, t.id DESC LIMIT $limitStr");
 	
 	$signModel=D('sub_sign');
 	$current_time=time();//当前时间戳

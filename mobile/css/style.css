@@ -1,0 +1,88 @@
+.tips_top {  
+    background: #d5dff0;  
+    padding: 20px 11px;  
+    border-bottom: 1px solid #b1c3e0;  
+    border-top-left-radius: 5px;  
+    border-top-right-radius: 5px;  
+}  
+  
+.tips_div {  
+    background: #fff;  
+    width: 263px;  
+    border-radius: 5px;  
+    position: absolute;  
+    top: 50%;  
+    left: 50%;  
+    z-index: 45;  
+    margin-left: -130px;  
+    margin-top: -69px;  
+    box-shadow: 1px 3px 25px #666;  
+    color: #000;  
+    display: none  
+}  
+  
+.fz_18 {  
+    font-size: 18px;  
+}  
+  
+.pt10 {  
+    padding-top: 10px;  
+}  
+  
+.tips_btn {  
+    padding: 10px 20px;  
+}  
+  
+.clear {  
+    clear: both;  
+}  
+  
+a.action_btn {  
+    background: #b1c3e0;  
+    padding: 6px 10px;  
+    display: inline-block;  
+    margin: 0 5px 5px 0;  
+    font-weight: normal;  
+    font-size: 12px;  
+    color: #fff;  
+    border-radius: 5px;  
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;  
+}  
+  
+a.action_btn:hover {  
+    background-color: #96b4eb;  
+}  
+  
+a.action_btn:active {  
+    background-color: #5172a9;  
+}  
+  
+.btn_long {  
+    padding: 6px 25px;  
+}  
+  
+.fl {  
+    float: left;  
+}  
+  
+.fr {  
+    float: right;  
+}  
+  
+.folder_layer {  
+    width: 100%;  
+    height: 100%;  
+    position: fixed;  
+    top: 0;  
+    left: 0;  
+    background: #000;  
+    opacity: 0.1;  
+    filter: alpha(opacity = 10);  
+    z-index: 40;  
+    display: none;  
+}  
+  
+.full_mask_layer {  
+    position: fixed;  
+}  

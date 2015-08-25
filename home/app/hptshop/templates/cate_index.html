@@ -1,0 +1,82 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+</style>
+<div class=" main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li><a href="slide.php">首页幻灯片</a></li>
+						<li class="select"><a href="cate.php">商品分类</a></li>
+						<li><a href="index.php">商品列表</a></li>
+						<li><a href="order.php">订单列表</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<div class="title-left">
+							<h4><{$cateName}>列表</h4>
+						</div>
+						<div class="title-right" style="top:8px;">
+							<form method="get" action="">
+								<input type="hidden" name='p' value="<{$smarty.get.p|default:1}>"/>
+								<input name="keywords" class="textarea" placeholder="请输入名称" type="text" value="<{$smarty.get.keywords}>" />
+								<input value="搜索" class="btn btn-large btn-success" title="搜索" type="submit" style="margin-top:-7px;padding:3px 10px;" />
+								<a href='cate.php?a=add'>
+									<input value="添加<{$cateName}>" class="btn btn-large btn-success" type="button" style="margin-top:-7px;padding:3px 10px;" />
+								</a>
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th name="Name" class="enable">名称</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td><div><{$v.name}></div></td>
+										<td>
+											<div class="btn-operate">
+											<a href="cate.php?a=add&id=<{$v.id}>" title="修改"><i class="glyphicon glyphicon-edit"></i></a>
+											<a href="#" onclick="delRow(event,'<{$v.id}>')" title="关闭"><i class="glyphicon glyphicon-trash"></i></a>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function delRow(event,id){
+	if(confirm("确定要删除此分类吗?")){
+		$.ajax({
+			url:"cate.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}
+			}
+		});
+	}
+}
+</script>

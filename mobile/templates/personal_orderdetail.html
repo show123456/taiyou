@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>我的订单</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/goods.css" />
+	<link rel="stylesheet" href="css/mmenu.css" />
+	<link rel="stylesheet" href="css/plugmenu.css" />
+	<script src="js/jquery.min.js"></script>
+	<style type="text/css">
+	/*没有数据样式*/
+	.b12-bubbling{background:#f8f8f8;color:#bdbdbd;width:100%;height:52px;line-height:50px;
+	text-align:center;overflow: hidden;position:relative;z-index:2;}
+	
+	.MySecondUp{width:100%;height:2.0em;font-size:106%;color:#0186b3;}
+	.MySecondDownLeft{height:3.0em;font-size:1.0em;float:left;}
+	.wait{background-color:#0186B3;color:#fff;border-radius:3px;padding:3px 7px 3px 7px;margin-right:0.5em;margin-left:4em;}
+	.end{background-color:#F66430;color:#fff;border-radius:3px;padding:3px 7px 3px 7px;}
+	</style>
+</head>
+<body class='white'>
+<div id="content">
+    <div style="clear:both"></div>
+	<div class="product_content">
+		<div class="product_text">
+			<h6>订单编号：<{$orderRow.id}></h6>
+			<div style="clear:both"></div>
+			<{if $orderRow.status=='0'}><span style="color:red;">待处理</span><{/if}>
+			<{if $orderRow.status=='1'}><span style="color:red;">已派送</span><{/if}>
+			<{if $orderRow.status=='2'}><span style="color:red;">已签收</span><{/if}>
+			<{if $orderRow.status=='3'}><span style="color:red;">无效单</span><{/if}>
+			<{if $orderRow.is_pay=='1'}>
+				<span style="color:red;">- 已付款</span>
+			<{else}>
+				<span style="color:red;">- 未付款</span>
+			<{/if}>
+			<div class="orders_text"><strong>姓名：</strong><{$orderRow.name}></div>
+			<div class="orders_text"><strong>电话：</strong><{$orderRow.tel}></div>
+			<div class="orders_text"><strong>地址：</strong><{$orderRow.address}></div>
+			<div class="orders_text"><strong>物流：</strong><{$orderRow.wuliu|default:'暂无数据'}></div>
+		</div>
+	</div>
+<div class="shop_ddlist">
+    <p><span class="zonjia">总价：¥<{$orderRow.money}>（含快递费<{$orderRow.yunfei}>元）</span>&nbsp;</p>
+    <div class="orders_list">
+		<{foreach from=$odetailArr item=row}>
+			<a href="javascript:void(0)"><dl>
+				<dt><img src="../../data/image_c/<{$row.pic}>" style="vertical-align:middle;width:90px;height:50px;"></dt>
+				<dd style="padding-left:100px;"><{$row.name}></dd>
+				<p style="margin-left:100px;">数量：<{$row.num}><span style="margin-left:20px;font-size:12px;">单价：<{$row.price}></span></p>
+			</dl></a> 
+		<{/foreach}>
+	</div>
+	<{if $orderRow.status==0 || $orderRow.status==1}>
+    <div class="shop_btn2">
+        <ul>
+			<{if $orderRow.is_pay==0}>
+            <li><a href="./shoppay/js_api_call.php?oid=<{$orderRow.id}>" class="jiaru" style="color:#FFF;">去付款</a></li>
+            <li id="delate"><a href="javascript:void(0)" onclick="cancelOrder()" class="goumai" style="color:#FFF;">取消订单</a></li>
+			<{/if}>
+			<{if $orderRow.is_pay==1}>
+			<li><a href="javascript:void(0)" class="jiaru" style="color:#FFF;background-color:#bbb;background-image:none;">已付款</a></li>
+            <li><a href="javascript:void(0)" onclick="confirmOrder()" class="jiaru" style="color:#FFF;">确认收货</a></li>
+			<{/if}>
+        </ul>
+    </div>
+	<{/if}>
+</div>
+<div class="return"><a href="javascript:window.history.go(-1)">返 回</a></div>
+<!-- 弹框 -->
+<!-- <div class="prompt" style="display:none;">
+     <div class="prompt_box" style="height:120px;">
+      <h5 style="margin-bottom:15px;">
+		<input type="radio" name="info[status]" value="3" />取消订单
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="info[status]" value="2" />确认收货
+	  </h5>
+      <a href="javascript:void(0)" id="dyes" style="background-color:#008ed8;border:1px solid #008ed8;">确定</a>
+	  <a href="javascript:$('.prompt').hide()" id="dno" style="background-color:#008ed8;border:1px solid #008ed8;">取消</a> 
+     </div>
+</div> -->
+</div>
+<{include file="footer.html"}>
+<script>
+function cancelOrder(){
+	var oid="<{$orderRow.id}>";
+	if(confirm("确定要取消订单吗")){
+		$.ajax({
+			url:"index.php?m=order&a=cancel",
+			data:{oid:oid,status:3},
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res){
+					window.location.reload();
+				}else{
+					alert('操作失败');
+				}
+			}
+		});
+	}
+}
+function confirmOrder(){
+	var oid="<{$orderRow.id}>";
+	if(confirm("确认收货吗")){
+		$.ajax({
+			url:"index.php?m=order&a=cancel",
+			data:{oid:oid,status:2},
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res){
+					window.location.reload();
+				}else{
+					alert('操作失败');
+				}
+			}
+		});
+	}
+}
+</script>
+<div class="clearfix"></div>
+</body>
+</html>

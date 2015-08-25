@@ -1,0 +1,197 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" media="all" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+	.input_span_extra{height:35px;line-height:35px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li><a href="slide.php">首页幻灯片</a></li>
+						<li><a href="cate.php">商品分类</a></li>
+						<li><a href="index.php">商品列表</a></li>
+						<li class="select"><a href="order.php">订单列表</a></li>
+						<!-- <li style="float:right;">
+							<a href='javascript:history.go(-1);'><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;返回上一页</a>
+						</li> -->
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<h4 style="margin-bottom:0">订单详情</h4>
+						<div style="height:0px;border-top:1px dashed #DBDBDB;margin:0 10px;"></div>
+					</div>
+					<form id="memberform" style="margin-top:10px">
+						<input type="hidden" name='a' value='add' />
+						<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+						<div class="shop_sort_box">
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>订单号：</h4>
+								</div>
+								<div class="shop_sort_set" style="line-height:33px;">
+									<{$vo.id}>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>收货人：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[name]" value="<{$vo.name}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>收货地址：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[address]" value="<{$vo.address}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>联系电话：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[tel]" value="<{$vo.tel}>" type="text">
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>物流：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input class="shop_sort_text" name="str[wuliu]" value="<{$vo.wuliu}>" type="text" placeholder="如：顺丰快递，590452892716" />
+									<span style="line-height:34px;color:red;">（物流公司，运单号）</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>订单额：</h4>
+								</div>
+								<div class="shop_sort_set" style="line-height:33px;">
+									￥<{$vo.money}>（含运费<{$vo.yunfei}>元）
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>商品详细：</h4></div>
+								<div class="shop_sort_set">				  
+									<table>
+										<tbody style="text-align:center;">
+											<tr style="background-color:#F3F3F3;">
+												<td style="width:100px;">商品</td>
+												<td style="width:80px;">订购量</td>
+												<td style="width:100px;">总价</td>
+											</tr>
+											<{foreach from=$detailList item=res}>
+												<tr>
+													<td style="height:45px;" title="<{$res.name}>"><a href="" target="_blank">
+													<img src="../../../data/image_c/<{$res.pic}>" style="height:34px;width:64px" alt="<{$res.goods_name}>"/>
+													</a></td>
+													<td><{$res.num}></td>
+													<td><{$res.money}>元</td>
+												</tr>
+											<{/foreach}>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>备注：</h4></div>
+								<div class="shop_sort_set" style="line-height:33px;">
+									<{$vo.content}>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>支付状态：</h4>
+								</div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									<{if $vo.is_pay==1}>已付款<{else}>未付款<{/if}>
+									<!-- <input type="radio" name="info[is_pay]" id="optionsRadios2" value="0" <{if $vo.is_pay==0}>checked<{/if}> > 
+									<label for="optionsRadios2">未支付&nbsp;&nbsp;</label>
+									<input type="radio" name="info[is_pay]" id="optionsRadios1" value="1" <{if $vo.is_pay==1}>checked<{/if}> > <label for="optionsRadios1">已支付</label> -->
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>状态：</h4></div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									
+									<{if $vo.status==2}>已签收<{else}>
+									
+									<input type="radio" name="info[status]" id="status0" value="0" <{if $vo.status==0}>checked<{/if}> > <label for="status0">待处理&nbsp;&nbsp;</label>
+									<input type="radio" name="info[status]" id="status1" value="1" <{if $vo.status==1}>checked<{/if}> > <label for="status1">已发货&nbsp;&nbsp;</label>
+									<input type="radio" name="info[status]" id="status3" value="3" <{if $vo.status==3}>checked<{/if}> > <label for="status3">无效单</label>
+									
+									<{/if}>
+									
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript">
+set_title_name('<{$cateName}>管理');
+set_menu_cur('menu_31', 'cur');
+function save(event,obj){
+	//防止表单重复提交
+	var subFromFlag=$(obj).attr("subFromFlag");
+	if(subFromFlag==0){
+		if($("input[name='str[name]']").val()==''){
+			note_info('收货人不能为空', 'warn', event);
+			return;
+		}
+		if($("input[name='str[address]']").val()==''){
+			note_info('收货地址不能为空', 'warn', event);
+			return;
+		}
+		if($("input[name='str[tel]']").val()==''){
+			note_info('联系电话不能为空', 'warn', event);
+			return;
+		}
+		$(obj).attr("subFromFlag",1);
+		$.ajax({
+			url:"order.php",
+			data:$('#memberform').serializeArray(),
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res){
+					note_info("保存成功","success",event);
+					setTimeout("window.location.href='order.php'",300);
+				}else{
+					$(obj).attr("subFromFlag",0);
+					note_info('保存失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

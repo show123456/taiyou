@@ -1,0 +1,132 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+</style>
+<div class=" main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li><a href="slide.php">首页幻灯片</a></li>
+						<li><a href="cate.php">商品分类</a></li>
+						<li class="select"><a href="index.php">商品列表</a></li>
+						<li><a href="order.php">订单列表</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<div class="title-left">
+							<h4><{$cateName}>列表</h4>
+						</div>
+						<div class="title-right" style="top:8px;">
+							<form method="get" action="">
+								<!-- <select name="order" class="textarea" style='font-size:12px'>
+									<option value='0'>排序条件</option>
+									<option value="1" <{if $smarty.get.order==1}>selected<{/if}> >销量递减</option>
+									<option value="2" <{if $smarty.get.order==2}>selected<{/if}> >销量递增</option>
+									<option value="3" <{if $smarty.get.order==3}>selected<{/if}> >点击量递减</option>
+									<option value="4" <{if $smarty.get.order==4}>selected<{/if}> >点击量递增</option>
+								</select> -->
+								<select name="cid" class="textarea" style='font-size:12px'>
+									<option value='0'>商品类别</option>
+									<{foreach from=$cateList item=v}>
+									<option value="<{$v.id}>" <{if $v.id==$smarty.get.cid}>selected<{/if}> ><{$v.name}></option>
+									<{/foreach}>
+								</select>
+								<select name="state" class="textarea" style='font-size:12px'>
+									<option value='0'>商品状态</option>
+									<option value="1" <{if $smarty.get.state==1}>selected<{/if}> >未上架</option>
+									<option value="2" <{if $smarty.get.state==2}>selected<{/if}> >在售</option>
+									<option value="3" <{if $smarty.get.state==3}>selected<{/if}> >已下架</option>
+								</select>
+								<input name="keywords" class="textarea" placeholder="请输入名称" type="text" value="<{$smarty.get.keywords}>" style="width:110px;" />
+								<input value="搜索" class="btn btn-large btn-success" title="搜索" type="submit" style="margin-top:-7px;padding:3px 10px;" />
+								<a href='index.php?a=add'>
+									<input value="添加<{$cateName}>" class="btn btn-large btn-success" type="button" style="margin-top:-7px;padding:3px 10px;" />
+								</a>
+							</form>
+						</div>
+					</div>
+					<div class="list-table">
+						<div class="wrapper">
+							<table style="table-layout:auto;" class="stable">
+								<thead>
+									<tr>
+										<th class="enable">名称</th>
+										<th class="enable">类别</th>
+										<th class="enable">现价</th>
+										<!-- <th class="enable">库存量</th> -->
+										<th class="enable">已售量</th>
+										<!-- <th class="enable">点击量</th> -->
+										<th name="Status" class="enable">状态</th>
+										<th name="Operate" class="enable">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<{foreach from=$list item="v"}>
+									<tr>
+										<td title="<{$v.name}>"><div><{$v.s_name}></div></td>
+										<td><div><{$v.cname}></div></td>
+										<td><div><{$v.fact_price}></div></td>
+										<!-- <td><div><{$v.store}></div></td> -->
+										<td><div><{$v.outnum}></div></td>
+										<!-- <td><div><{$v.clicknum}></div></td> -->
+										<td><div><{if $v.state==1}>未上架<{elseif $v.state==2}>在售<{else}>已下架<{/if}></div></td>
+										<td>
+											<div class="btn-operate">
+											<a href="#" onclick="upDownGoods(event,'<{$v.id}>',2)" title="上架"><i class="glyphicon glyphicon-arrow-up"></i></a>
+											<a href="#" onclick="upDownGoods(event,'<{$v.id}>',3)" title="下架"><i class="glyphicon glyphicon-arrow-down"></i></a>
+											<a href="index.php?a=add&id=<{$v.id}>" title="修改"><i class="glyphicon glyphicon-edit"></i></a>
+											<a href="#" onclick="delRow(event,'<{$v.id}>')" title="删除"><i class="glyphicon glyphicon-trash"></i></a>
+											</div>
+										</td>
+									</tr>
+									<{/foreach}>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<{if $page}><div class="page-list" style="margin-top:15px;float: right;margin-right:20px;"><{$page}></div><{/if}>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function delRow(event,id){
+	if(confirm("确定要删除吗?")){
+		$.ajax({
+			url:"index.php",
+			data:{id:id,a:'del'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('删除成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}
+			}
+		});
+	}
+}
+//上下架
+function upDownGoods(event,id,state){
+	if(confirm("确定要执行此操作吗?")){
+		$.ajax({
+			url:"index.php",
+			data:{id:id,state:state,a:'upDown'},
+			type:"post",
+			dataType:'json',
+			async:false,
+			success:function(res) {
+				if(res){
+					note_info('操作成功','success',event);
+					setTimeout("window.location.reload()",300);
+				}
+			}
+		});
+	}
+}
+</script>

@@ -1,0 +1,115 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" media="all" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+	.input_span_extra{height:35px;line-height:35px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li><a href="slide.php">首页幻灯片</a></li>
+						<li class="select"><a href="cate.php">商品分类</a></li>
+						<li><a href="index.php">商品列表</a></li>
+						<li><a href="order.php">订单列表</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<h4 style="margin-bottom:0"><{if $vo.id}>修改<{else}>添加<{/if}><{$cateName}></h4>
+						<div style="height:0px;border-top:1px dashed #DBDBDB;margin:0 10px;"></div>
+					</div>
+					<form id="memberform" style="margin-top:10px">
+						<input type="hidden" name='a' value='add'/>
+						<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+						<div class="shop_sort_box">
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>名称：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[name]" value="<{$vo.name}>" type="text">
+								</div>
+							</div>
+							<!-- <div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>介绍：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<textarea id="goods_intro" name="str[content]" style="width:550px;height:150px;"><{$vo.content}></textarea>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>序号：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="num[ordernum]" value="<{$vo.ordernum|default:0}>" type="text" style="width:45px" /><span class="input_span_extra" style="color:red">&nbsp;&nbsp;注：序号越大，位置越靠前</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>状态：</h4>
+								</div>
+								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
+									<input type="radio" name="info[state]" id="optionsRadios1" value="1" <{if $vo.state==1 || !$vo.state}>checked<{/if}> > <label for="optionsRadios1">开放&nbsp;&nbsp;</label>
+									<input type="radio" name="info[state]" id="optionsRadios2" value="2" <{if $vo.state==2}>checked<{/if}> ><label for="optionsRadios2">关闭</label>
+								</div>
+							</div> -->
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo"subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript">
+//初始化编辑器
+function save(event,obj){
+	//防止表单重复提交
+	var subFromFlag=$(obj).attr("subFromFlag");
+	if(subFromFlag==0){
+		if($("input[name='str[name]']").val()==''){
+			note_info('名称不能为空', 'warn', event);
+			return;
+		}
+		$(obj).attr("subFromFlag",1);
+		$.ajax({
+			url:"cate.php",
+			data:$('#memberform').serializeArray(),
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res){
+					note_info("保存成功","success",event);
+					setTimeout("window.history.go(-1)",300);
+				}else{
+					$(obj).attr("subFromFlag",0);
+					note_info('保存失败','warn',event);
+				}
+			}
+		});
+	}
+}
+</script>

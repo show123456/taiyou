@@ -13,6 +13,7 @@ class SubTjrAction extends CommonAction{
 			$urow=$userModel->where(array('username'=>I('get.phone')))->find();
 			$where['tjr_uid']=$urow['id'];
 		}
+		if(I('get.is_zj')) $where['is_zj']=I('get.is_zj');
 		
 		$list=D($this->moduleName)->field('*,count(reg_uid) as reg_num')->where($where)->group('tjr_uid')->select();
 		foreach($list as $k=>$v){

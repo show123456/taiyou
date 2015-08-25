@@ -60,7 +60,26 @@ if($_REQUEST['a']=='user_add_company'){
 		//行业
 		$indModel=D('sub_industry');
 		$smarty->assign('indArr',$indModel->order('id asc')->dataArr());
-		$smarty->assign('vo',$model->find($userRow['id']));
+		
+		$vo=$model->find($userRow['id']);
+		//若为中介
+		if($vo['industry_id']){
+			$ind_row=$indModel->find($vo['industry_id']);
+			if($ind_row['name']=='中介'){
+				$code=substr(md5($vo['username']),-4);//4位推广码
+				$smarty->assign('promote_code',$code);
+				//同步sub_code表
+				$codeModel=D('sub_code');
+				$code_row=$codeModel->where("uid = '".$userRow['id']."'")->dataRow();
+				if(!$code_row){
+					$code_arr=array();
+					$code_arr['info']['uid']=$userRow['id'];
+					$code_arr['info']['code']=$code;
+					$codeModel->add($code_arr);
+				}
+			}
+		}
+		$smarty->assign('vo',$vo);
 		$smarty->setLayout('')->setTpl('mobile/templates/user_add_company.html')->display();die;
 	}
 }

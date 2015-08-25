@@ -1,0 +1,141 @@
+<link rel="stylesheet" type="text/css" href="css/mall.css" media="all" />
+<style type="text/css">
+	.mall-set{font-family:"Microsoft YaHei","黑体","宋体";}
+	.input_span_extra{height:35px;line-height:35px;}
+	.fg-upload span{color:#777;height:34px;line-height:34px}
+</style>
+<div class="main-content">
+	<div class="inner">
+		<div class="mall-manage">
+			<div class="mall-set">
+				<div class="mall-set-title">
+					<ul>
+						<li class="select"><a href="slide.php">首页幻灯片</a></li>
+						<li><a href="cate.php">商品分类</a></li>
+						<li><a href="index.php">商品列表</a></li>
+						<li><a href="order.php">订单列表</a></li>
+					</ul>
+				</div>
+				<div class="comm-list" style="min-height:600px">
+					<div class="comm-top">
+						<h4 style="margin-bottom:0"><{if $vo.id}>修改<{else}>添加<{/if}><{$cateName}></h4>
+						<div style="height:0px;border-top:1px dashed #DBDBDB;margin:0 10px;"></div>
+					</div>
+					<form id="memberform" style="margin-top:10px">
+						<input type="hidden" name='a' value='add' />
+						<input type="hidden" name="num[id]" value="<{$vo.id}>" />
+						<input type="hidden" id="info_pic" name="info[pic]" value="<{$vo.pic}>" />
+						<div class="shop_sort_box">
+							<div class="shop_sort">
+								<div class="shop_sort_title"><h4>图片：</h4></div>
+								<div class="shop_sort_set">				  
+									<div class="form-group">
+									<div class="fg-upload" onclick="$('#img-file').click()">
+										<input id="local-image" type="text" class="form-control shop_sort_text" value='' style="padding-left:70px;" />
+										<a href="#" class="btn-upload"><i class="icons icons-upload"></i>上传</a>
+										<span>&nbsp;&nbsp;&nbsp;(建议尺寸:640px*340px)</span>
+									</div>
+									</div>
+									<div id="logo_image" class="editer_img cover" style="display:<{if $vo.pic}><{else}>none<{/if}>">
+									<img id="logo_url" src="../../../data/image_c/<{$vo.pic}>" style="width:128px;height:68px;" />
+									<span>
+										<a id="logo_delete" href="#" onclick="dele_pic(event);return false">删除</a>
+									</span>
+								</div>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>链接地址：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="info[piclink]" value="<{$vo.piclink}>" type="text">
+									<span class="input_span_extra" style="color:red">&nbsp;&nbsp;&nbsp;注:请以http://开头</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>序号：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="num[ordernum]" value="<{$vo.ordernum|default:0}>" type="text" style="width:45px" /><span class="input_span_extra" style="color:red">&nbsp;&nbsp;注：序号越大，位置越靠前，最多显示3张</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4></h4>
+								</div>
+								<div class="shop_sort_set">
+									<button onclick="save(event,this);return false" type='button' class="btngreen30" id="adddo" subFromFlag="0">
+										完成
+									</button>&nbsp;&nbsp;&nbsp;
+									<button onclick="javascript:window.history.go(-1);" class="btngray30" type='button' id="adddo2">返回</button>
+								</div>
+								<div class="clr"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="display:none">
+	<iframe name='img-frame' id="img-frame" style="display:none"></iframe>
+	<form id="img-form" action="/home/info/upload.php" encType="multipart/form-data" method="post" target="img-frame" >
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript">
+function save(event,obj){
+	//防止表单重复提交
+	var subFromFlag=$(obj).attr("subFromFlag");
+	if(subFromFlag==0){
+		if($("input[name='info[pic]']").val()==''){
+			note_info('请上传图片', 'warn', event);
+			return;
+		}
+		$(obj).attr("subFromFlag",1);
+		$.ajax({
+			url:"slide.php",
+			data:$('#memberform').serializeArray(),
+			type:"post",
+			dataType:'json',
+			async :false,
+			success:function(res) {
+				if(res){
+					note_info("保存成功","success",event);
+					setTimeout("window.location.href='slide.php'",300);
+				}else{
+					$(obj).attr("subFromFlag",0);
+					note_info('保存失败','warn',event);
+				}
+			}
+		});
+	}
+}
+//删除图片
+function dele_pic(event){
+	note_info("只有点击保存才能真正删除图片哦",'success',event);
+	$('#logo_image').hide();
+	$('#info_pic').val('');
+}
+$(document).ready(function(){
+	//图片处理
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+    	try{
+    	    var result = $.parseJSON(html);
+    	    if(result.success==1){
+    	    	$('#info_pic').val(result.data.path);
+				$('.cover').html('<img src="../../../data/image_c/'+result.data.path+'" style="width:128px;height:68px;" /><span><a id="logo_delete" href="">删除</a></span>');
+				$('.cover').show();
+    	    }
+    	}catch(e){ }
+    });
+    $('#img-file').change(function(){
+    	$('#local-image').val($(this).val());
+    });
+})
+</script>

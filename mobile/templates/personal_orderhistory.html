@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>我的订单</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<script src="js/jquery.min.js"></script>
+	<style type="text/css">
+	/*没有数据样式*/
+	.b12-bubbling{background:#f8f8f8;color:#bdbdbd;width:100%;height:52px;
+	line-height:50px;text-align:center;overflow: hidden;position:relative;z-index:2;}
+	
+	.MySecondUp{width:100%;height:2.0em;font-size:106%;color:#0186b3;}
+	.MySecondDownLeft{height:3.0em;font-size:1.0em;float:left;}
+	.wait{background-color:#0186B3;color:#fff;border-radius:3px;padding:3px 7px 3px 7px;margin-right:0.5em;margin-left:4em;}
+	.end{background-color:#F66430;color:#fff;border-radius:3px;padding:3px 7px 3px 7px;}
+	</style>
+</head>
+<body class='white'>
+	<div class="clearfix"></div>
+	<section class="Main personal">
+		<div class="ContentMain">
+			<{foreach from=$orderArr key=k item="v"}>
+				<div class="MySecond" <{if $k%2==0}>style="background-color:#eee"<{/if}> >
+					<div class="MySecondRight" onclick="window.location.href='index.php?m=personal&a=orderdetail&oid=<{$v.id}>'">
+						<div class="MySecondUp">订单号：<{$v.id}>
+						<span style="color:red; padding-right:0.3em; float: right; margin-right: 0.5em;"> 
+						<span class="fa fa-jpy" style="color:red; padding-right:0.3em;"></span><{$v.money}></span>
+						</div>
+						<div class="MySecondDown">
+							<div class="MySecondDownLeft">
+								<div class="MySecondDownLeftH" style="margin-top:0.8em;">
+									<span><span class="fa fa-calendar" style="color:#A2A2A2; padding-right:0.3em;"></span><{$v.addtime}></span>
+									<span class="wait" ><{if $v.status==0}>未处理<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效单<{/if}></span> 
+									<span class="end" ><{if $v.is_pay==1}>已付款<{else}>未付款<{/if}></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<{/foreach}>
+			<!-- <div class="Xian"></div>
+			<div class="FanHui">
+				<div class="FanHuiContent">返回</div>
+			</div> -->
+		</div>
+	</section>
+	<div class="clearfix"></div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+//分页
+var pageNum=1;
+var page_ajax=true;
+$(document).ready(function(){
+    $(window).scroll(function(){
+        var bot = 150; //bot是底部距离的高度
+        if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+			if(page_ajax){
+				page_ajax=false;
+				pageNum++;
+				$('#loading').show();
+				
+				var get_url='index.php?m=personal&a=orderhistory&p='+pageNum;
+				$.get(get_url,function(res){
+					$('#loading').hide();
+					if(res){
+						if(res=='err'){
+						}else{
+							var goodsStr='';
+							$.each(res,function(i,item){
+								if(i%2==0){
+									goodsStr+='<div class="MySecond" style="background-color:#eee">';
+								}else{
+									goodsStr+='<div class="MySecond">';
+								}
+								goodsStr+='<div class="MySecondRight" onclick="window.location.href=\'index.php?m=personal&a=orderdetail&oid='+item.id+'\'"><div class="MySecondUp">订单号：'+item.id+'<span style="color:red;padding-right:0.3em;float:right;margin-right:0.5em;"><span class="fa fa-jpy" style="color:red;padding-right:0.3em;"></span>'+item.money+'</span></div><div class="MySecondDown"><div class="MySecondDownLeft"><div class="MySecondDownLeftH" style="margin-top:0.8em;"><span><span class="fa fa-calendar" style="color:#A2A2A2;padding-right:0.3em;"></span>'+item.addtime+'</span>';
+								if(item.status==0){
+									goodsStr+='<span class="wait" >未处理</span>';
+								}else if(item.status==1){
+									goodsStr+='<span class="wait" >已派送</span>';
+								}else if(item.status==2){
+									goodsStr+='<span class="wait" >已签收</span>';
+								}else{
+									goodsStr+='<span class="wait" >无效单</span>';
+								}
+								if(item.is_pay==1){
+									goodsStr+='<span class="end" >已付款</span>';
+								}else{
+									goodsStr+='<span class="end" >未付款</span>';
+								}
+								goodsStr+='</div></div></div></div></div>';
+							})
+							$('.ContentMain').append(goodsStr);
+							page_ajax=true;
+						}
+					}
+				},'json');
+			}
+        }
+    });
+});
+</script>
+</body>
+</html>

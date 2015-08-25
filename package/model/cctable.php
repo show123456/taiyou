@@ -113,6 +113,14 @@ class Model_Cctable extends Model_Table {
 		}
 		return $this;
 	}
+	
+	//清空条件
+	private function clearCondition(){
+		$this->_field=null;
+		$this->_where=null;
+		$this->_order=null;
+		$this->_limit=null;
+	}
 
 	public function dataArr(){
 		$sql="select ";
@@ -125,6 +133,7 @@ class Model_Cctable extends Model_Table {
 		if($this->_where) $sql.=$this->_where;
 		if($this->_order) $sql.=$this->_order;
 		if($this->_limit) $sql.=$this->_limit;
+		$this->clearCondition();
 		return $this->fetchAll($sql);
 	}
 
@@ -137,6 +146,7 @@ class Model_Cctable extends Model_Table {
 		}
 		$sql.="from {$this->_name} ";
 		if($this->_where) $sql.=$this->_where;
+		$this->clearCondition();
 		return $this->fetchRow($sql);
 	}
 }

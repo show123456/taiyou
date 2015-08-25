@@ -28,7 +28,11 @@ class IndexAction extends Action {
 			$this->error("用户名或密码错误！",U('Index/login'));
 		}else{
 			setSuserInfo($arr);
-			$this->success("登录成功！",U('Index/index'));
+			if($arr['type']==5){
+				$this->success("登录成功！",'../home/app/hptshop/order.php');
+			}else{
+				$this->success("登录成功！",U('Index/index'));
+			}
 		}
 	}
 	

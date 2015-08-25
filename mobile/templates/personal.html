@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>微信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<script src="js/jquery.min.js"></script>
+</head>
+<body class='white'>
+<div class="clearfix"></div>
+<section class="Main personal">
+        <div class='photo'>
+            <div class='photoBorder'>
+                <a href="javascript:void(0)" class='photoshop' onclick="alert('建议上传头像呈正方形且小于2M');$('#img-file').click()">
+                    <{if $docRow.pic}>
+					<img src="/data/image_c/<{$docRow.pic}>">
+					<{else}>
+					<img src="images/girl.png">
+					<{/if}>
+                </a>
+            </div>
+            <div class='userName'><{$docRow.name}></div>
+        </div>
+        <div class='myFunctions'>
+			<{if $docRow.typenum==1}>
+			<a href='index.php?m=doctor&a=book&id=<{$docRow.id}>' class='myactive6'>预约设置</a>
+			<a href='index.php?m=personal&a=doctoryuyue' class='myactive1'>我的预约本
+			<{if $ddoctororderFlag}><div style="width:0.5em;height:0.5em;background-color:red;border-radius:0.3em;position:absolute;top:0.4em ;left:1.6em;z-index:200;"></div><{/if}>
+			</a>
+            <a href='./index.php?m=personal&a=trainhistory' class='myactive5'>我的培训课
+			<{if $trainFlag}><div style="width:0.5em;height:0.5em;background-color:red;border-radius:0.3em;position:absolute;top:0.4em ;left:1.6em;z-index:200;"></div><{/if}>
+			</a>
+			<{else}>
+            <a href='index.php?m=personal&a=patientyuyue' class='myactive1'>我的私人牙医
+			<{if $pdoctororderFlag}><div style="width:0.5em;height:0.5em;background-color:red;border-radius:0.3em;position:absolute;top:0.4em ;left:1.6em;z-index:200;"></div><{/if}>
+			</a>
+			<{/if}>
+            <a href='./index.php?m=personal&a=orderhistory' class='myactive4'>商城购买记录
+			<{if $shengchengFlag}><div style="width:0.5em;height:0.5em;background-color:red;border-radius:0.3em;position:absolute;top:0.4em ;left:1.6em;z-index:200;"></div><{/if}>
+			</a>
+            <a href='./index.php?m=doctor&a=readd' class='myactive6'>我的资料</a>
+        </div>
+</section>
+<div class="clearfix"></div>
+<footer>
+ 	<p class='support'>版权所有：登特商贸&nbsp;|&nbsp;技术支持：微沟通</p>
+</footer>
+<div style="visibility:hidden;">
+	<iframe name='img-frame' id="img-frame" style="visibility:hidden;height:10px"></iframe>
+	<form id="img-form" action="upload.php" encType="multipart/form-data" method="post" target="img-frame">
+		<input type="hidden" name="id" value="<{$docRow.id}>" />
+		<input type="file" name="imgfile" value="" id="img-file" onchange="$('#img-form').submit();"/>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	//图片处理
+	$('#img-frame').load(function(){
+        try{var html = $(this).contents().find('body').html();
+    	}catch(e){ var html = window.frames["upload_frame"].document.body.innerText;}
+    	try{
+    	    var result = $.parseJSON(html);
+    	    if(result.success==1){
+    	    	window.location.reload();
+    	    }else{
+				alert("照片太大或其他错误");
+			}
+    	}catch(e){ }
+    });
+})
+</script>
+</body>
+</html>

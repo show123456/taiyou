@@ -124,6 +124,10 @@
 				<option value="1" <{if $vo.sh_status==1}>selected<{/if}> >审核通过</option>
 			</select>
 			<{/if}>
+			<select name="num[is_phone]" style="width:100%">
+				<option value="0" <{if $vo.is_phone==0}>selected<{/if}> >不允许提报电话</option>
+				<option value="1" <{if $vo.is_phone==1}>selected<{/if}> >允许提报电话</option>
+			</select>
 		</div>
 		<div class="blank_15"></div>
 	</div>
