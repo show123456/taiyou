@@ -143,7 +143,7 @@ $(document).ready(function(){
 						}else{
 							var goodsStr='';
 							$.each(res,function(i,item){
-								goodsStr+='<a href="index.php?m=goods&a=detail&id='+item.id+'" class="resultBlock"><div class="resultPhoto" style="vertical-align:middle;margin-top:1em;"><img src="/data/image_c/'+item.pic+'" style="vertical-align:middle;" /></div><div class="resultInfo"><p>'+item.name+'</p><div class="clearfix"></div><span style="color:#888888;font-size:80%;line-height:1.2em;display:block;">'+item.content+'</span></div><div class="resultPrice"><p style="margin-left:0.9em">￥'+item.fact_price+'</p><div class="clearfix"></div><p class="noDisPrice" style="color:#888;">￥'+item.price+'</p></div><div class="clearfix"></div></a>';
+								goodsStr+='<a href="index.php?m=goods&a=detail&id='+item.id+'" class="resultBlock"><div class="resultPhoto" style="vertical-align:middle;margin-top:1em;"><img src="/data/image_c/'+item.pic+'" style="vertical-align:middle;" /></div><div class="resultInfo"><p>'+item.name+'</p><div class="clearfix"></div><span style="color:#888888;font-size:80%;line-height:1.2em;display:block;">销量：'+item.outnum+'</span></div><div class="resultPrice"><p style="margin-left:0.9em">￥'+item.fact_price+'</p><div class="clearfix"></div><p class="noDisPrice" style="color:#888;">￥'+item.price+'</p></div><div class="clearfix"></div></a>';
 							})
 							$('.resultList').append(goodsStr);
 							page_ajax=true;

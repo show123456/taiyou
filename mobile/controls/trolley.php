@@ -65,6 +65,21 @@
 		}
 		$smarty->setLayout('')->setTpl('mobile/templates/trolley.html')->display();
 	}
+	
+	//购物车列表
+	if($_REQUEST['a']=='index_lb'){
+		$goodsModel=D('applist_hpt_shop_goods');
+		$list=$goodsModel->where('is_lb=1')->dataArr();
+		$smarty->assign('list',$list);
+		$smarty->assign('yunfei',$yunfei);
+		//是否登录
+		if($_COOKIE['tyuid'] && !$_SESSION['tyuser']['id']) $_SESSION['tyuser']['id']=$_COOKIE['tyuid'];
+		if(empty($_SESSION['tyuser'])){
+			$smarty->assign('no_login',1);
+		}
+		$smarty->setLayout('')->setTpl('mobile/templates/trolley_lb.html')->display();die;
+	}
+	
 	//保存购物车信息
 	if($_REQUEST['a']=='bind_discount'){
 		$bindDocName=$_POST['docName'];

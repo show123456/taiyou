@@ -16,6 +16,8 @@
 .replyBox textarea{width:230px;height:60px;border-radius:5px;}
 .replyBox input[type='button']{padding:3px 10px;font-family:"Microsoft YaHei","黑体","宋体";}
 .replyBox b{display:block;float:right;cursor:pointer;}
+.code_btn{padding:4px 20px;background-color:#EDEDED;border:1px solid #DDD;font-size:12px;
+	cursor:pointer;border-radius:3px;color:#686868;}
 </style>
 <div class="main-content">
 <div class='inner'>
@@ -80,7 +82,7 @@
 						<th name="Theme" class="hover enable">真实姓名</th>
 						<th name="Theme" class="hover enable">昵称</th>
 						<th name="Theme" class="hover enable">性别</th>
-						<th name="Theme" class="hover enable">设置为客服</th>
+						<th name="Theme" class="hover enable">礼包优惠码</th>
 						<th name="Theme" class="hover enable">余额(元)</th>
 						<th name="Theme" class="hover enable">向该用户</th>
 						<{if $smarty.get.admin==1}><th name="Theme" class="hover enable">充值</th><{/if}>
@@ -108,10 +110,12 @@
 						<td><div><{$v.nickname}></div></td>
 						<td><div><{$v.nicheng}></div></td>
 						<td><div><{if $v.sex==1}>男<{else}>女<{/if}></div></td>
-						<td><div class="kfTypeDiv">
-							<span class="kfSpan <{if $v.type==3}>isKf<{/if}>" data-status='3' data-id='<{$v.id}>'>是</span> | 
-							<span class="kfSpan <{if $v.type==1}>isKf<{/if}>" data-status='1' data-id='<{$v.id}>'>否</span>
-						</div></td>
+						<td>
+						<{if $v.code}>
+							<{$v.code}>
+						<{else}>
+							<span class='code_btn' onclick="produce_code(<{$v.id}>,'<{$v.nickname}>')">生成</span></td>
+						<{/if}>
 						<td><div><{$v.money}></div></td>
 						<td><div><a href="javascript:void(0);" onclick="sendMsg(this,<{$v.id}>)" data-name="<{$v.nickname}>">发消息</a></div></td>
 						<{if $smarty.get.admin==1}><td><a href="index.php?a=cz&id=<{$v.id}>">充值</a></td><{/if}>
@@ -221,5 +225,13 @@ function submitMsg(){
 		$('.replyDiv').slideUp();
 		$('#replyContent').val('');
 	});
+}
+//产生优惠码
+function produce_code(id,name){
+	if(confirm('确定为'+name+'生成优惠码吗？')){
+	$.post('index.php?a=produce_code',{id:id},function(){
+		window.location.reload();
+	})
+	}
 }
 </script>

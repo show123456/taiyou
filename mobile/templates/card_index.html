@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的卡片</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+<style type="text/css">
+.ban_div{padding:10px 10px 0;color:#ff7101;font-weight:bold;letter-spacing:2px;}
+.card_box{padding:10px 10px 0;}
+.img_box{width:200px;height:270px;float:left;}
+.img_box img{width:200px;height:270px;}
+.num_div{float:left;height:30px;margin-top:120px;margin-left:15px;}
+.use_btn{display:block;background-color:#ff7101;color:#fff;font-size:16px;
+	border-radius:5px;padding:3px 22px;margin-top:5px;}
+</style>
+</head>
+<style type="text/css">
+</style>
+<body style="background-color:#eeeeee;">
+<div class="main">
+	<div class="ban_div"><{if $in_ban==1}>您在禁闭期内，可使用解禁卡解禁<{else}>您不在禁闭期内<{/if}></div>
+	<div class="card_box">
+		<div class='img_box'><img src="./images/card1.png" /></div>
+		<div class="num_div">
+			x&nbsp;&nbsp;
+			<span style="color:red;font-size:30px;"><{$num1}></span>
+			&nbsp;&nbsp;&nbsp;
+			<span class="use_btn" onclick="del_ban()">使用</span>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	<div class="card_box">
+		<div class='img_box'><img src="./images/card2.png" /></div>
+		<div class="num_div">
+			x&nbsp;&nbsp;
+			<span style="color:red;font-size:30px;"><{$num2}></span>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	<div class="card_box">
+		<div class='img_box'><img src="./images/card3.png" /></div>
+		<div class="num_div">
+			x&nbsp;&nbsp;
+			<span style="color:red;font-size:30px;"><{$num3}></span>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	<div style="height:40px;"></div>
+</div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+//使用解禁卡
+function del_ban(){
+	if('<{$in_ban}>'!='1'){
+		alert('您不在禁闭期内');retuen;
+	}
+	if('<{$num1}>'=='0'){
+		alert('您未获得解禁卡或解禁卡已过期');retuen;
+	}
+	if(confirm('确定要使用一张解禁卡吗？')){
+		$.post('index.php?m=card&a=del_ban',function(res){
+			res=$.trim(res);
+			if(res=='suc'){
+				alert('使用成功');
+				window.location.reload();
+			}else{
+				alert('使用失败');
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

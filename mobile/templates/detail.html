@@ -39,14 +39,18 @@
         <div class='orderNumber'>
             <span>购买数量:</span>
             <a href='javascript:void(0);' class='orderChange minus' onclick="changeNum(-1)">-</a>
-            <input name='num' type='text' class='orderNumberInput' value='1' />&nbsp;
+            <input name='num' type='text' class='orderNumberInput' value='1' <{if $vo.id==1}>disabled<{/if}> />&nbsp;
             <a href='javascript:void(0);' class='orderChange plus' onclick="changeNum(1)">+</a>
             <!-- <span>库存（<{$vo.store}>）</span> -->
             <div class="clearfix"></div>
         </div>
         <div class='detailForm'>
-            <button type="button" class='addBtn detailFormBtn' onclick="addTrolley()">加入购物车</button>
-            <button type="button" class='submitBtn detailFormBtn' onclick="buyNow()">立即购买</button>
+            <{if $vo.id==1}>
+				<button type="button" class='addBtn detailFormBtn' onclick="window.location.href='index.php?m=trolley&a=index_lb'">立即购买</button>
+			<{else}>
+				<button type="button" class='addBtn detailFormBtn' onclick="addTrolley()">加入购物车</button>
+				<button type="button" class='submitBtn detailFormBtn' onclick="buyNow()">立即购买</button>
+			<{/if}>
             <div class="clearfix"></div>
         </div>
         </form>
@@ -69,6 +73,7 @@
 <script type="text/javascript">
 //购买数量改变
 function changeNum(num){
+	if('<{$vo.id}>'=='1') return;
 	var buyNum=parseInt($(".orderNumberInput").val());
 	if(!buyNum) buyNum=1;
 	//var store=<{$vo.store}>;

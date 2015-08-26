@@ -136,6 +136,20 @@
 		}
 		die;
 	}
+
+	//生成大礼包优惠码
+	if($_REQUEST['a']=='produce_code'){
+		if(method_is('post')){
+			$data=array();
+			$id=$_POST['id'];
+			$userModel=new Model_Subtable('sub_user');
+			$userRow=$userModel->find($id);
+			$data['info']['id']=$id;
+			$data['info']['code']=substr(md5($userRow['username']),-6);
+			$userModel->add($data);
+		}
+		die;
+	}
 	
 	//数据列表
 	$dmodel=new Model_Subtable('s_district');

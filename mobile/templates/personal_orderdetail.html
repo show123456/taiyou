@@ -45,7 +45,12 @@
 		</div>
 	</div>
 <div class="shop_ddlist">
-    <p><span class="zonjia">总价：¥<{$orderRow.money}>（含快递费<{$orderRow.yunfei}>元）</span>&nbsp;</p>
+    <p>
+		<{if $orderRow.is_lb==1}>
+			<span style="color:red;font-weight:bold;font-size:16px;">（大礼包）</span>
+		<{/if}>
+		<span class="zonjia" style="color:#01B4EC;">总价：¥<{$orderRow.money}>（含快递费<{$orderRow.yunfei}>元）</span>&nbsp;
+	</p>
     <div class="orders_list">
 		<{foreach from=$odetailArr item=row}>
 			<a href="javascript:void(0)"><dl>
