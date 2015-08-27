@@ -33,7 +33,7 @@
 			$taskRow=$model->field('id,pay_type,is_js,work_time')->where("id=".$data['tid'])->dataRow();
 			//1现金日结，用户金额不增加
 			if($taskRow['pay_type']==1 && $taskRow['is_js']==0){
-				$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
+				$listArr=$signModel->where("is_valid=1 and is_qd=1 and is_js=1 and tid=".$data['tid'])->dataArr();
 				foreach($listArr as $k=>$v){
 					//写金额日志
 					$logData=array();
@@ -47,7 +47,7 @@
 			}
 			//2转账日结，用户金额增加
 			if($taskRow['pay_type']==2 && $taskRow['is_js']==0){
-				$listArr=$signModel->where("is_js=1 and tid=".$data['tid'])->dataArr();
+				$listArr=$signModel->where("is_valid=1 and is_qd=1 and is_js=1 and tid=".$data['tid'])->dataArr();
 				foreach($listArr as $k=>$v){
 					//用户金额增加
 					$signModel->query("update sub_user set money = money + ".$v['fact_money']." where id='".$v['uid']."'");
@@ -67,9 +67,9 @@
 			$model->add($taskData);
 			die('suc');
 		}else{
-			$listArr=$signModel->where("is_js=1 and tid=".$_GET['tid'])->order('distance asc')->dataArr();
+			$listArr=$signModel->where("is_valid=1 and is_qd=1 and is_js=1 and tid=".$_GET['tid'])->order('distance asc')->dataArr();
 			//应结算人数
-			$listRow=$signModel->field("count(*) as countnum")->where("is_js=1 and tid=".$_GET['tid'])->dataRow();
+			$listRow=$signModel->field("count(*) as countnum")->where("is_valid=1 and is_qd=1 and is_js=1 and tid=".$_GET['tid'])->dataRow();
 			$smarty->assign('countnum',$listRow['countnum']);
 			
 			if($listArr){

@@ -275,7 +275,7 @@ if($_REQUEST['a']=='sign_js_ajax'){
 			echo json_encode('err');die;
 		}
 	}else{
-		$listArr=$signModel->where("is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
+		$listArr=$signModel->where("is_valid=1 and is_qd=1 and tid=".$_GET['tid'])->order('distance asc')->limit($limitStr)->dataArr();
 		if($listArr){
 			foreach($listArr as $key=>$value){
 				//从快照中获取用户信息

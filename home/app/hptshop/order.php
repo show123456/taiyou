@@ -19,6 +19,11 @@
 		}
 		$smarty->setTpl('app/hptshop/templates/order_add.html')->display();die();
 	}
+	//数据删除
+	if($_REQUEST['a']=='del'){
+		$res=$model->del($_POST['id']);
+		echo json_encode($res);die();
+	}
 	//查看医师绑定的病人的消费
 	if($_REQUEST['a']=='bind'){
 		$did=(int)$_GET['did'];
@@ -36,6 +41,11 @@
 	//数据列表
 	$condition=array();$filter=array();
 	if($_GET['keywords']) $condition[]=" id=".common_pg('keywords')." ";
+	if($_GET['date']){
+		$date=date('Y-m-d',strtotime($_GET['date']));
+		$condition[]=" left(addtime,10)='{$date}' ";
+	}
+	$condition[]=" is_pay=1 ";
 	if($condition) $filter['where'] = implode('and',$condition);
 	$filter['order'] = " addtime desc ";
 	$data = $model->paginate($filter,'*',common_pg('p'),10);

@@ -21,6 +21,7 @@
 						</div>
 						<div class="title-right" style="top:8px;">
 							<form method="get" action="">
+								<input name="date" class="textarea" placeholder="下单日期，如2015-08-28" type="text" value="<{$smarty.get.date}>" style="width:200px;" />
 								<input name="keywords" class="textarea" placeholder="请输入订单号" type="text" value="<{$smarty.get.keywords}>" style="width:110px;" />
 								<input value="搜索" class="btn btn-large btn-success" title="搜索" type="submit" style="margin-top:-7px;padding:3px 10px;" />
 							</form>
@@ -53,7 +54,10 @@
 										<td><div><{$v.wuliu}></div></td>
 										<td><div><{if $v.is_pay==1}>已付款<{else}>未付款<{/if}></div></td>
 										<td><div><{if $v.status==0}>未处理<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效<{/if}></div></td>
-										<td><div><a href="order.php?a=detail&id=<{$v.id}>" class="minutebtn">详情</a></div></td>
+										<td><div>
+											<a href="order.php?a=detail&id=<{$v.id}>" class="minutebtn">详情</a>
+											<a href="javascript:void(0);" onclick="delRow(event,<{$v.id}>)" class="minutebtn">删除</a>
+										</div></td>
 										<td><div><a href="exceldemo.php?oid=<{$v.id}>" class="minutebtn">导出到excel</a></div></td>
 									</tr>
 									<{/foreach}>
@@ -70,9 +74,9 @@
 </div>
 <script type="text/javascript">
 function delRow(event,id){
-	if(confirm("确定要删除吗?")){
+	if(confirm("确定要删除此订单吗?")){
 		$.ajax({
-			url:"index.php",
+			url:"order.php",
 			data:{id:id,a:'del'},
 			type:"post",
 			dataType:'json',

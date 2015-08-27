@@ -34,7 +34,7 @@
 							<div class="MySecondDownLeft">
 								<div class="MySecondDownLeftH" style="margin-top:0.8em;">
 									<span><span class="fa fa-calendar" style="color:#A2A2A2; padding-right:0.3em;"></span><{$v.addtime}></span>
-									<span class="wait" ><{if $v.status==0}>未处理<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效单<{/if}></span> 
+									<span class="wait" ><{if $v.status==0}>处理中<{elseif $v.status==1}>已发货<{elseif $v.status==2}>已签收<{else}>无效单<{/if}></span> 
 									<span class="end" ><{if $v.is_pay==1}>已付款<{else}>未付款<{/if}></span>
 								</div>
 							</div>
@@ -78,9 +78,9 @@ $(document).ready(function(){
 								}
 								goodsStr+='<div class="MySecondRight" onclick="window.location.href=\'index.php?m=personal&a=orderdetail&oid='+item.id+'\'"><div class="MySecondUp">订单号：'+item.id+'<span style="color:red;padding-right:0.3em;float:right;margin-right:0.5em;"><span class="fa fa-jpy" style="color:red;padding-right:0.3em;"></span>'+item.money+'</span></div><div class="MySecondDown"><div class="MySecondDownLeft"><div class="MySecondDownLeftH" style="margin-top:0.8em;"><span><span class="fa fa-calendar" style="color:#A2A2A2;padding-right:0.3em;"></span>'+item.addtime+'</span>';
 								if(item.status==0){
-									goodsStr+='<span class="wait" >未处理</span>';
+									goodsStr+='<span class="wait" >处理中</span>';
 								}else if(item.status==1){
-									goodsStr+='<span class="wait" >已派送</span>';
+									goodsStr+='<span class="wait" >已发货</span>';
 								}else if(item.status==2){
 									goodsStr+='<span class="wait" >已签收</span>';
 								}else{

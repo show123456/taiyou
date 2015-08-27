@@ -62,8 +62,16 @@
 			$orderTable=D('applist_hpt_shop_order');
 			$resObj=simplexml_load_string($xml);
 			$oid=$resObj->out_trade_no;
+			$orderRow=$orderTable->find($oid);
+			if($orderRow['is_lb']==0){
+				//获得禁闭卡
+				$cardData=array();
+				$cardData['info']['type']=1;
+				$cardData['info']['uid']=$orderRow['uid'];
+				$cardData['info']['out_time']=time()+3600*24*30;
+				D('sub_card')->add($cardData);
+			}
 			$orderTable->query("update applist_hpt_shop_order set is_pay=1 where id='{$oid}'");
-			
 			//此处应该更新一下订单状态，商户自行增删操作
 			$log_->log_result($log_name,"【支付成功】:\n".$xml."\n");
 		}

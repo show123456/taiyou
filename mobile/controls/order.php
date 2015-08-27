@@ -6,19 +6,6 @@
 		if(empty($_SESSION['trolley'])){
 			header("Location:index.php?m=goods&a=index");die;
 		}
-		//减少库存，增加售出量
-		$numArr=$_SESSION['trolley'];
-		if($numArr){
-			foreach($numArr as $key=>$value){
-				$listArr=array();
-				$listArr[info]['oid']=$res;
-				$listArr[info]['gid']=$key;
-				$listArr[info]['num']=$value['num'];
-				$goodsModel=new Model_ApplistHptShopGoods();
-				//$goodsModel->query("update applist_hpt_shop_goods set store=store-{$value[num]},outnum=outnum+{$value[num]} where id={$key}");
-				$goodsModel->query("update applist_hpt_shop_goods set outnum=outnum+{$value[num]} where id={$key}");
-			}
-		}
 		//收货人信息
 		if($_COOKIE['tyuid'] && !$_SESSION['tyuser']['id']) $_SESSION['tyuser']['id']=$_COOKIE['tyuid'];
 		if(empty($_SESSION['tyuser'])){
@@ -105,21 +92,24 @@
 		$res=$model->add($data);
 		//保存订单详情表
 		if($numArr){
+			$goodsModel=new Model_ApplistHptShopGoods();
 			foreach($numArr as $key=>$value){
 				$listArr=array();
 				$listArr[info]['oid']=$res;
 				$listArr[info]['gid']=$key;
 				$listArr[info]['num']=$value['num'];
 				//获取商品信息
-				$goodsModel=new Model_ApplistHptShopGoods();
 				$vo=$goodsModel->find($key);
 				$listArr[info]['name']=$vo['name'];
 				$listArr[info]['pic']=$vo['pic'];
 				$listArr[info]['price']=$vo['fact_price'];
 				$listArr[info]['money']=$vo['fact_price']*$value['num'];
 				$result=$m->add($listArr);//保存订单详情
+				//增加售出量
+				$goodsModel->query("update applist_hpt_shop_goods set outnum=outnum+{$value[num]} where id={$key}");
 			}
 		}
+		
 		unset($_SESSION["trolley"]);
 		if($data['num']['pay_type']==1){
 			echo json_encode('yezf');die;
@@ -135,7 +125,7 @@
 		$totalMoney=$yunfei;
 		$list=$goodsModel->where('is_lb=1')->dataArr();
 		//核对优惠码
-		if($data['code']=='' || $data['code']!=$userRow['code'] || $$userRow['is_use']==1){
+		if($data['code']=='' || $data['code']!=$userRow['code'] || $userRow['is_use']==1){
 			echo json_encode('code_err');die;
 		}
 		//若为余额支付
@@ -171,10 +161,15 @@
 				$listArr[info]['name']=$value['name'];
 				$listArr[info]['pic']=$value['pic'];
 				$listArr[info]['price']=$value['fact_price'];
-				$listArr[info]['money']=$value['fact_price']*$value['num'];
+				$listArr[info]['money']=$value['fact_price']*1;
 				$result=$m->add($listArr);//保存订单详情
+				//增加售出量
+				$goodsModel->query("update applist_hpt_shop_goods set outnum=outnum+1 where id=".$value['id']);
 			}
 		}
+		//礼包售出量+1
+		$goodsModel->query("update applist_hpt_shop_goods set outnum=outnum+1 where id=1");
+		
 		if($data['num']['pay_type']==1){
 			echo json_encode('yezf');die;
 		}else{

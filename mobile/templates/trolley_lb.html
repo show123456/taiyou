@@ -13,7 +13,8 @@
 <section class="Main trolley">
     <div class='trolleyMain'>
         <h3 class='trolleyTitle'>购 物 车</h3>
-		<div style="text-align:center;color:#ff4400;margin-bottom:-0.5em;font-size:0.9em;">大礼包，邮费￥<{$yunfei}></div>
+		<div style="text-align:center;color:#ff4400;margin-bottom:5px;font-size:0.9em;">大礼包，邮费￥<{$yunfei}></div>
+		<div style="text-align:center;color:#ff4400;margin-bottom:-0.5em;font-size:0.9em;">(国内不限区域、不限重量)</div>
         <form action="javascript:void(0);">
 		<{foreach from=$list item="v"}>
 		<div class='trolleyBlock'>
@@ -30,7 +31,7 @@
 		<{/foreach}>
         <div class='trolleyCount'>
             <p style="width:90%;float:none;margin-bottom:5px;">您购买了一个大礼包</p>
-            <p class='money' style="width:90%;float:none;font-weight:bold;font-size:14px;">总价：￥0 + <{$yunfei}>（邮费）= <{$yunfei}></p>
+            <p class='money' style="width:90%;float:none;font-weight:bold;font-size:14px;">总计：￥0 + <{$yunfei}>（邮费）= <{$yunfei}></p>
             <div class="clearfix"></div>
             <button type="button" class='addBtn detailFormBtn' onclick="goToPay()" style="float:none;margin:10px auto;">去结账</button>
             <!-- <button type="button" class='submitBtn detailFormBtn' onclick="javascript:window.location.href='index.php?m=goods&a=index'">继续挑选</button> -->

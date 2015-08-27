@@ -86,6 +86,7 @@
 											<tr style="color:red;line-height:30px;font-size:16px;"><th>大礼包</th></tr>
 											<{/if}>
 											<tr style="background-color:#F3F3F3;">
+												<td style="width:100px;">图片</td>
 												<td style="width:100px;">商品</td>
 												<td style="width:80px;">订购量</td>
 												<td style="width:100px;">总价</td>
@@ -95,6 +96,7 @@
 													<td style="height:45px;" title="<{$res.name}>"><a href="" target="_blank">
 													<img src="../../../data/image_c/<{$res.pic}>" style="height:34px;width:64px" alt="<{$res.goods_name}>"/>
 													</a></td>
+													<td><{$res.name}></td>
 													<td><{$res.num}></td>
 													<td><{$res.money}>元</td>
 												</tr>
@@ -123,15 +125,10 @@
 							<div class="shop_sort">
 								<div class="shop_sort_title"><h4>状态：</h4></div>
 								<div class="shop_sort_set" style="margin:10px;color:#4E5359;">
-									
-									<{if $vo.status==2}>已签收<{else}>
-									
 									<input type="radio" name="info[status]" id="status0" value="0" <{if $vo.status==0}>checked<{/if}> > <label for="status0">待处理&nbsp;&nbsp;</label>
 									<input type="radio" name="info[status]" id="status1" value="1" <{if $vo.status==1}>checked<{/if}> > <label for="status1">已发货&nbsp;&nbsp;</label>
+									<input type="radio" name="info[status]" id="status2" value="2" <{if $vo.status==2}>checked<{/if}> > <label for="status2">已签收&nbsp;&nbsp;</label>
 									<input type="radio" name="info[status]" id="status3" value="3" <{if $vo.status==3}>checked<{/if}> > <label for="status3">无效单</label>
-									
-									<{/if}>
-									
 								</div>
 							</div>
 							<div class="shop_sort">

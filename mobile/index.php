@@ -35,10 +35,10 @@
 		$smarty->setLayout('')->setTpl('mobile/templates/no_data.html')->display();die;
 	}
 	//设置订单满多少额度包邮
-	$moneyToFree=100;
+	$moneyToFree=68;
 	$smarty->assign('moneyToFree',$moneyToFree);
 	//设置运费
-	$yunfei=6;
+	$yunfei=12;
 	$smarty->assign('yunfei',$yunfei);
 	//路由
 	$_GET['m'] ? $controllerName=$_GET['m'] : $controllerName='index';

@@ -49,6 +49,14 @@
 								</div>
 							</div>
 							<div class="shop_sort">
+								<div class="shop_sort_title">
+									<h4>条形码：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[one_code]" value="<{$vo.one_code}>" type="text" />
+								</div>
+							</div>
+							<div class="shop_sort">
 								<div class="shop_sort_title"><h4>图片：</h4></div>
 								<div class="shop_sort_set">				  
 									<div class="form-group">
@@ -68,10 +76,18 @@
 							</div>
 							<div class="shop_sort">
 								<div class="shop_sort_title">
+									<h4>底价：</h4>
+								</div>
+								<div class="shop_sort_set">
+									<input maxlength="30" class="shop_sort_text" name="str[ori_price]" value="<{$vo.ori_price}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
+								</div>
+							</div>
+							<div class="shop_sort">
+								<div class="shop_sort_title">
 									<h4>原价：</h4>
 								</div>
 								<div class="shop_sort_set">
-									<input maxlength="30" class="shop_sort_text" name="str[price]" value="<{$vo.price|default:'0'}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
+									<input maxlength="30" class="shop_sort_text" name="str[price]" value="<{$vo.price}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
 								</div>
 							</div>
 							<div class="shop_sort">
@@ -79,7 +95,7 @@
 									<h4>现价：</h4>
 								</div>
 								<div class="shop_sort_set">
-									<input maxlength="30" class="shop_sort_text" name="str[fact_price]" value="<{$vo.fact_price|default:'0'}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
+									<input maxlength="30" class="shop_sort_text" name="str[fact_price]" value="<{$vo.fact_price}>" type="text" style="width:80px" /><span class="input_span_extra">&nbsp;元</span>
 								</div>
 							</div>
 							<!-- <div class="shop_sort">
