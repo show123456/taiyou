@@ -48,7 +48,7 @@
 									<{foreach from=$list item="v"}>
 									<tr>
 										<td><div><{$v.id}></div></td>
-										<td><div><{$v.money}></div></td>
+										<td><div><{$v.money}><{if $v.is_lb==1}>(大礼包)<{/if}></div></td>
 										<td><div><{$v.name}></div></td>
 										<td><div><{$v.addtime}></div></td>
 										<td><div><{$v.wuliu}></div></td>

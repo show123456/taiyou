@@ -72,6 +72,40 @@
 				D('sub_card')->add($cardData);
 			}
 			$orderTable->query("update applist_hpt_shop_order set is_pay=1 where id='{$oid}'");
+			
+			//增加累计消费
+			$sumData=array();
+			$sumModel=D('sub_sum');
+			$sum_row=$sumModel->where("uid='".$orderRow['uid']."'")->dataRow();
+			if($sum_row){
+				$sumData['info']['id']=$sum_row['id'];
+				$sumData['info']['money2']=$sum_row['money2']+$orderRow['money'];
+				$sumData['info']['money3']=$sum_row['money3']+$orderRow['money'];
+			}else{
+				$sumData['info']['money2']=$orderRow['money'];
+				$sumData['info']['money3']=$orderRow['money'];
+			}
+			if($sumData['info']['money2'] >= 368){
+				//获得一张抢位卡
+				$cardData=array();
+				$cardData['info']['type']=2;
+				$cardData['info']['uid']=$orderRow['uid'];
+				$cardData['info']['out_time']=time()+3600*24*30;
+				D('sub_card')->add($cardData);
+				$sumData['info']['money2']-=368;
+			}
+			if($sumData['info']['money3'] >= 688){
+				//获得一张提醒卡
+				$cardData=array();
+				$cardData['info']['type']=3;
+				$cardData['info']['uid']=$orderRow['uid'];
+				$cardData['info']['out_time']=time()+3600*24*30;
+				D('sub_card')->add($cardData);
+				$sumData['info']['money3']-=688;
+			}
+			$sumData['info']['uid']=$orderRow['uid'];
+			$sumModel->add($sumData);
+			
 			//此处应该更新一下订单状态，商户自行增删操作
 			$log_->log_result($log_name,"【支付成功】:\n".$xml."\n");
 		}

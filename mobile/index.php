@@ -38,7 +38,7 @@
 	$moneyToFree=68;
 	$smarty->assign('moneyToFree',$moneyToFree);
 	//设置运费
-	$yunfei=12;
+	$yunfei=9;
 	$smarty->assign('yunfei',$yunfei);
 	//路由
 	$_GET['m'] ? $controllerName=$_GET['m'] : $controllerName='index';

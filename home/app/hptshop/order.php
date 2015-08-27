@@ -52,4 +52,12 @@
 	$listArr = $data['data'];
 	$smarty->assign('list',$listArr);
 	$smarty->assign('page',$model->existPages($data['pager']));
+	//每次访问订单列表，删除昨天之前未付款大礼包订单
+	$lb_list=$model->where("is_lb=1 and is_pay=0 and addtime<'".date('Y-m-d')." 00:00:00'")->dataArr();
+	if($lb_list){
+		foreach($lb_list as $lk=>$lv){
+			$model->query("update sub_user set is_use=0 where id='".$lv['uid']."' limit 1");//优惠码继续可用
+			$model->del($lv['id']);
+		}
+	}
 	$smarty->setTpl('app/hptshop/templates/order_index.html')->display();

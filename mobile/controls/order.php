@@ -83,6 +83,38 @@
 				$cardData['info']['uid']=$userRow['id'];
 				$cardData['info']['out_time']=time()+3600*24*30;
 				D('sub_card')->add($cardData);
+				//增加累计消费
+				$sumData=array();
+				$sumModel=D('sub_sum');
+				$sum_row=$sumModel->where("uid='".$userRow['id']."'")->dataRow();
+				if($sum_row){
+					$sumData['info']['id']=$sum_row['id'];
+					$sumData['info']['money2']=$sum_row['money2']+$totalMoney;
+					$sumData['info']['money3']=$sum_row['money3']+$totalMoney;
+				}else{
+					$sumData['info']['money2']=$totalMoney;
+					$sumData['info']['money3']=$totalMoney;
+				}
+				if($sumData['info']['money2'] >= 368){
+					//获得一张抢位卡
+					$cardData=array();
+					$cardData['info']['type']=2;
+					$cardData['info']['uid']=$userRow['id'];
+					$cardData['info']['out_time']=time()+3600*24*30;
+					D('sub_card')->add($cardData);
+					$sumData['info']['money2']-=368;
+				}
+				if($sumData['info']['money3'] >= 688){
+					//获得一张提醒卡
+					$cardData=array();
+					$cardData['info']['type']=3;
+					$cardData['info']['uid']=$userRow['id'];
+					$cardData['info']['out_time']=time()+3600*24*30;
+					D('sub_card')->add($cardData);
+					$sumData['info']['money3']-=688;
+				}
+				$sumData['info']['uid']=$userRow['id'];
+				$sumModel->add($sumData);
 			}
 		}
 		//保存订单表
