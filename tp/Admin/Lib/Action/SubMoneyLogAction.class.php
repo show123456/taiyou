@@ -172,6 +172,15 @@ class SubMoneyLogAction extends CommonAction{
 		$where_str1=" type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
 		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
 		$sum_row['type1']=$row['sum_money'];
+		//商城余额支付收入
+		$orderModel=M('ApplistHptShopOrder');
+		$where_str_yue="is_pay=1 and pay_type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$row=$orderModel->field("sum(money) as sum_money")->where($where_str_yue)->find();
+		$sum_row['yue']=$row['sum_money'];
+		//商城微信支付收入
+		$where_str_yue="is_pay=1 and pay_type=2 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$row=$orderModel->field("sum(money) as sum_money")->where($where_str_yue)->find();
+		$sum_row['wx']=$row['sum_money'];
 		
 		/* //支付报名费
 		$where_str4=" type=4 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";

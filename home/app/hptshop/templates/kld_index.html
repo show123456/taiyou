@@ -31,6 +31,7 @@
 							<th class="enable">序号</th>
 							<th class="enable">优惠码</th>
 							<th class="enable">持有人</th>
+							<th class="enable">过期状态</th>
 							<th class="enable">状态</th>
 							<th class="enable">设置</th>
 							<th name="Operate" class="enable">操作</th>
@@ -44,6 +45,13 @@
 							<td><div style="font-size:16px;letter-spacing:2px;"><{$v.code}></div></td>
 							<td><div><{$v.info}></div></td>
 							<td><div>
+								<{if $v.is_out==1}>
+								<span style="color:#aaa">已过期</span>
+								<{else}>
+								<span style="color:#01B4EC;font-weight:bold;">未过期</span>
+								<{/if}>
+							</div></td>
+							<td><div>
 								<{if $v.is_use==1}>
 								<span style="color:#aaa">已使用</span>
 								<{else}>
@@ -51,11 +59,13 @@
 								<{/if}>
 							</div></td>
 							<td><div>
+							<{if $v.is_out!=1}>
 								<{if $v.is_use==0}>
 								<a href="javascript:void(0)" class="minutebtn" onclick="use_act(<{$v.id}>,1)">设置为已使用</a>
 								<{else}>
 								<a href="javascript:void(0)" class="minutebtn" onclick="use_act(<{$v.id}>,0)">设置为未使用</a>
 								<{/if}>
+							<{/if}>
 							</div></td>
 							<td>
 								<div class="btn-operate">

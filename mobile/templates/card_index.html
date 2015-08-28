@@ -33,8 +33,10 @@
 		<div class="kld_code"><{$kv.code}></div>
 		<{if $kv.is_use==1}>
 		<div class="kld_use">已使用</div>
+		<{elseif $kv.day <= 0}>
+		<div class="kld_use">已过期</div>
 		<{else}>
-		<div class="kld_no_use">未使用</div>
+		<div class="kld_no_use">未使用（还有<{$kv.day}>天过期）</div>
 		<{/if}>
 		<div style="clear:both;"></div>
 	</div>

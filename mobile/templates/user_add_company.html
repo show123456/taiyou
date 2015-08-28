@@ -94,7 +94,7 @@
 			<div class="title">企业性质：</div>
 		</div>
 		<div class="input_group checkVal">
-			<select name="num[industry_id]" style="text-indent:6em;width:99%;padding-left:0;">
+			<select name="num[industry_id]" style="text-indent:6em;width:99%;padding-left:0;" <{if $promote_code}>disabled<{/if}> >
 				<{foreach from=$indArr item=v}>
 				<option value="<{$v.id}>" <{if $vo.industry_id==$v.id}>selected<{/if}> ><{$v.name}></option>
 				<{/foreach}>
@@ -115,7 +115,10 @@
 		</div>
 	</div>
 	</form>
-	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>	
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">确定</div></a>
+	<{if $promote_code}>
+		<div style="text-align:center;color:#ff7101;">推广码：<{$promote_code}></div>
+	<{/if}>
 </div>
 <!-- 上传照片 -->
 <div style="visibility:hidden;">

@@ -44,7 +44,7 @@
 		<input type="password" name="repass" placeholder="请再次输入密码"/>
 		
 		<{if $smarty.get.type!=2}>
-		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">推荐人登录用户名(手机号码)：</div>
+		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">推荐人登录用户名(手机号码)/推广码：</div>
 		<input type="text" name="tjr_phone" placeholder="此项可以为空"/>
 		<{/if}>
 		
@@ -160,9 +160,10 @@ function save(){
 		}
 	<{else}>
 		//推荐人验证
-		if($('input[name="tjr_phone"]').val()!=''){
-			if(!isMobil($('input[name="tjr_phone"]').val())){
-				alert("请填写正确的推荐人手机号");return;
+		var tjr_phone=$('input[name="tjr_phone"]').val();
+		if(tjr_phone!=''){
+			if(!isMobil(tjr_phone) && tjr_phone.length!=4){
+				alert("请填写正确的推荐人手机号或推广码");return;
 			}
 		}
 	<{/if}>
@@ -186,7 +187,7 @@ function save(){
 			}else if(res=='wxerr'){
 				alert("微信身份标识丢失，请点击底部菜单，从推送的图文打开");
 			}else if(res=='no_tjr'){
-				alert("该推荐人不存在");
+				alert("该推荐人或推广码不存在");
 			}else{
 				alert("恭喜您，注册成功");
 				<{if $smarty.get.type==2}>

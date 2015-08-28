@@ -29,7 +29,12 @@
 			$smarty->assign('in_ban',1);
 		}
 		//开乐迪优惠码
-		$smarty->assign('kld_list',D('sub_kld')->where("uid='".$userRow['id']."'")->dataArr());
+		$kld_list=D('sub_kld')->where("uid='".$userRow['id']."'")->dataArr();
+		$current_time=time();
+		foreach($kld_list as $kk=>$kv){
+			$kld_list[$kk]['day']=ceil((strtotime($kv['addtime'])+15*3600*24-$current_time)/(3600*24));
+		}
+		$smarty->assign('kld_list',$kld_list);
 		$smarty->setLayout('')->setTpl('mobile/templates/card_index.html')->display();die;
 	}
 	

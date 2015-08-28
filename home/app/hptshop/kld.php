@@ -39,10 +39,16 @@
 	$listArr = $data['data'];
 	$memberModel=new Model_Member();
 	$_GET['p']>0 ? $p=$_GET['p'] : $p=1;
+	$current_time=time();
 	foreach($listArr as $key=>$value){
 		$userRow=$userModel->find($value['uid']);
 		$listArr[$key]['info']=$userRow['nickname'].'/'.$userRow['username'];
 		$listArr[$key]['xuhao']=($p-1)*15+$key+1;
+		//是否过期
+		$s=ceil((strtotime($value['addtime'])+15*3600*24-$current_time)/(3600*24));
+		if($s <= 0){
+			$listArr[$key]['is_out']=1;
+		}
 	}
 	$smarty->assign('list',$listArr);
 	$smarty->assign('page',$model->pager($data['pager']));

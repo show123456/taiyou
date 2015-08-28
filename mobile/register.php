@@ -21,11 +21,20 @@ if($_REQUEST['a']=='doregister'){
 	}
 	//填写的推荐人是否存在
 	if($data['tjr_phone']){
-		$userRow=$model->where("username='".$data['tjr_phone']."'")->dataRow();
-		if(!$userRow){
-			echo 'no_tjr';die;
+		if(strlen($data['tjr_phone'])==4){
+			$code_row=D('sub_code')->where("code = '".$data['tjr_phone']."'")->dataRow();
+			if(!$code_row){
+				echo 'no_tjr';die;
+			}else{
+				$tjr_uid=$code_row['uid'];
+			}
 		}else{
-			$tjr_uid=$userRow['id'];
+			$userRow=$model->where("username='".$data['tjr_phone']."'")->dataRow();
+			if(!$userRow){
+				echo 'no_tjr';die;
+			}else{
+				$tjr_uid=$userRow['id'];
+			}
 		}
 	}
 	//账号查重
@@ -61,6 +70,9 @@ if($_REQUEST['a']=='doregister'){
 		$_SESSION['tyuser']=$model->field('id,username,pass,fromuser')->where("id={$res}")->dataRow();
 		//推荐人处理
 		if($data['tjr_phone']){
+			if(strlen($data['tjr_phone'])==4){//推广码注册
+				$tj_data['info']['is_zj']=1;
+			}
 			$tj_data['info']['tjr_uid']=$tjr_uid;
 			$tj_data['info']['reg_uid']=$res;
 			$tj_data['info']['add_date']=date('Y-m-d');
