@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>商品详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="css/common1.css" />
+	<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+	<script src="js/jquery.min.js"></script>
+	<style type="text/css">
+	.detailMain .orderNumber span{float:left;color:#333;font-size:1em;line-height:2em;padding-left:1em;}
+	.detailMain .orderChange{background-color:#f9f9f9;}
+	/*弹框*/
+	.prompt{border:none;position:fixed;width:100%;height:100%;right:0px;top:0;background:rgba(0, 0, 0, 0.4) none repeat scroll 0 0 !important;z-index:999;float:left;}
+	.prompt_box{ width:300px;margin:0 auto;background:#fff3d8;border:1px solid #CCC;border-radius:5px;margin-top:50%;height:100px;}
+	.prompt_box h5{ color:#0185b1;text-align:center;font-size:16px;margin:0;padding:0;line-height:50px;}
+	.prompt_box a{ background:#0091c2;width:140px;float:left;margin-left:5px;height:35px;text-align:center;text-shadow:none;color:#fff;font-size:14px;font-weight:normal;line-height:35px;font-weight:bold;display:block;text-decoration:none;border-radius:4px 4px 4px 4px;border:1px solid #0185b1;box-shadow:0 1px;display:block;font-size:16px;text-align:center;text-decoration:none;box-shadow:0 1px 0 #7e7e7e inset, 0 1px 2px #7e7e7e;text-shadow:none;color:#FFF;font-weight:normal;}
+	</style>
+</head>
+<body>
+<div class="clearfix"></div>
+<section class="Main detail">
+    <div class='detailMain'>
+        <div class='detailImage' style="display:block">
+            <img src="/data/image_c/<{$vo.pic}>" />
+        </div>
+        <div class='productName' style="height:auto;line-height:1.5em;">
+            <h3><{$vo.name}></h3>
+            <div style="clear:both;"></div>
+        </div>
+        <div class='productPrice'>
+            <p>现价：<{$vo.fact_price}></p>
+            <p class='delete'>原价：<{$vo.price}></p>
+            <div class="clearfix"></div>
+        </div>
+        <form id="memberform">
+		<input name='gid' type='hidden' value='<{$vo.id}>' />
+        <div class='orderNumber'>
+            <span>购买数量:</span>
+            <a href='javascript:void(0);' class='orderChange minus' onclick="changeNum(-1)">-</a>
+            <input name='num' type='text' class='orderNumberInput' value='1' <{if $vo.id==1}>disabled<{/if}> />&nbsp;
+            <a href='javascript:void(0);' class='orderChange plus' onclick="changeNum(1)">+</a>
+            <!-- <span>库存（<{$vo.store}>）</span> -->
+            <div class="clearfix"></div>
+        </div>
+		<{if $time_cha > 0 }>
+		<div class='productPrice' style="margin-top:8px;">
+			<p>今日距抢购还有<span id='time_box'></span></p>
+			<div class="clearfix"></div>
+		</div>
+		<{/if}>
+        <div class='detailForm' id='buy_btn' style="margin-top:8px;<{if $time_cha > 0 }>display:none;<{/if}>">
+			<button type="button" class='addBtn detailFormBtn' onclick="window.location.href='index.php?m=trolley&a=index_lb'">立即购买</button>
+            <div class="clearfix"></div>
+        </div>
+        </form>
+        <div class='productDescription'>
+            <p style="color:#333;">商品描述：</p>
+            <p class='delete'><{$vo.content}></p>
+        </div>
+		<{if $vo.detail_pic}><div><img src="/data/image_c/<{$vo.detail_pic}>" /></div><{/if}>
+    </div>
+</section>
+<div class="clearfix"></div>
+<div class="prompt" style="display:none;">
+	<div class="prompt_box">
+		<h5>加入购物车成功</h5>
+		<a href="./index.php?m=goods&a=index">继续逛逛</a><a href="./index.php?m=trolley&a=index">去结算</a>
+	</div>
+</div>
+<{include file="footer.html"}>
+<script src='js/hhSwipe.js'></script>
+<script type="text/javascript">
+//购买数量改变
+function changeNum(num){
+	if('<{$vo.id}>'=='1') return;
+	var buyNum=parseInt($(".orderNumberInput").val());
+	if(!buyNum) buyNum=1;
+	//var store=<{$vo.store}>;
+	buyNum=buyNum+num;
+	if(buyNum<1){
+		buyNum=1;
+	}
+	//if(buyNum>store){buyNum=store;}
+	$(".orderNumberInput").val(buyNum);
+}
+//加入购物车
+function addTrolley(){
+	$.ajax({		
+		url:"index.php?m=trolley&a=add",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res) {
+			if(res){
+				$('.prompt').show();
+			}else{
+				alert('加入购物车失败');
+			}
+		}
+	});
+}
+function buyNow(){
+	$.ajax({		
+		url:"index.php?m=trolley&a=add",
+		data:$('#memberform').serializeArray(),
+		type:"post",
+		dataType:'json',
+		async :false,
+		success:function(res) {
+			if(res){
+				window.location.href="index.php?m=trolley&a=index";
+			}else{
+				alert('购买失败');
+			}
+		}
+	});
+}
+var time_cha=<{$time_cha}>;
+var time_hour=0;
+var time_min=0;
+var time_sec=0;
+var time_clock;
+time_clock=setInterval(function(){
+	time_cha--;
+	if(time_cha<0){
+		$('#buy_btn').show();
+		clearInterval(time_clock);
+	}else{
+		time_hour=parseInt(time_cha/3600);
+		time_min=parseInt((time_cha-(3600*time_hour))/60);
+		time_sec=time_cha-(3600*time_hour)-(60*time_min);
+		$('#time_box').text(time_hour+'时'+time_min+'分'+time_sec+'秒');
+	}
+},1000);
+</script>
+</body>
+</html>

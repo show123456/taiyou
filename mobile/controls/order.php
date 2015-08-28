@@ -35,6 +35,11 @@
 		$dRow=D('s_district')->where("DistrictID='".$userRow['did']."'")->dataRow();
 		$userRow['dname']=$dRow['DistrictName'];
 		$smarty->assign('userRow',$userRow);
+		//时间是否对
+		$current_time=time();
+		$time_12=strtotime(date('Y-m-d',$current_time).' 12:00:00');
+		$time_cha=$time_12-$current_time;
+		//if($time_cha > 0) die;
 		$smarty->setLayout('')->setTpl('mobile/templates/delivery_lb.html')->display();die();
 	}
 	
@@ -115,6 +120,11 @@
 				}
 				$sumData['info']['uid']=$userRow['id'];
 				$sumModel->add($sumData);
+				//获取开乐迪券码
+				$kldData=array();
+				$kldData['info']['code']=strtolower(code_random(5));
+				$kldData['info']['uid']=$userRow['id'];
+				D('sub_kld')->add($kldData);
 			}
 		}
 		//保存订单表
@@ -160,6 +170,12 @@
 		if($data['code']=='' || $data['code']!=$userRow['code'] || $userRow['is_use']==1){
 			echo json_encode('code_err');die;
 		}
+		//今日剩礼包数量
+		$lbModel=D('sub_lb');
+		$lb_count_row=$lbModel->field('count(*) as count_num')->where("left(addtime,10)='".date('Y-m-d')."'")->dataRow();
+		if($lb_count_row['count_num'] >= 10){
+			echo json_encode('man');die;
+		}
 		//若为余额支付
 		if($data['num']['pay_type']==1){
 			if($userRow['money'] < $totalMoney){//余额不足
@@ -169,6 +185,9 @@
 				$userMoneyRes=$userModel->query("update sub_user set money = money - ".$totalMoney." where id='".$userRow['id']."'");
 				//直接设置为已支付
 				$data[info]['is_pay']=1;
+				
+				$lbData['info']['uid']=$userRow['id'];
+				$lbModel->add($lbData);//今日礼包+1
 			}
 		}
 		//保存订单表

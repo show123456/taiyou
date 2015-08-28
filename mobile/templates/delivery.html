@@ -85,7 +85,7 @@ function save(obj){
 						window.location.href="index.php?m=user&a=jk";
 					}
 				}else if(res=='yezf'){
-					alert('支付成功');
+					alert('支付成功，当天16点前的订单当天发货');
 					window.location.href="index.php?m=personal&a=orderhistory";
 				}else if(res){
 					window.location.href="./shoppay/js_api_call.php?oid="+res;

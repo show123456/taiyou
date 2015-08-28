@@ -77,6 +77,11 @@
 		if(empty($_SESSION['tyuser'])){
 			$smarty->assign('no_login',1);
 		}
+		//时间是否对
+		$current_time=time();
+		$time_12=strtotime(date('Y-m-d',$current_time).' 12:00:00');
+		$time_cha=$time_12-$current_time;
+		if($time_cha > 0) die;
 		$smarty->setLayout('')->setTpl('mobile/templates/trolley_lb.html')->display();die;
 	}
 	

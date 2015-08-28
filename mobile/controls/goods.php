@@ -6,7 +6,15 @@
 		$vo=$model->find($id);
 		$smarty->assign('vo',$vo);
 		$model->query("update applist_hpt_shop_goods set clicknum=clicknum+1 where id='{$id}'");//人气加一
-		$smarty->setLayout('')->setTpl('mobile/templates/detail.html')->display();
+		if($vo['id']==1){
+			$current_time=time();
+			$time_12=strtotime(date('Y-m-d',$current_time).' 12:00:00');
+			$time_cha=$time_12-$current_time;
+			$smarty->assign('time_cha',$time_cha);
+			$smarty->setLayout('')->setTpl('mobile/templates/detail_lb.html')->display();
+		}else{
+			$smarty->setLayout('')->setTpl('mobile/templates/detail.html')->display();
+		}
 	}
 	
 	if($_REQUEST['a']=='index'){

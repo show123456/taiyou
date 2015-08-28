@@ -105,6 +105,14 @@
 			}
 			$sumData['info']['uid']=$orderRow['uid'];
 			$sumModel->add($sumData);
+			//获取开乐迪券码
+			$kldData=array();
+			$kldData['info']['code']=strtolower(code_random(5));
+			$kldData['info']['uid']=$orderRow['uid'];
+			D('sub_kld')->add($kldData);
+			
+			$lbData['info']['uid']=$orderRow['uid'];
+			D('sub_lb')->add($lbData);//今日礼包+1
 			
 			//此处应该更新一下订单状态，商户自行增删操作
 			$log_->log_result($log_name,"【支付成功】:\n".$xml."\n");

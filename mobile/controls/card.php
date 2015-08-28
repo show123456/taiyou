@@ -28,6 +28,8 @@
 		if($banList){
 			$smarty->assign('in_ban',1);
 		}
+		//开乐迪优惠码
+		$smarty->assign('kld_list',D('sub_kld')->where("uid='".$userRow['id']."'")->dataArr());
 		$smarty->setLayout('')->setTpl('mobile/templates/card_index.html')->display();die;
 	}
 	

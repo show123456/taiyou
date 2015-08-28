@@ -30,6 +30,8 @@ class IndexAction extends Action {
 			setSuserInfo($arr);
 			if($arr['type']==5){
 				$this->success("登录成功！",'../home/app/hptshop/order.php');
+			}elseif($arr['type']==6){
+				$this->success("登录成功！",'../home/app/hptshop/kld.php');
 			}else{
 				$this->success("登录成功！",U('Index/index'));
 			}

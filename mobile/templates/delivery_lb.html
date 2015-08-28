@@ -90,12 +90,15 @@ function save(obj){
 				$(obj).attr("subFromFlag",'0');
 				if(res=='code_err'){
 					alert('您的优惠码不存在或已使用');
+				}else if(res=='man'){
+					alert('今日礼包已抢购完毕，请明日来抢！');
+					window.location.href="index.php?m=goods&a=index";
 				}else if(res=='yebz'){
 					if(confirm('余额不足，去充值？')){
 						window.location.href="index.php?m=user&a=jk";
 					}
 				}else if(res=='yezf'){
-					alert('支付成功');
+					alert('支付成功，当天16点前的订单当天发货');
 					window.location.href="index.php?m=personal&a=orderhistory";
 				}else if(res){
 					window.location.href="./shoppay/js_api_call.php?oid="+res;
