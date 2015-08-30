@@ -27,6 +27,9 @@ if($_REQUEST['a']=='user_add_personal'){
 		$res=$model->add($data);
 		echo $res;die;
 	}else{
+		//省
+		$pmodel=new Model_Subtable('s_province');
+		$smarty->assign('parr',$pmodel->dataArr());
 		//苏州市下的区
 		$dmodel=new Model_Subtable('s_district');
 		$smarty->assign('darr',$dmodel->where("CityID=78")->order("DistrictId asc")->dataArr());

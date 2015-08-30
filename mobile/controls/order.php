@@ -82,6 +82,7 @@
 				$userMoneyRes=$userModel->query("update sub_user set money = money - ".$totalMoney." where id='".$userRow['id']."'");
 				//直接设置为已支付
 				$data[info]['is_pay']=1;
+				$data[info]['pay_time']=date('Y-m-d H:i:s');
 				//获得禁闭卡
 				$cardData=array();
 				$cardData['info']['type']=1;
@@ -144,6 +145,7 @@
 				$vo=$goodsModel->find($key);
 				$listArr[info]['name']=$vo['name'];
 				$listArr[info]['pic']=$vo['pic'];
+				$listArr[info]['ori_price']=$vo['ori_price'];
 				$listArr[info]['price']=$vo['fact_price'];
 				$listArr[info]['money']=$vo['fact_price']*$value['num'];
 				$result=$m->add($listArr);//保存订单详情
@@ -185,9 +187,7 @@
 				$userMoneyRes=$userModel->query("update sub_user set money = money - ".$totalMoney." where id='".$userRow['id']."'");
 				//直接设置为已支付
 				$data[info]['is_pay']=1;
-				
-				$lbData['info']['uid']=$userRow['id'];
-				$lbModel->add($lbData);//今日礼包+1
+				$data[info]['pay_time']=date('Y-m-d H:i:s');
 			}
 		}
 		//保存订单表
@@ -202,6 +202,9 @@
 		$userData['info']['id']=$userRow['id'];
 		$userData['info']['is_use']=1;
 		$userModel->add($userData);
+		//今日礼包+1
+		$lbData['info']['uid']=$userRow['id'];
+		$lbModel->add($lbData);
 		//保存订单详情表
 		if($list){
 			foreach($list as $key=>$value){
@@ -211,6 +214,7 @@
 				$listArr[info]['num']=1;
 				$listArr[info]['name']=$value['name'];
 				$listArr[info]['pic']=$value['pic'];
+				$listArr[info]['ori_price']=$vo['ori_price'];
 				$listArr[info]['price']=$value['fact_price'];
 				$listArr[info]['money']=$value['fact_price']*1;
 				$result=$m->add($listArr);//保存订单详情

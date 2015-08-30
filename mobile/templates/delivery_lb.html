@@ -21,29 +21,32 @@
                    <tr>
                        <td class='title'>姓名：</td>
                        <td><input name='str[name]' class='deliveryFormInput' value="<{$userRow.nickname}>" /></td>
+                       <td class='title' style="font-size:14px;width:65px;color:#ff7101;">(可修改)</td>
                    </tr>
                    <tr>
                        <td class='title'>电话：</td>
                        <td><input name='str[tel]' class='deliveryFormInput' value="<{$userRow.username}>" /></td>
+                       <td class='title' style="font-size:14px;width:65px;color:#ff7101;">(可修改)</td>
                    </tr>
                    <tr>
                        <td class='title'>地址：</td>
                        <td><input name='str[address]' class='deliveryFormInput' value="<{$userRow.pname}><{$userRow.cname}><{$userRow.dname}><{$userRow.address}>" /></td>
+                       <td class='title' style="font-size:14px;width:65px;color:#ff7101;">(可修改)</td>
                    </tr>
                    <tr>
                     <td class='title'>运费：</td>
-                    <td style="font-size:0.9em;color:#737373;">
+                    <td style="font-size:0.9em;color:#737373;" colspan='2'>
 						<label><input type="radio" name="num[pay_type]" value="1" checked />余额支付</label>&nbsp;&nbsp;
 						<label><input type="radio" name="num[pay_type]" value="2" />微信支付</label>
 					</td>
                    </tr>
                    <tr>
                        <td class='title'>优惠码：</td>
-                       <td><input name='code' id="code" class='deliveryFormInput' value="" /></td>
+                       <td colspan='2'><input name='code' id="code" class='deliveryFormInput' value="" /></td>
                    </tr>
                    <tr>
                        <td class='title'>备注：</td>
-                       <td><input name='str[content]' class='deliveryFormInput' /></td>
+                       <td colspan='2'><input name='str[content]' class='deliveryFormInput' /></td>
                    </tr>
                </table>
         </div>

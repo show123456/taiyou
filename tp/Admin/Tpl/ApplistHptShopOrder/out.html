@@ -36,30 +36,24 @@
 		<thead>
 			<tr>
 				<th>订单号</th>
-				<th>金额</th>
+				<th>收入</th>
+				<th>底价支出</th>
 				<th>收货人</th>
 				<th>支付时间</th>
-				<th>下单时间</th>
 			</tr>
 		</thead>
 		<tbody>
-			<foreach name="list['data']" item='v'>
-			<tr>
+			<foreach name="list" item='v'>
+			<tr style="height:25px;">
 				<td><{$v.id}></td>
 				<td><{$v.money}></td>
+				<td><{$v.out}>(含9元运费)</td>
 				<td><{$v.name}>/<{$v.tel}></td>
 				<td><{$v.pay_time}></td>
-				<td><{$v.addtime}></td>
 			</tr>
 			</foreach>
 		</tbody>
 	</table>
-	<div class="pagin">
-		<ul class="paginList">
-			<{$list['page']}>
-		</ul>
-	</div>
-	<if condition="$_GET['work_date'] neq ''"><div style="color:red;font-weight:bold;font-size:14px;"><{:I('get.work_date')}>总金额：￥<{$sum_money|default=0}></div></if>
 </div>
 <script type="text/javascript">
 function search(){

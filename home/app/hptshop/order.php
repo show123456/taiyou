@@ -41,17 +41,39 @@
 	//数据列表
 	$condition=array();$filter=array();
 	if($_GET['keywords']) $condition[]=" id=".common_pg('keywords')." ";
-	if($_GET['date']){
-		$date=date('Y-m-d',strtotime($_GET['date']));
-		$condition[]=" left(addtime,10)='{$date}' ";
+	if($_GET['is_pay']==1){
+		$condition[]=" is_pay=1 ";
+	}elseif($_GET['is_pay']==2){
+		$condition[]=" is_pay=0 ";
 	}
-	$condition[]=" is_pay=1 ";
+	if($_GET['status']){
+		if($_GET['status']==10){
+			$condition[]=" status=0 ";
+		}else{
+			$condition[]=" status='".$_GET['status']."' ";
+		}
+	}
+	
+	if($_GET['date']) $condition[]=" left(addtime,10)='".$_GET['date']."' ";
+	if($_GET['pay_date']){
+		$now_time=strtotime($_GET['pay_date'].' 16:00:00');
+		$time_before=date('Y-m-d H:i:s',$now_time-24*3600);
+		$condition[]=" pay_time > '{$time_before}' and pay_time <= '".$_GET['pay_date']." 16:00:00' ";
+	}
 	if($condition) $filter['where'] = implode('and',$condition);
 	$filter['order'] = " addtime desc ";
 	$data = $model->paginate($filter,'*',common_pg('p'),10);
 	$listArr = $data['data'];
 	$smarty->assign('list',$listArr);
 	$smarty->assign('page',$model->existPages($data['pager']));
+	
+	//总订单数总额
+	if($filter['where']){
+		$countRow=$model->field("count(*) as count_num,sum(money) as sum_money")->where($filter['where'])->dataRow();
+	}else{
+		$countRow=$model->field("count(*) as count_num,sum(money) as sum_money")->dataRow();
+	}
+	$smarty->assign('countRow',$countRow);
 	//每次访问订单列表，删除昨天之前未付款大礼包订单
 	$lb_list=$model->where("is_lb=1 and is_pay=0 and addtime<'".date('Y-m-d')." 00:00:00'")->dataArr();
 	if($lb_list){

@@ -17,11 +17,24 @@
 				<div class="comm-list" style="min-height:600px">
 					<div class="comm-top">
 						<div class="title-left">
-							<h4><{$cateName}>列表</h4>
+							<h4><{$cateName}>列表（共<{$countRow.count_num|default:0}>单，总额<{$countRow.sum_money|default:0}>元）</h4>
 						</div>
 						<div class="title-right" style="top:8px;">
 							<form method="get" action="">
+								<select name="status" class="textarea" style='font-size:12px'>
+									<option value=''>订单状态</option>
+									<option value="10" <{if $smarty.get.status==10}>selected<{/if}> >处理中</option>
+									<option value="1" <{if $smarty.get.status==1}>selected<{/if}> >已发货</option>
+									<option value="2" <{if $smarty.get.status==2}>selected<{/if}> >已签收</option>
+									<option value="3" <{if $smarty.get.status==3}>selected<{/if}> >无效</option>
+								</select>
+								<select name="is_pay" class="textarea" style='font-size:12px'>
+									<option value=''>支付状态</option>
+									<option value="1" <{if $smarty.get.is_pay==1}>selected<{/if}> >已支付</option>
+									<option value="2" <{if $smarty.get.is_pay==2}>selected<{/if}> >未支付</option>
+								</select>
 								<input name="date" class="textarea" placeholder="下单日期，如2015-08-28" type="text" value="<{$smarty.get.date}>" style="width:200px;" />
+								<input name="pay_date" class="textarea" placeholder="支付日期，如2015-08-28" type="text" value="<{$smarty.get.pay_date}>" style="width:200px;" />
 								<input name="keywords" class="textarea" placeholder="请输入订单号" type="text" value="<{$smarty.get.keywords}>" style="width:110px;" />
 								<input value="搜索" class="btn btn-large btn-success" title="搜索" type="submit" style="margin-top:-7px;padding:3px 10px;" />
 							</form>
@@ -36,7 +49,9 @@
 										<th class="enable">订单金额</th>
 										<th class="enable">收货人</th>
 										<th class="enable">下单时间</th>
+										<th class="enable">支付时间</th>
 										<th class="enable">物流（公司，运单号）</th>
+										<th class="enable">备注</th>
 										<th name="Status" class="enable">支付</th>
 										<th name="Status" class="enable">状态</th>
 										<th style="width:150px;" class="enable">操作</th>
@@ -51,9 +66,11 @@
 										<td><div><{$v.money}><{if $v.is_lb==1}>(大礼包)<{/if}></div></td>
 										<td><div><{$v.name}></div></td>
 										<td><div><{$v.addtime}></div></td>
+										<td><div><{$v.pay_time}></div></td>
 										<td><div><{$v.wuliu}></div></td>
+										<td><div><{$v.content}></div></td>
 										<td><div><{if $v.is_pay==1}>已付款<{else}>未付款<{/if}></div></td>
-										<td><div><{if $v.status==0}>未处理<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效<{/if}></div></td>
+										<td><div><{if $v.status==0}>处理中<{elseif $v.status==1}>已派送<{elseif $v.status==2}>已签收<{else}>无效<{/if}></div></td>
 										<td><div>
 											<a href="order.php?a=detail&id=<{$v.id}>" class="minutebtn">详情</a>
 											<a href="javascript:void(0);" onclick="delRow(event,<{$v.id}>)" class="minutebtn">删除</a>

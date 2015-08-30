@@ -34,6 +34,10 @@
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
 				<{if $smarty.get.type=='1'}>
+				<select name="code" style="height:25px;line-height:25px;">
+					<option value="">礼包优惠码</option>
+					<option value="1" <{if $smarty.get.wanshan=='1'}>selected<{/if}> >有</option>
+				</select>&nbsp;&nbsp;
 				<select name="wanshan" style="height:25px;line-height:25px;">
 					<option value="">身份证照</option>
 					<option value="2" <{if $smarty.get.wanshan=='2'}>selected<{/if}> >无</option>
@@ -112,7 +116,7 @@
 						<td><div><{if $v.sex==1}>男<{else}>女<{/if}></div></td>
 						<td>
 						<{if $v.code}>
-							<{$v.code}>
+							<{$v.code}><{if $v.is_use==1}>(已使用)<{/if}>
 						<{else}>
 							<span class='code_btn' onclick="produce_code(<{$v.id}>,'<{$v.nickname}>')">生成</span></td>
 						<{/if}>

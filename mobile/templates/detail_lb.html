@@ -44,7 +44,12 @@
             <!-- <span>库存（<{$vo.store}>）</span> -->
             <div class="clearfix"></div>
         </div>
-		<{if $time_cha > 0 }>
+		<{if $lb_man==1}>
+		<div class='productPrice' style="margin-top:8px;">
+			<p>距下次抢购还有<span id='time_box'></span></p>
+			<div class="clearfix"></div>
+		</div>
+		<{elseif $time_cha > 0 }>
 		<div class='productPrice' style="margin-top:8px;">
 			<p>今日距抢购还有<span id='time_box'></span></p>
 			<div class="clearfix"></div>

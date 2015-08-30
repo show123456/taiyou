@@ -7,8 +7,17 @@
 		$smarty->assign('vo',$vo);
 		$model->query("update applist_hpt_shop_goods set clicknum=clicknum+1 where id='{$id}'");//人气加一
 		if($vo['id']==1){
+			//今日剩礼包数量
 			$current_time=time();
-			$time_12=strtotime(date('Y-m-d',$current_time).' 12:00:00');
+			$lbModel=D('sub_lb');
+			$lb_count_row=$lbModel->field('count(*) as count_num')->where("left(addtime,10)='".date('Y-m-d')."'")->dataRow();
+			if($lb_count_row['count_num'] >= 10){
+				$smarty->assign('lb_man',1);
+				$time_12=strtotime(date('Y-m-d',$current_time+24*3600).' 12:00:00');
+			}else{
+				$time_12=strtotime(date('Y-m-d',$current_time).' 12:00:00');
+			}
+			
 			$time_cha=$time_12-$current_time;
 			$smarty->assign('time_cha',$time_cha);
 			$smarty->setLayout('')->setTpl('mobile/templates/detail_lb.html')->display();

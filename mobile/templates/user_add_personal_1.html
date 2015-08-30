@@ -49,20 +49,23 @@
 		</div>
 		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">现居住地：</div>
 		<div>
-			<select style="float:left;margin-right:1.5%;" name="num[pid]" class="provinceid" onchange="pselect(this)">
-				<option value="">请选择省</option>
+			<select style="float:left;margin-right:1.5%;" name="num[pid]" class="provinceid">
+				<option value="10">江苏省</option>
+				<!-- <option value="">请选择省</option>
 				<{foreach from=$parr item=pv}>
 				<option value="<{$pv.ProvinceID}>" <{if $pv.ProvinceID==$vo.pid}>selected<{/if}> ><{$pv.ProvinceName}></option>
-				<{/foreach}>
+				<{/foreach}> -->
 			</select>
-			<select style="float:left;margin-right:1.5%;" name="num[cid]" class="cityid" onchange="cselect(this)">
+			<select style="float:left;margin-right:1.5%;" name="num[cid]" class="cityid">
+			<option value="78">苏州市</option>
 			</select>
 			<select style="width:33%;float:right;" name="num[did]" class="areaid">
+				<option value="">请选择区</option>
+				<{foreach from=$darr item=dv}>
+				<option value="<{$dv.DistrictID}>" <{if $dv.DistrictID==$vo.did}>selected<{/if}> ><{$dv.DistrictName}></option>
+				<{/foreach}>
 			</select>
 			<div class="clear"></div>		
-		</div>
-		<div class="input_group">
-			<input type="text" name="str[zhen]" value="<{$vo.zhen}>" placeholder="请填写镇" />
 		</div>
 		<div class="input_group">
 			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细地址" />
@@ -211,7 +214,7 @@ function cselect(obj){
 }
 			
 //修改时加载城市和区域信息
-if('<{$vo.id}>'){
+if(0 && '<{$vo.id}>'){
 	var pid='<{$vo.pid}>';
 	var cid='<{$vo.cid}>';
 	var did='<{$vo.did}>';

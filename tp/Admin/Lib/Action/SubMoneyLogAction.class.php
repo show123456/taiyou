@@ -172,15 +172,31 @@ class SubMoneyLogAction extends CommonAction{
 		$where_str1=" type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
 		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
 		$sum_row['type1']=$row['sum_money'];
-		//商城余额支付收入
+		//商城支付
 		$orderModel=M('ApplistHptShopOrder');
-		$where_str_yue="is_pay=1 and pay_type=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
-		$row=$orderModel->field("sum(money) as sum_money")->where($where_str_yue)->find();
-		$sum_row['yue']=$row['sum_money'];
+		$odModel=M('ApplistHptShopOdetail');
+		$sum_row['yue']=0;$sum_row['wx']=0;$sum_row['out']=0;
+		$where_str_yue="is_pay=1 and pay_time > '".$start_date." 00:00:00' and pay_time < '".$end_date." 23:59:59' ";
+		$order_arr=$orderModel->field("id,money,pay_type")->where($where_str_yue)->select();
+		foreach($order_arr as $ov){
+			if($ov['pay_type']==1){
+				$sum_row['yue']+=$ov['money'];
+			}else{
+				$sum_row['wx']+=$ov['money'];
+			}
+			//底价支出
+			$od_arr=$odModel->where(array('oid'=>$ov['id']))->select();
+			foreach($od_arr as $odv){
+				$sum_row['out']+=$odv['ori_price']*$odv['num'];
+			}
+			$sum_row['out']+=9;
+		}
+		
+		/* $sum_row['yue']=$row['sum_money'];
 		//商城微信支付收入
-		$where_str_yue="is_pay=1 and pay_type=2 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
+		$where_str_yue="is_pay=1 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
 		$row=$orderModel->field("sum(money) as sum_money")->where($where_str_yue)->find();
-		$sum_row['wx']=$row['sum_money'];
+		$sum_row['wx']=$row['sum_money']; */
 		
 		/* //支付报名费
 		$where_str4=" type=4 and addtime > '".$start_date." 00:00:00' and addtime < '".$end_date." 23:59:59' ";
@@ -529,6 +545,19 @@ class SubMoneyLogAction extends CommonAction{
 			$row=$taskModel->field('id,work_time')->find($v['desc']);
 			$data['id']=$v['id'];
 			$data['work_date']=substr($row['work_time'],0,10);
+			$model->save($data);
+		}
+	}
+	
+	//修改订单详情表底价
+	public function od_test(){
+		$model=M('ApplistHptShopOdetail');
+		$goodsModel=M('ApplistHptShopGoods');
+		$arr=$model->select();
+		foreach($arr as $k=>$v){
+			$row=$goodsModel->field('id,ori_price')->find($v['gid']);
+			$data['id']=$v['id'];
+			$data['ori_price']=$row['ori_price'];
 			$model->save($data);
 		}
 	}
