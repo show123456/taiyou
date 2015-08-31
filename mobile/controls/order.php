@@ -133,6 +133,15 @@
 		$data[info]['money']=$totalMoney;
 		$data[info]['uid']=$userRow['id'];
 		$res=$model->add($data);
+		//写金额日志
+		if($data['num']['pay_type']==1){
+			$logData=array();
+			$logData['info']['type']=8;//余额支付
+			$logData['info']['uid']=$userRow['id'];
+			$logData['info']['money']=0-$totalMoney;
+			$logData['info']['desc']=$res;
+			D('sub_money_log')->add($logData);
+		}
 		//保存订单详情表
 		if($numArr){
 			$goodsModel=new Model_ApplistHptShopGoods();
@@ -143,6 +152,7 @@
 				$listArr[info]['num']=$value['num'];
 				//获取商品信息
 				$vo=$goodsModel->find($key);
+				$listArr[info]['one_code']=$vo['one_code'];
 				$listArr[info]['name']=$vo['name'];
 				$listArr[info]['pic']=$vo['pic'];
 				$listArr[info]['ori_price']=$vo['ori_price'];
@@ -212,9 +222,10 @@
 				$listArr[info]['oid']=$res;
 				$listArr[info]['gid']=$value['id'];
 				$listArr[info]['num']=1;
+				$listArr[info]['one_code']=$value['one_code'];
 				$listArr[info]['name']=$value['name'];
 				$listArr[info]['pic']=$value['pic'];
-				$listArr[info]['ori_price']=$vo['ori_price'];
+				$listArr[info]['ori_price']=$value['ori_price'];
 				$listArr[info]['price']=$value['fact_price'];
 				$listArr[info]['money']=$value['fact_price']*1;
 				$result=$m->add($listArr);//保存订单详情

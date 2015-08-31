@@ -103,20 +103,31 @@ class SubUserAction extends CommonAction{
 			$current_time=time();
 			$res=D('Recharge')->saveData($data);			
 			if($res){
-				//用户金额增加
-				M()->query("update sub_user set money = money + ".$data['info']['money']." where id='".$data['info']['uid']."' limit 1");
-				//写金额日志
-				$data1=array();
-				$data1['type']=6;//系统充值
-				$data1['uid']=$data['info']['uid'];
-				$data1['money']=$data['info']['money'];
-				$data1['desc']=$data['info']['desc'];
-				M('SubMoneyLog')->add($data1);
-				//发消息
-				$userRow=M('SubUser')->find($data1['uid']);
-				$fromuser=$userRow['fromuser'];
-				$content="您好".$userRow['nickname']."，云客驿站为您充值".$data1['money']."元钱，请前往“个人金库”查看。备注：".$data1['desc'];
-				D('CustomerConfig')->sendCustomerMsg($content,$fromuser);
+				if($data['info']['money'] < 0){
+					M()->query("update sub_user set money = money - ".(0-$data['info']['money'])." where id='".$data['info']['uid']."' limit 1");
+					//写金额日志
+					$data1=array();
+					$data1['type']=6;//系统充值
+					$data1['uid']=$data['info']['uid'];
+					$data1['money']=$data['info']['money'];
+					$data1['desc']=$data['info']['desc'];
+					M('SubMoneyLog')->add($data1);
+				}else{
+					//用户金额增加
+					M()->query("update sub_user set money = money + ".$data['info']['money']." where id='".$data['info']['uid']."' limit 1");
+					//写金额日志
+					$data1=array();
+					$data1['type']=6;//系统充值
+					$data1['uid']=$data['info']['uid'];
+					$data1['money']=$data['info']['money'];
+					$data1['desc']=$data['info']['desc'];
+					M('SubMoneyLog')->add($data1);
+					//发消息
+					$userRow=M('SubUser')->find($data1['uid']);
+					$fromuser=$userRow['fromuser'];
+					$content="您好".$userRow['nickname']."，云客驿站为您充值".$data1['money']."元钱，请前往“个人金库”查看。备注：".$data1['desc'];
+					D('CustomerConfig')->sendCustomerMsg($content,$fromuser);
+				}
 				
 				$this->success('保存成功',I('post.lastURL'));
 			}else{

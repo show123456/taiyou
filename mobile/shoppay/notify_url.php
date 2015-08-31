@@ -110,6 +110,13 @@
 			$kldData['info']['code']=strtolower(code_random(5));
 			$kldData['info']['uid']=$orderRow['uid'];
 			D('sub_kld')->add($kldData);
+			//写金额日志
+			$logData=array();
+			$logData['info']['type']=9;//微信支付
+			$logData['info']['uid']=$orderRow['uid'];
+			$logData['info']['money']=0-$orderRow['money'];
+			$logData['info']['desc']=$oid;
+			D('sub_money_log')->add($logData);
 			
 			//此处应该更新一下订单状态，商户自行增删操作
 			$log_->log_result($log_name,"【支付成功】:\n".$xml."\n");

@@ -25,9 +25,6 @@
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
 .toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
 	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
-
-.top_div{width:130px;height:100px;background-color:#ff7101;color:#fff;border:1px solid #ccc;
-	border-radius:5px;font-size:15px;padding:10px;text-align:center;float:left;margin-left:20px;}
 </style>
 </head>
 <body>
@@ -36,43 +33,29 @@
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
 		<input type="hidden" name='a' value="<{$actionName}>" />
-		<input type="hidden" name='uid' value="<{:I('get.uid')}>" />
 		<ul class="toolbar1"><li>
-			<!-- <span>
-				<input type="text" class="date_picker" name="work_date" placeholder="工作日期" value="<{:I('get.work_date')}>" />
-			</span> -->
-			<span>
-				<select name="type" style="margin-top:0;">
-					<option value="">请选择类别</option>
-					<option value="1" <{:$_GET['type']==1 ? 'selected' : ''}> >会员充值</option>
-					<option value="2" <{:$_GET['type']==2 ? 'selected' : ''}> >提现</option>
-					<option value="3" <{:$_GET['type']==3 ? 'selected' : ''}> >转账日结</option>
-					<option value="4" <{:$_GET['type']==4 ? 'selected' : ''}> >支付报名费</option>
-					<option value="5" <{:$_GET['type']==5 ? 'selected' : ''}> >退还报名费</option>
-					<option value="6" <{:$_GET['type']==6 ? 'selected' : ''}> >系统充值</option>
-					<option value="7" <{:$_GET['type']==7 ? 'selected' : ''}> >现金日结</option>
-					<option value="8" <{:$_GET['type']==8 ? 'selected' : ''}> >余额支付</option>
-					<option value="9" <{:$_GET['type']==9 ? 'selected' : ''}> >微信支付</option>
+			<span style="margin-top:0;">
+				支付时间:
+				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{$start_date}>" />
+				<select name="start_time" style="margin-top:0;">
+					<foreach name='timearr' item='v'>
+						<option value="<{$v}>" <{:I('get.start_time')==$v ? 'selected' : ''}> ><{$v}></option>
+					</foreach>
 				</select>
 			</span>
 			<span style="margin-top:0;">
-				开始日期:
-				<input type="text" class="date_picker" name="start_date" placeholder="开始日期" value="<{:I('get.start_date')}>" /> —
+				至&nbsp;&nbsp;&nbsp;
+				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{$end_date}>" />
+				<select name="end_time" style="margin-top:0;">
+					<foreach name='timearr' item='v'>
+						<option value="<{$v}>" <{:I('get.end_time')==$v ? 'selected' : ''}> ><{$v}></option>
+					</foreach>
+				</select>
 			</span>
-			<span style="margin-top:0;">
-				结束日期:
-				<input type="text" class="date_picker" name="end_date" placeholder="结束日期" value="<{:I('get.end_date')}>" />
-			</span>
-			<if condition="$_GET['uid'] eq ''">
-			<span>
-				<input type="text" name="username" placeholder="请输入手机号" value="<{:I('get.username')}>" />
-			</span>
-			<span>
-				<input type="text" name="keywords" placeholder="请输入姓名" value="<{:I('get.keywords')}>" />
-			</span>
-			</if>
 			<b onclick="search()">搜索</b>
-			<a href="<{:U('daochu',array('start_date'=>$start_date,'end_date'=>$end_date))}>"><b>导出到excel</b></a>
+			<if condition="$_GET['start_time'] neq ''">
+				<a href="<{:U('daochu',array('start_date'=>$start_date,'end_date'=>$end_date,'start_time'=>I('get.start_time'),'end_time'=>I('get.end_time')))}>"><b>导出到excel</b></a>
+			</if>
 		</li>
 		</ul>
 		</form>
@@ -80,31 +63,47 @@
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th>姓名</th>
-				<th>手机号</th>
-				<th>类别</th>
-				<th>用户金额变动(元)</th>
-				<th>变动时间</th>
+				<th>订单号</th>
+				<th>条形码</th>
+				<th>商品名</th>
+				<th>底价</th>
+				<th>售价</th>
+				<th>数量</th>
+				<th>运费</th>
+				<th>包装费</th>
+				<th>支付方式</th>
+				<th>收入</th>
+				<th>支出</th>
+				<th>支付时间</th>
 			</tr>
 		</thead>
 		<tbody>
-			<foreach name="list['data']" item='v'>
-			<tr style="height:25px;">
-				<td><{$v.nickname}></td>
-				<td><{$v.username}></td>
-				<td><{$v.type}></td>
+			<foreach name="info" item='v'>
+			<tr style="height:25px;<if condition='$v["is_last"] eq 1'>border-bottom:3px solid #aaa;</if>">
+				<td><{$v.oid}></td>
+				<td><{$v.gone_code}></td>
+				<td><{:cut_str($v['gname'],10)}></td>
+				<td><{$v.gori_price}></td>
+				<td><{$v.gfact_price}></td>
+				<td><{$v.gnum}></td>
+				<td><{$v.yunfei}></td>
+				<td><{$v.bz}></td>
+				<td><{$v.pay_type_name}></td>
 				<td><{$v.money}></td>
-				<td><{$v.addtime}></td>
+				<td><{$v.zc}></td>
+				<td><{$v.pay_time}></td>
 			</tr>
 			</foreach>
+			<tr style="height:25px;">
+				<td colspan='5' style="text-align:center;color:red;font-weight:bold;">总计：</td>
+				<td colspan='2' style="text-align:center;">余额收入￥<{$total_shouru_yue}></td>
+				<td colspan='2' style="text-align:center;">微信收入￥<{$total_shouru_wx}></td>
+				<td><{$total_shouru}></td>
+				<td><{$total_zhichu}></td>
+				<td></td>
+			</tr>
 		</tbody>
 	</table>
-	<div class="pagin">
-		<ul class="paginList">
-			<{$list['page']}>
-		</ul>
-	</div>
-	<if condition="$_GET['work_date'] neq ''"><div style="color:red;font-weight:bold;font-size:14px;"><{:I('get.work_date')}>总金额：￥<{$sum_money|default=0}></div></if>
 </div>
 <script type="text/javascript">
 function search(){

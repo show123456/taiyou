@@ -63,9 +63,6 @@ $(function(){
 <!-- loading动画结束 -->
 <script type="text/javascript">
 function save(obj){
-	if(!isNumber($('input[name="info[money]"]').val())){
-		alert_tip("充值金额必须为正整数");return;
-	}
 	$('#loading').show();
 	$('#memberform').submit();
 }

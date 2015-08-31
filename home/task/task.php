@@ -186,6 +186,11 @@ if($_REQUEST['a']=='get_districts'){
 	$darr=$dmodel->where("CityID=".$_GET['cid'])->order('DistrictId asc')->dataArr();
 	echo json_encode($darr);die;
 }
+//触发删除前天之前message表中数据
+$rand_num=rand(1,6);
+if($rand_num==3){
+	$model->query("delete from message where create_date < '".date('Y-m-d H:i:s',time()-3600*24*2)."'");
+}
 //数据列表
 $signModel = new Model_Subtable('sub_sign');
 $condition=array();

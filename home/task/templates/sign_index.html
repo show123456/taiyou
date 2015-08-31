@@ -55,6 +55,7 @@
 	<{if $signNum!=0}>
 	<div class="register_end" data-page="1" onclick="seeMore(this)">查看更多</div>
 	<div class="register_end" onclick="save();">确认</div>
+	<textarea id="send_content" style="width:90%;margin-left:5%;" placeholder='发送提醒消息之前，请填写发送内容'></textarea>
 	<div class="register_end" onclick="send_msg();">发送提醒消息</div>
 	<{/if}>
 	<input type="text" id="add_num"/>
@@ -127,8 +128,11 @@ function seeMore(obj){
 }
 //向已确认的报名用户发送提醒消息
 function send_msg(){
+	if($('#send_content').val()==''){
+		alert('请填写发送内容');return;
+	}
 	$('#loading').show();
-	$.get('send_wx_msg.php?a=send_msg_confirm&tid=<{$smarty.get.tid}>',function(){
+	$.post('send_wx_msg.php?a=send_msg_new',{tid:<{$smarty.get.tid}>,msg:$('#send_content').val()},function(){
 		$('#loading').hide();
 		alert('发送成功');
 	})

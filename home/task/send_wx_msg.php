@@ -42,6 +42,27 @@ if($_REQUEST['a']=='send_msg_confirm'){
 	}
 	die;
 }
+if($_REQUEST['a']=='send_msg_new'){
+	set_time_limit(0);
+	$configModel=new Model_CustomerConfig();
+	$tid=$_POST['tid'];
+	$content=$_POST['msg'];
+	//职位信息
+	/* $taskModel=D('sub_task');
+	$taskRow=$taskModel->find($tid); */
+	//确认过的报名人员
+	$listArr=D('sub_sign')->where("tid='{$tid}' and is_valid=1")->dataArr();
+	if($listArr){
+		foreach($listArr as $key=>$value){
+			$uRow=$userModel->field('id,nickname,fromuser')->where("id='{$value['uid']}'")->dataRow();
+			if($uRow['fromuser']){
+				$configModel->sendCustomerMsg($content,$uRow['fromuser']);
+				usleep(100000);
+			}
+		}
+	}
+	die;
+}
 $listArr=$userModel->field('fromuser')->where("`type`=1 and fromuser!=''")->dataArr();
 shuffle($listArr);
 $smarty->assign('list',$listArr);

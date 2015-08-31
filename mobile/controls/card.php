@@ -53,6 +53,6 @@
 		}else{
 			$where_str="end_time > '".date('Y-m-d',$current_time)."' and username='".$userRow['username']."'";
 		}
-		$model->query("delete from ban where ".$where_str." order by id desc limit 1");
+		$model->query("update ban set ban_day=0,end_time=start_time where ".$where_str." order by id desc limit 1");
 		die('suc');
 	}

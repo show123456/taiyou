@@ -173,7 +173,7 @@ class SubMoneyLogAction extends CommonAction{
 		$row=$model->field("sum(money) as sum_money")->where($where_str1)->find();
 		$sum_row['type1']=$row['sum_money'];
 		//商城支付
-		$orderModel=M('ApplistHptShopOrder');
+		/* $orderModel=M('ApplistHptShopOrder');
 		$odModel=M('ApplistHptShopOdetail');
 		$sum_row['yue']=0;$sum_row['wx']=0;$sum_row['out']=0;
 		$where_str_yue="is_pay=1 and pay_time > '".$start_date." 00:00:00' and pay_time < '".$end_date." 23:59:59' ";
@@ -190,7 +190,7 @@ class SubMoneyLogAction extends CommonAction{
 				$sum_row['out']+=$odv['ori_price']*$odv['num'];
 			}
 			$sum_row['out']+=9;
-		}
+		} */
 		
 		/* $sum_row['yue']=$row['sum_money'];
 		//商城微信支付收入
@@ -555,9 +555,10 @@ class SubMoneyLogAction extends CommonAction{
 		$goodsModel=M('ApplistHptShopGoods');
 		$arr=$model->select();
 		foreach($arr as $k=>$v){
-			$row=$goodsModel->field('id,ori_price')->find($v['gid']);
+			$row=$goodsModel->find($v['gid']);
 			$data['id']=$v['id'];
-			$data['ori_price']=$row['ori_price'];
+			//$data['ori_price']=$row['ori_price'];
+			$data['one_code']=$row['one_code'];
 			$model->save($data);
 		}
 	}
