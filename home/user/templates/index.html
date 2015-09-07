@@ -97,6 +97,7 @@
 						<th name="Theme" class="hover enable">联系人</th>
 						<{/if}>
 						<th name="Operate" class="hover enable">所属区</th>
+						<th name="Operate" class="hover enable">注册日期</th>
 						<th name="Operate" class="hover enable">操作</th>
 					</tr>
 				</thead>
@@ -130,6 +131,7 @@
 						<td><div><{$v.contact_name}></div></td>
 						<{/if}>
 						<td><div><{$v.district}></div></td>
+						<td><div><{$v.addtime}></div></td>
 						<td>
 							<div class="btn-operate">
 							<{if $smarty.get.type==1}>

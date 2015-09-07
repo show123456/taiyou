@@ -17,10 +17,15 @@
 				<div class="comm-list" style="min-height:600px">
 					<div class="comm-top">
 						<div class="title-left">
-							<h4><{$cateName}>列表（共<{$countRow.count_num|default:0}>单，总额<{$countRow.sum_money|default:0}>元）</h4>
+							<h4>共<{$countRow.count_num|default:0}>单，总额<{$countRow.sum_money|default:0}>元</h4>
 						</div>
 						<div class="title-right" style="top:8px;">
 							<form method="get" action="">
+								<select name="is_lb" class="textarea" style='font-size:12px'>
+									<option value=''>礼包</option>
+									<option value="1" <{if $smarty.get.is_lb==1}>selected<{/if}> >是</option>
+									<option value="2" <{if $smarty.get.is_lb==2}>selected<{/if}> >否</option>
+								</select>
 								<select name="status" class="textarea" style='font-size:12px'>
 									<option value=''>订单状态</option>
 									<option value="10" <{if $smarty.get.status==10}>selected<{/if}> >处理中</option>

@@ -38,6 +38,23 @@
 		$res=$model->add($data);
 		echo json_encode($res);die();
 	}
+	
+	//填满今日礼包
+	if($_REQUEST['a']=='shut_lb'){
+		$lbModel=D('sub_lb');
+		$count_row=$lbModel->field('count(*) as count_num')->where("left(addtime,10) = '".date('Y-m-d')."'")->dataRow();
+		if($count_row['count_num'] >= 10){
+			die('already');
+		}else{
+			for($i=$count_row['count_num'];$i<11;$i++){
+				$lbData=array();
+				$lbData['info']['uid']=14;
+				$lbModel->add($lbData);
+			}
+			die;
+		}
+	}
+	
 	//数据列表
 	//搜索
 	$condition=array();

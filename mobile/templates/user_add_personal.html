@@ -31,6 +31,9 @@
 	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
 	<input type="hidden" id="picInput" name="str[pic]" value="<{$vo.pic}>" />
 	<div class="tabs_info">
+		<{if $num}>
+		<div style="text-align:center;margin:5px auto -5px;color:#666;">我的代理商编号：<span style="color:red;"><{$num}></span></div>
+		<{/if}>
 		<a href="index.php?m=user&a=bind_wxh">
 			<div class="register_end" style="width:60%;background-color:#ff7101;margin:10px auto -5px;font-size:13px;height:30px;line-height:30px;">绑定手机账号与微信号</div>
 		</a>
@@ -62,7 +65,7 @@
 			<div class="clear"></div>		
 		</div>
 		<div class="input_group">
-			<input type="text" name="str[zhen]" value="<{$vo.zhen}>" placeholder="请填写镇" />
+			<input type="text" name="str[zhen]" value="<{$vo.zhen}>" placeholder="请填写县（镇）" />
 		</div>
 		<div class="input_group">
 			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细地址" />
@@ -71,6 +74,10 @@
 		<div class="input_group">
 			<input style="text-indent:7em;" type="text" name="str[cardnum]" value="<{$vo.cardnum}>" />
 			<div class="title">身份证号码：</div>
+		</div>
+		<div class="input_group">
+			<input style="text-indent:7em;" type="text" name="str[agent_num]" value="<{$vo.agent_num}>" />
+			<div class="title">代理商编号：</div>
 		</div>
 		<div class="input_group" id="cardPic">
 			<img class="upload_pic" src="<{if $vo.pic}>/data/image_c/<{$vo.pic}><{else}>images/upload.gif<{/if}>" />
@@ -153,7 +160,10 @@ function save(){
 		alert("请上传身份证正面照片");return;
 	}*/
 	$.post('index.php?m=user&a=user_add_personal',$('#meminfo').serialize(),function(res){
-		if(jQuery.trim(res)){
+		res=$.trim(res);
+		if(res=='no_agent'){
+			alert('该代理商不存在');
+		}else if(res){
 			alert('保存成功');
 			window.location.href='index.php?m=user&a=user_index';
 		}else{

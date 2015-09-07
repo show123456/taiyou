@@ -11,6 +11,11 @@ if($_REQUEST['a']=='add_bank'){
 if($_REQUEST['a']=='user_add_personal'){
 	if(method_is('post')){
 		$data=$_POST;
+		//代理商
+		if($data['str']['agent_num']){
+			$agentRow=D('sub_agent')->where("num='".$data['str']['agent_num']."'")->dataRow();
+			if(!$agentRow) die('no_agent');
+		}
 		//推荐人返利
 		if($data['recommend_phone'] && $data['recommend_phone']!=$userRow['username']){
 			$uRow=$model->where("username='".$data['recommend_phone']."'")->dataRow();
@@ -42,6 +47,9 @@ if($_REQUEST['a']=='user_add_personal'){
 			$tjr_user_row=$model->field('id,nickname')->where("id='".$tjrRow['tjr_uid']."'")->dataRow();
 			$smarty->assign('tjr_user_row',$tjr_user_row);
 		}
+		//我的代理商编号
+		$agentRow=D('sub_agent')->where("uid='".$userRow['id']."'")->dataRow();
+		$smarty->assign('num',$agentRow['num']);
 		
 		$smarty->assign('vo',$model->find($userRow['id']));
 		$smarty->setLayout('')->setTpl('mobile/templates/user_add_personal.html')->display();die;

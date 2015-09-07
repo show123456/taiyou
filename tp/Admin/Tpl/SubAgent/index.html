@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/admin/js/jquery.js"></script>
+<script language="javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+<style type="text/css">
+.imgtable tbody tr{height:50px;}
+/*搜索样式*/
+.toolbar1 li{border:0;}
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;
+	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
+.toolbar1 li b,.send_btn{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}	
+.kfTypeDiv span{cursor:pointer;display:inline;}
+.kfSpan{color:#ccc;}
+.isKf{color:#428bca;}
+.num_inp{width:50px;height:18px;line-height:18px;background-color:#f9f9f9;
+	border:1px solid #aaa;text-indent:1em;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="rightinfo">
+	<!-- <div class="tools">
+		<form action="" name="searchForm" method="get">
+		<input type="hidden" name='m' value='<{$moduleName}>' />
+		<input type="hidden" name='a' value="<{$actionName}>" />
+		<ul class="toolbar1">
+			<li>
+				<span>
+					<input type="text" name="name" placeholder="请输入名字" value="<{:I('get.name')}>" />
+				</span>
+				<select name="scoredate">
+					<option value="">请选择日期</option>
+					<foreach name="dateArr" item="vo">
+						<option value="<{$vo}>" <if condition="$_GET['scoredate'] eq $vo">selected</if> ><{$vo}></option>
+					</foreach>
+				</select>
+				<b onclick="document.searchForm.submit()">搜索</b>
+			</li>
+		</ul>
+		</form>
+	</div> -->
+	<table class="imgtable">
+		<thead>
+			<tr>
+				<th>编号</th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>年龄</th>
+				<th>手机</th>
+				<th>身份证号</th>
+				<th>学校</th>
+				<th>年级</th>
+				<th>专业</th>
+				<th>审核状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name="list['data']" item='v'>
+			<tr>
+				<td><input type="text" value="<{$v.num}>" class="num_inp" onblur="num_change(<{$v.id}>,this)" /></td>
+				<td><{$v.name}></td>
+				<td><{:$v['sex']==1 ? '男' : '女'}></td>
+				<td><{$v.age}></td>
+				<td><{$v.tel}></td>
+				<td><{$v.card_num}></td>
+				<td><{$v.school}></td>
+				<td><{$v.clas}></td>
+				<td><{$v.major}></td>
+				<td class="kfTypeDiv">
+					<span class="kfSpan <{:$v['sh_status']==1 ? 'isKf' : ''}>" data-status='1' data-id='<{$v.id}>'>已通过</span> | 
+					<span class="kfSpan <{:$v['sh_status']==0 ? 'isKf' : ''}>" data-status='0' data-id='<{$v.id}>'>未通过</span>
+				</td>
+				<td class="kfTypeDiv">
+					<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a></if>
+				</td>
+			</tr>
+			</foreach>
+		</tbody>
+	</table>
+	<div class="pagin">
+		<ul class="paginList">
+			<{$list['page']}>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+$('.imgtable tbody tr:odd').addClass('odd');
+function delRow(str){
+	if(confirm('确定要删除吗？')) window.location.href=str;
+}
+
+$(document).ready(function(){
+	$('.kfTypeDiv span').click(function(){
+		if(confirm('确定要执行此操作吗？')){
+			var kf_type=$(this).attr('data-status');
+			var open_act_id=$(this).attr('data-id');
+			$('#loading').show();
+			$.get('<{:U("kf")}>',{id:open_act_id,sh_status:kf_type},function(res){
+				$('#loading').hide();
+				if(res){
+					window.location.reload();
+				}
+			})
+		}
+	})
+})
+function num_change(id,obj){
+	if($(obj).val()==''){
+		alert_tip('请填写编号');return;
+	}
+	$.get('<{:U("num_change")}>',{id:id,num:$(obj).val()},function(res){
+		res=$.trim(res);
+		if(res=='cf'){
+			alert_tip('此编号已存在');
+		}else if(res=='suc'){
+			alert_tip('编号分配成功');
+		}
+	})
+}
+</script>
+</body>
+</html>

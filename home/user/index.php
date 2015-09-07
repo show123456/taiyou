@@ -27,10 +27,11 @@
 		if($res){
 			if($data['info']['is_see']=='1' && $data['fromuser']){
 				$configModel=new Model_CustomerConfig();
-				$configModel->sendCustomerMsg('亲~，你的个人资料已通过云姐的审核；审核通过后，除绑定银行卡信息外，其它信息均无法修改；遇手机号码有变动时，请在小窗口第一时间与云姐联系，云姐对个人信息审核无误后，方可进行修改。',$data['fromuser']);
+				$configModel->sendCustomerMsg('亲~，你的个人资料已通过云姐的审核；遇手机号码有变动时，请在小窗口第一时间与云姐联系，云姐对个人信息审核无误后，方可进行修改。',$data['fromuser']);
 			}
-			echo json_encode('suc');die;
 		}
+		echo json_encode('suc');
+		die;
 	}
 	
 	//删除身份证照片
@@ -44,7 +45,7 @@
 		if($res){
 			$configModel=new Model_CustomerConfig();
 			if($uRow['fromuser']){
-				$configModel->sendCustomerMsg('你的照片审核未通过，请重新上传完整身份证正面照片',$uRow['fromuser']);
+				$configModel->sendCustomerMsg('你的照片审核未通过，请重新上传完整身份证正面照片。上传照片格式须知：拍摄时，将所需拍摄物平放在桌面上，手机对准拍摄物，使拍摄物充满手机屏幕，照片周围尽量不要有其他杂乱背景。',$uRow['fromuser']);
 			}
 			die('suc');
 		}else{

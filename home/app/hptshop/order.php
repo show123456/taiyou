@@ -46,6 +46,11 @@
 	}elseif($_GET['is_pay']==2){
 		$condition[]=" is_pay=0 ";
 	}
+	if($_GET['is_lb']==1){
+		$condition[]=" is_lb=1 ";
+	}elseif($_GET['is_lb']==2){
+		$condition[]=" is_lb=0 ";
+	}
 	if($_GET['status']){
 		if($_GET['status']==10){
 			$condition[]=" status=0 ";

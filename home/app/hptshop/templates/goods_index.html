@@ -66,7 +66,11 @@
 								<tbody>
 									<{foreach from=$list item="v"}>
 									<tr>
-										<td title="<{$v.name}>"><div><{$v.s_name}></div></td>
+										<td title="<{$v.name}>"><div><{$v.s_name}>
+										<{if $v.id==1}>
+											<span style="color:#4cae4c;font-weight:bold;cursor:pointer;" onclick="shut_lb()">(关闭今日大礼包)</span>
+										<{/if}>
+										</div></td>
 										<td><div><{$v.cname}></div></td>
 										<td><div><{$v.fact_price}></div></td>
 										<!-- <td><div><{$v.store}></div></td> -->
@@ -127,6 +131,19 @@ function upDownGoods(event,id,state){
 				}
 			}
 		});
+	}
+}
+//关闭今日大礼包
+function shut_lb(){
+	if(confirm('确定要关闭今天的礼包吗？')){
+		$.get('index.php?a=shut_lb',function(res){
+			res=$.trim(res);
+			if(res=='already'){
+				alert('您已关闭今日礼包');
+			}else{
+				alert('关闭成功');
+			}
+		})
 	}
 }
 </script>
