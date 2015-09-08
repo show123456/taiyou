@@ -18,6 +18,7 @@
 .replyBox b{display:block;float:right;cursor:pointer;}
 .code_btn{padding:4px 20px;background-color:#EDEDED;border:1px solid #DDD;font-size:12px;
 	cursor:pointer;border-radius:3px;color:#686868;}
+.num_inp{width:50px;text-indent:5px;}
 </style>
 <div class="main-content">
 <div class='inner'>
@@ -34,9 +35,9 @@
 			<form method="get" action="">
 				<input type="hidden" name="type" value="<{$smarty.get.type}>" />
 				<{if $smarty.get.type=='1'}>
-				<select name="code" style="height:25px;line-height:25px;">
-					<option value="">礼包优惠码</option>
-					<option value="1" <{if $smarty.get.wanshan=='1'}>selected<{/if}> >有</option>
+				<select name="agent_num" style="height:25px;line-height:25px;">
+					<option value="">代理商</option>
+					<option value="1" <{if $smarty.get.agent_num=='1'}>selected<{/if}> >是</option>
 				</select>&nbsp;&nbsp;
 				<select name="wanshan" style="height:25px;line-height:25px;">
 					<option value="">身份证照</option>
@@ -86,7 +87,7 @@
 						<th name="Theme" class="hover enable">真实姓名</th>
 						<th name="Theme" class="hover enable">昵称</th>
 						<th name="Theme" class="hover enable">性别</th>
-						<th name="Theme" class="hover enable">礼包优惠码</th>
+						<th name="Theme" class="hover enable">代理商编号</th>
 						<th name="Theme" class="hover enable">余额(元)</th>
 						<th name="Theme" class="hover enable">向该用户</th>
 						<{if $smarty.get.admin==1}><th name="Theme" class="hover enable">充值</th><{/if}>
@@ -116,11 +117,8 @@
 						<td><div><{$v.nicheng}></div></td>
 						<td><div><{if $v.sex==1}>男<{else}>女<{/if}></div></td>
 						<td>
-						<{if $v.code}>
-							<{$v.code}><{if $v.is_use==1}>(已使用)<{/if}>
-						<{else}>
-							<span class='code_btn' onclick="produce_code(<{$v.id}>,'<{$v.nickname}>')">生成</span></td>
-						<{/if}>
+							<input type="text" value="<{$v.agent_num}>" class="num_inp" onblur="num_change(<{$v.id}>,this,event)" />
+						</td>
 						<td><div><{$v.money}></div></td>
 						<td><div><a href="javascript:void(0);" onclick="sendMsg(this,<{$v.id}>)" data-name="<{$v.nickname}>">发消息</a></div></td>
 						<{if $smarty.get.admin==1}><td><a href="index.php?a=cz&id=<{$v.id}>">充值</a></td><{/if}>
@@ -239,5 +237,17 @@ function produce_code(id,name){
 		window.location.reload();
 	})
 	}
+}
+//生成代理商编号
+function num_change(id,obj,event){
+	$.post('index.php?a=num_change',{id:id,num:$(obj).val()},function(res){
+		res=$.trim(res);
+		if(res=='cf'){
+			alert('编号为空或已存在');
+			window.location.reload();
+		}else if(res=='suc'){
+			alert('编号分配成功');
+		}
+	})
 }
 </script>

@@ -50,6 +50,9 @@ $(function(){$('.date_picker').date_input();})
 </div>
 <script type="text/javascript">
 function save(){
+	if($("input[name='discount']").val() > 1){
+		alert_tip('折扣不能大于1');return;
+	}
 	$('#memberform').submit();
 }
 </script>

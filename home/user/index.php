@@ -151,6 +151,22 @@
 		}
 		die;
 	}
+
+	//生成代理商编号
+	if($_REQUEST['a']=='num_change'){
+		if(method_is('post')){
+			if($_POST['num']!=''){
+				$r=$model->where("agent_num='".$_POST['num']."'")->dataRow();
+				if($r) die('cf');
+			}
+			$data=array();
+			$data['info']['id']=$_POST['id'];
+			$data['info']['agent_num']=$_POST['num'];
+			$model->add($data);
+			die('suc');
+		}
+		die;
+	}
 	
 	//数据列表
 	$dmodel=new Model_Subtable('s_district');
@@ -184,7 +200,7 @@
 	if($_GET['username']) $condition[]=" username = '".common_pg('username')."' ";
 	if($_GET['cardnum']) $condition[]=" cardnum = '".common_pg('cardnum')."' ";
 	if($_GET['industry_id']) $condition[]=" industry_id = '".common_pg('industry_id')."' ";
-	if($_GET['code']) $condition[]=" code != '' ";
+	if($_GET['agent_num']) $condition[]=" agent_num != '' ";
 	//搜索微信昵称
 	if($_GET['wx_nickname']){
 		$memberArr=D('member')->where("nickname='".$_GET['wx_nickname']."'")->dataArr();

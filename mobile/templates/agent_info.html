@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>申请代理</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<style type="text/css">
+.register_end{height:35px;line-height:35px;font-size:16px;width:90%;}
+select,input{color:#555;}
+.job_info .info_list p{float:none;color:#666;font-weight:normal;}
+.input_group input{text-indent:4em;}
+<{if $vo.sh_status==1}>input,select,textarea{background-color:#eee;}<{/if}>
+</style>
+<body style="background-color:#eeeeee;">
+<div class="main">
+	<div class="job_detail">
+		<div class="item_list" style="padding:15px 0 10px 0;">
+			<div class="list_title">
+				<div class="job_title" style="font-size:16px;margin-top:-5px;">我的店铺信息
+				</div>
+			</div>
+			<div class="clear" ></div>
+		</div>
+	</div>
+	<div style="background-color:#f6f6f6;">
+	<form id="meminfo" onsubmit="return false;">
+	<input type="hidden" name="num[id]" value="<{$userRow.id}>"/>
+	<div class="tabs_info">
+		<div style="padding-top:10px;">编号：<span style="color:red;"><{$userRow.agent_num}></span></div>
+		<div style="padding-top:10px;">折扣：<span style="color:red;"><{$discount}>折</span></div>
+		<div class="input_group">
+			<input type="text" name="str[code]" value="<{$userRow.code}>" style="text-indent:5em;" />
+			<div class="title">店铺名：</div>
+		</div>
+	</div>
+	</form>
+	<div style="height:10px;"></div>
+	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">保存</div></a>
+	</div>
+</div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	if($('input[name="str[code]"]').val()==''){
+		alert("请填写店铺名");return;
+	}
+	$('#loading').show();
+	$.post('index.php?m=agent&a=info',$('#meminfo').serialize(),function(res){
+		$('#loading').hide();
+		res=$.trim(res);
+		if(res=='suc'){
+			alert('保存成功');
+			window.history.go(-1);
+		}else{
+			alert('保存失败');
+		}
+	});
+}
+</script>
+</body>
+</html>

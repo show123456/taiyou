@@ -135,6 +135,14 @@
 				<div class="next"><span class="fa fa-chevron-right" ></span></div>
 			</li>
 			</a>
+			<{if $userRow.agent_num != ''}>
+			<a href="index.php?m=agent&a=info">
+			<li>
+				<div class="list_info">代理商信息设置</div>
+				<div class="next"><span class="fa fa-chevron-right" ></span></div>
+			</li>
+			</a>
+			<{/if}>
 			<{if $userExtRow.group_id==2}>
 			<div class="register_end" onclick="chuqin()" style="height:35px;line-height:35px;font-size:16px;width:40%;background-color:#ff7101;">出勤提报</div>
 			<{/if}>
