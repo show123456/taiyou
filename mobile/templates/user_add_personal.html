@@ -17,6 +17,8 @@
 <script src="js/jquery.min.js"></script>
 <style type="text/css">
 <{if $userRow.is_see==1}>input,select,textarea{background-color:#eee;}<{/if}>
+.tixian{float:left;width:19%;height:42px;line-height:42px;color:#fff;background-color:#01B4EC;
+  border-radius:5px;text-align:center;}
 </style>
 </head>
 <body style="background-color:#F6F6F6;">
@@ -31,13 +33,9 @@
 	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
 	<input type="hidden" id="picInput" name="str[pic]" value="<{$vo.pic}>" />
 	<div class="tabs_info">
-		<{if $num}>
-		<div style="text-align:center;margin:5px auto -5px;color:#666;">我的代理商编号：<span style="color:red;"><{$num}></span></div>
-		<{/if}>
 		<a href="index.php?m=user&a=bind_wxh">
 			<div class="register_end" style="width:60%;background-color:#ff7101;margin:10px auto -5px;font-size:13px;height:30px;line-height:30px;">绑定手机账号与微信号</div>
 		</a>
-		<!-- <{if $userRow.is_v==1}><img class="vip" src="images/vip.gif"/><{/if}> -->
 		<div class="input_group">
 			<input style="text-indent:4em;" type="text" name="str[nickname]" value="<{$vo.nickname}>" placeholder="请输入真实姓名，保证费用顺利结算" />
 			<div class="title">姓名：</div>
@@ -72,8 +70,8 @@
 		</div>
 		<{if $userRow.type==1}>
 		<div class="input_group">
-			<input style="text-indent:7em;" type="text" name="str[cardnum]" value="<{$vo.cardnum}>" />
 			<div class="title">身份证号码：</div>
+			<input style="text-indent:7em;" type="text" name="str[cardnum]" value="<{$vo.cardnum}>" />
 		</div>
 		<div class="input_group">
 			<input style="text-indent:7em;" type="text" name="str[agent_num]" value="<{$vo.agent_num}>" />
@@ -99,6 +97,15 @@
 	<{if $tjr_user_row}>
 	<div style="text-align:center;color:#ff7101;font-size:14px;margin-top:-8px;">我的推荐人：<{$tjr_user_row.nickname|default:'匿名'}></div>
 	<{/if}>
+	
+	<div class="tabs_info">
+		<div class="input_group">
+			<div class="title">代理商编号：</div>
+			<input style="text-indent:7em;width:80%;" type="text" id="my_num" value="<{$userRow.my_num}>" />
+			<div class='tixian' style="width:13%;float:right;margin-top:15px;" onclick="num_bind()">绑定</div>
+		</div>
+	</div>
+	<div style="clear:both;height:10px;"></div>
 </div><{include file="footer.html"}>
 <!-- 上传照片 -->
 <div style="visibility:hidden;">
@@ -183,7 +190,7 @@ function isNumber(s){
 	if (!patrn.exec(s)) return false
 	return true
 }
-<!-- 城市级联开始 -->
+/*城市级联开始*/
 function pselect(obj){
 	$(".cityid option").remove();
 	$(".areaid option").remove();
@@ -261,7 +268,23 @@ if('<{$vo.id}>'){
 		}
 	})
 }
-<!-- 城市级联结束 -->
+/*城市级联结束*/
+//绑定代理商编号
+function num_bind(){
+	var my_num=$('#my_num').val();
+	if(my_num==''){
+		alert('编号不能为空');return;
+	}
+	$.get('index.php?m=user&a=num_bind&my_num='+my_num,function(res){
+		res=$.trim(res);
+		if(res=='no'){
+			alert('该代理商不存在');
+		}else{
+			alert('绑定成功');
+			window.history.go(-1);
+		}
+	});
+}
 </script>
 </body>
 </html>

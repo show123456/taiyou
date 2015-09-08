@@ -47,9 +47,6 @@ if($_REQUEST['a']=='user_add_personal'){
 			$tjr_user_row=$model->field('id,nickname')->where("id='".$tjrRow['tjr_uid']."'")->dataRow();
 			$smarty->assign('tjr_user_row',$tjr_user_row);
 		}
-		//我的代理商编号
-		$agentRow=D('sub_agent')->where("uid='".$userRow['id']."'")->dataRow();
-		$smarty->assign('num',$agentRow['num']);
 		
 		$smarty->assign('vo',$model->find($userRow['id']));
 		$smarty->setLayout('')->setTpl('mobile/templates/user_add_personal.html')->display();die;
@@ -190,6 +187,20 @@ if($_REQUEST['a']=='get_person_info'){
 		$result=$res['nickname'].$res['username'];
 	}
 	$result ? die($result) : die('err');
+}
+
+//绑定代理商编号
+if($_REQUEST['a']=='num_bind'){
+	$my_num=$_GET['my_num'];
+	$r=$userModel->where("agent_num='{$my_num}'")->dataRow();
+	if(!$r) die('no');
+	if($my_num && $userRow['id']){
+		$data=array();
+		$data['info']['id']=$userRow['id'];
+		$data['info']['my_num']=$my_num;
+		$userModel->add($data);
+	}
+	die;
 }
 
 //绑定微信号手机号
