@@ -23,7 +23,6 @@ select,input{color:#555;}
 		<div class="item_list" style="padding:15px 0 10px 0;">
 			<div class="list_title">
 				<div class="job_title" style="font-size:16px;margin-top:-5px;">资料填报
-					<span style="color:red;font-size:14px;">(默认的信息来自个人资料)</span>
 				</div>
 			</div>
 			<div class="clear" ></div>
@@ -34,7 +33,7 @@ select,input{color:#555;}
 	<input type="hidden" name="num[id]" value="<{$vo.id}>"/>
 	<div class="tabs_info">
 		<div class="input_group">
-			<input type="text" name="str[name]" value="<{if $vo.name}><{$vo.name}><{else}><{$userRow.nickname}><{/if}>" />
+			<input type="text" name="str[name]" value="" />
 			<div class="title">姓名：</div>
 		</div>
 		<div class="input_group" style="margin-top:10px;">
@@ -44,15 +43,15 @@ select,input{color:#555;}
 			<input type="radio" name="num[sex]" value="2" <{if $vo.sex==2}>checked<{/if}> id="check2" /><label for="check2">女</label>
 		</div>
 		<div class="input_group">
+			<input type="text" name="str[tel]" value="" />
+			<div class="title">手机：</div>
+		</div>
+		<div class="input_group">
 			<input type="text" name="num[age]" value="<{$vo.age}>" placeholder='请输入整数' />
 			<div class="title">年龄：</div>
 		</div>
 		<div class="input_group">
-			<input type="text" name="str[tel]" value="<{if $vo.tel}><{$vo.tel}><{else}><{$userRow.username}><{/if}>" />
-			<div class="title">手机：</div>
-		</div>
-		<div class="input_group">
-			<input type="text" name="str[card_num]" value="<{if $vo.card_num}><{$vo.card_num}><{else}><{$userRow.cardnum}><{/if}>" style="text-indent:6em;" />
+			<input type="text" name="str[card_num]" value="" style="text-indent:6em;" />
 			<div class="title">身份证号：</div>
 		</div>
 		<div class="input_group">
@@ -74,11 +73,7 @@ select,input{color:#555;}
 	</div>
 	</form>
 	<div style="height:10px;"></div>
-	<{if $vo.sh_status==1}>
-	<a href="javascript:void(0);"><div class="register_end" style="width:96%;">审核通过 编号<{$vo.num}></div></a>
-	<{else}>
 	<a href="javascript:void(0);"><div class="register_end" style="width:96%;" onclick="save()">提交保存</div></a>
-	<{/if}>
 	</div>
 </div>
 <{include file="footer.html"}>
@@ -87,30 +82,8 @@ function save(){
 	if($('input[name="str[name]"]').val()==''){
 		alert("请填写姓名");return;
 	}
-	if(!isNumber($('input[name="num[age]"]').val())){
-		alert("填写的年龄必须为整数");return;
-	}
-	if($('input[name="num[age]"]').val()==''){
-		alert("请填写年龄");return;
-	}
 	if(!isMobil($('input[name="str[tel]"]').val())){
 		alert("请填写正确格式的手机号");return;
-	}
-	var card_len=parseInt($('input[name="str[card_num]"]').val().length);
-	if(card_len==15 || card_len==18){}else{
-		alert("请填写正确的身份证号");return;
-	}
-	if($('input[name="str[school]"]').val()==''){
-		alert("请填写学校");return;
-	}
-	if($('input[name="str[clas]"]').val()==''){
-		alert("请填写年级");return;
-	}
-	if($('input[name="str[major]"]').val()==''){
-		alert("请填写专业");return;
-	}
-	if($('#goodness').val()==''){
-		alert("请填写自己做代理的优势");return;
 	}
 	$('#loading').show();
 	$.post('index.php?m=agent&a=add',$('#meminfo').serialize(),function(res){

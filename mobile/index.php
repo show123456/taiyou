@@ -5,7 +5,7 @@
 	if($_COOKIE['tyuid'] && !$_SESSION['tyuser']['id']) $_SESSION['tyuser']['id']=$_COOKIE['tyuid'];
 
 	$userModel=new Model_Subtable('sub_user');
-	if($_GET['m']=='goods' || $_GET['m']=='trolley'){
+	if($_GET['m']=='goods' || $_GET['m']=='trolley' || $_GET['m']=='agent'){
 	}else if($_GET['m']=='task' && ($_GET['a']=='index' || $_GET['a']=='detail')){
 		if($_SESSION['tyuser']['id']){
 			$userRow=$userModel->find($_SESSION['tyuser']['id']);

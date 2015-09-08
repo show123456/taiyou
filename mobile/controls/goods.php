@@ -32,7 +32,7 @@
 		$smarty->assign('cateList',$cateModel->findAll(" id>0 "));
 		//获取幻灯片
 		$picModel=new Model_ApplistHptShopPic();
-		$smarty->assign('picList',$picModel->fetchAll("select * from applist_hpt_shop_pic order by ordernum desc limit 3"));
+		$smarty->assign('picList',$picModel->fetchAll("select * from applist_hpt_shop_pic order by ordernum desc"));
 		//数据列表
 		$condition=array();
 		$url=array();

@@ -24,16 +24,21 @@
 .toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
 	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
 .toolbar1 li b,.send_btn{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
-	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}	
-.kfTypeDiv span{cursor:pointer;display:inline;}
-.kfSpan{color:#ccc;}
-.isKf{color:#428bca;}
-.num_inp{width:50px;height:18px;line-height:18px;background-color:#f9f9f9;
-	border:1px solid #aaa;text-indent:1em;border-radius:3px;}
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+#show_div{width:200px;border:1px solid #006699;border-radius:5px;background-color:#fefefe;
+	position:fixed;top:0;left:45%;color:#666;display:none;}
+#show_div div{text-align:right;background-color:#eee;padding-right:8px;cursor:pointer;font-size:16px;}
+#show_div span{display:block;padding:5px;}
 </style>
 </head>
 <body>
 <div class="rightinfo">
+	<div class="itab" style="margin-bottom:10px;">
+		<ul>
+			<li><a href="<{:U('index')}>" class="selected">申请列表</a></li>
+			<li><a href="<{:U('discount_add')}>">折扣设置</a></li>
+		</ul>
+	</div>
 	<!-- <div class="tools">
 		<form action="" name="searchForm" method="get">
 		<input type="hidden" name='m' value='<{$moduleName}>' />
@@ -57,35 +62,30 @@
 	<table class="imgtable">
 		<thead>
 			<tr>
-				<th>编号</th>
 				<th>姓名</th>
+				<th>手机</th>
 				<th>性别</th>
 				<th>年龄</th>
-				<th>手机</th>
 				<th>身份证号</th>
 				<th>学校</th>
 				<th>年级</th>
 				<th>专业</th>
-				<th>审核状态</th>
+				<th>优势自述</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<foreach name="list['data']" item='v'>
 			<tr>
-				<td><input type="text" value="<{$v.num}>" class="num_inp" onblur="num_change(<{$v.id}>,this)" /></td>
 				<td><{$v.name}></td>
+				<td><{$v.tel}></td>
 				<td><{:$v['sex']==1 ? '男' : '女'}></td>
 				<td><{$v.age}></td>
-				<td><{$v.tel}></td>
 				<td><{$v.card_num}></td>
 				<td><{$v.school}></td>
 				<td><{$v.clas}></td>
 				<td><{$v.major}></td>
-				<td class="kfTypeDiv">
-					<span class="kfSpan <{:$v['sh_status']==1 ? 'isKf' : ''}>" data-status='1' data-id='<{$v.id}>'>已通过</span> | 
-					<span class="kfSpan <{:$v['sh_status']==0 ? 'isKf' : ''}>" data-status='0' data-id='<{$v.id}>'>未通过</span>
-				</td>
+				<td style="cursor:pointer;color:#006699;" title="<{$v.goodness}>" onclick="show_gdns(this)">查看</td>
 				<td class="kfTypeDiv">
 					<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a></if>
 				</td>
@@ -99,6 +99,7 @@
 		</ul>
 	</div>
 </div>
+<div id='show_div'><div onclick="$(this).parent().hide()">X</div><span>无</span></div>
 <script type="text/javascript">
 $('.imgtable tbody tr:odd').addClass('odd');
 function delRow(str){
@@ -132,6 +133,13 @@ function num_change(id,obj){
 			alert_tip('编号分配成功');
 		}
 	})
+}
+//显示优势自述
+function show_gdns(obj){
+	var goodness=$(obj).attr('title');
+	if(goodness=='') goodness='无';
+	$('#show_div span').text(goodness);
+	$('#show_div').slideDown();
 }
 </script>
 </body>

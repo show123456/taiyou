@@ -24,34 +24,19 @@ $(function(){$('.date_picker').date_input();})
 <div class="formbody">
 	<div id="usual1" class="usual">
 		<div class="itab">
-			<ul>
-				<li><a href="#tab1" class="selected">消息模板<{:$vo['id'] ? '修改' : '新增'}></a></li>
-			</ul>
+		<ul>
+			<li><a href="<{:U('index')}>">申请列表</a></li>
+			<li><a href="<{:U('discount_add')}>" class="selected">折扣设置</a></li>
+		</ul>
 		</div>
-		<form method="post" action="<{:U('add')}>" id="memberform">
-		<input type="hidden" name='info[id]' value="<{$vo['id']|default=''}>"/>
+		<form method="post" action="<{:U('discount_add')}>" id="memberform">
+		<input type="hidden" name='id' value="<{$vo.id}>"/>
 		<input type="hidden" name='lastURL' value="<{$lastURL}>"/>
 		<div id="tab1" class="tabson">
 			<ul class="forminfo">
 				<li>
-					<label>开头<b>*</b></label>
-					<input type="text" name="info[title]" value="<{$vo['title']|default='【云客生活部落】'}>" class="dfinput yaheifont">
-				</li>
-				<li>
-					<label>主题内容<b>*</b></label>
-					<textarea name="info[content]" class="dfinput yaheifont" style="height:150px;"><{$vo['content']}></textarea>
-				</li>
-				<li>
-					<label>标题<b>*</b></label>
-					<input type="text" name="info[a_title]" value="<{$vo['a_title']}>" class="dfinput yaheifont" placeholder='记得修改哦～' />
-				</li>
-				<li>
-					<label>标题链接<b>*</b></label>
-					<input type="text" name="info[a_link]" value="<{$vo['a_link']}>" class="dfinput yaheifont">
-				</li>
-				<li>
-					<label>计划发送时间<b>*</b></label>
-					<input type="text" name="info[plan_date]" value="<{$vo['plan_date']}>" class="dfinput yaheifont date_picker">
+					<label>代理商拥有的折扣<b>*</b></label>
+					<input type="text" name="discount" value="<{$vo.v}>" class="dfinput yaheifont"><b>（0.8代表8折，0.95代表95折）</b>
 				</li>
 				<li>
 					<label>&nbsp;</label>
