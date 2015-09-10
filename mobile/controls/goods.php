@@ -1,9 +1,26 @@
 <?php
 	$model=new Model_ApplistHptShopGoods();
+	/* 店铺名及折扣 */
+	$discount=1;//折扣
+	if($_SESSION['tyuser']['id']){
+		$userModel=D('sub_user');
+		$userRow=$userModel->find($_SESSION['tyuser']['id']);
+		if($userRow['my_num']){
+			$agent_user_row=$userModel->field("id,code,agent_num")->where("agent_num='".$userRow['my_num']."'")->dataRow();
+			$smarty->assign('shop_name',$agent_user_row['code']);
+			//登录之后，若有代理商编号，显示折扣价
+			if($agent_user_row){
+				$kvRow=D('sub_kv')->where("k='discount'")->dataRow();
+				$discount=$kvRow['v'];
+			}
+		}
+	}
+	$smarty->assign('discount',$discount);
 	
 	if($_REQUEST['a']=='detail'){
 		$id=(int)$_GET['id'];
 		$vo=$model->find($id);
+		$vo['fact_price']=round($vo['fact_price']*$discount,2);
 		$smarty->assign('vo',$vo);
 		$model->query("update applist_hpt_shop_goods set clicknum=clicknum+1 where id='{$id}'");//人气加一
 		if($vo['id']==1){
@@ -61,6 +78,7 @@
 		foreach($listArr as $key=>$value){
 			$listArr[$key]['name']=cut_str(deletehtml($value['name']),10);
 			$listArr[$key]['content']=cut_str(deletehtml($value['content']),25);
+			$listArr[$key]['fact_price']=round($value['fact_price']*$discount,2);
 		}
 		
 		if($_GET['p']){

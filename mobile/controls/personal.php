@@ -34,6 +34,10 @@
 	if($_REQUEST['a']=='orderdetail'){
 		$oid=$_GET['oid'];
 		$smarty->assign('orderRow',D('applist_hpt_shop_order')->find($oid));
-		$smarty->assign('odetailArr',D('applist_hpt_shop_odetail')->where(" oid='{$oid}' ")->dataArr());
+		$odetailArr=D('applist_hpt_shop_odetail')->where(" oid='{$oid}' ")->dataArr();
+		foreach($odetailArr as $k=>$v){
+			$odetailArr[$k]['discount_price']=round($v['price']*$v['discount'],2);
+		}
+		$smarty->assign('odetailArr',$odetailArr);
 		$smarty->setLayout('')->setTpl('mobile/templates/personal_orderdetail.html')->display();
 	}

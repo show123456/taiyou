@@ -23,6 +23,24 @@
 		}
 		echo json_encode('suc');
 	}
+	
+	/* 店铺名及折扣 */
+	$discount=1;//折扣
+	if($_SESSION['tyuser']['id']){
+		$userModel=D('sub_user');
+		$userRow=$userModel->find($_SESSION['tyuser']['id']);
+		if($userRow['my_num']){
+			$agent_user_row=$userModel->field("id,code,agent_num")->where("agent_num='".$userRow['my_num']."'")->dataRow();
+			$smarty->assign('shop_name',$agent_user_row['code']);
+			//登录之后，若有代理商编号，显示折扣价
+			if($agent_user_row){
+				$kvRow=D('sub_kv')->where("k='discount'")->dataRow();
+				$discount=$kvRow['v'];
+			}
+		}
+	}
+	$smarty->assign('discount',$discount);
+	
 	//购物车列表
 	if($_REQUEST['a']=='index'){
 		$listArr=array();
@@ -38,7 +56,7 @@
 				$vo=$goodsModel->find($key);
 				$listArr[$key]['name']=cut_str(deletehtml($vo['name']),10);
 				$listArr[$key]['pic']=$vo['pic'];
-				$listArr[$key]['fact_price']=$vo['fact_price'];
+				$listArr[$key]['fact_price']=round($vo['fact_price']*$discount,2);
 				$listArr[$key]['money']=$listArr[$key]['fact_price']*$value['num'];
 				$totalNum++;//商品数量
 				$totalMoney+=$listArr[$key]['money'];//总价
@@ -83,21 +101,4 @@
 		$time_cha=$time_12-$current_time;
 		if($time_cha > 0) die;
 		$smarty->setLayout('')->setTpl('mobile/templates/trolley_lb.html')->display();die;
-	}
-	
-	//保存购物车信息
-	if($_REQUEST['a']=='bind_discount'){
-		$bindDocName=$_POST['docName'];
-		$doctorTable=D('Doctor');
-		$bindDocRow=$doctorTable->findAll(" typenum=1 and name='{$bindDocName}' ");
-		if($bindDocRow){
-			$data['info'][id]=$docRow['id'];
-			$data['info'][lastdid]=$bindDocRow[0]['id'];
-			$data['info'][discount]=$bindDocRow[0]['discount'];
-			if($doctorTable->add($data)){
-				echo json_encode('is');exit;
-			}
-		}else{
-			echo json_encode('not');exit;
-		}
 	}

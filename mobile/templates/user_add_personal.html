@@ -66,16 +66,12 @@
 			<input type="text" name="str[zhen]" value="<{$vo.zhen}>" placeholder="请填写县（镇）" />
 		</div>
 		<div class="input_group">
-			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细地址" />
+			<input type="text" name="str[address]" value="<{$vo.address}>" placeholder="请填写详细现居住地址" />
 		</div>
 		<{if $userRow.type==1}>
 		<div class="input_group">
 			<div class="title">身份证号码：</div>
 			<input style="text-indent:7em;" type="text" name="str[cardnum]" value="<{$vo.cardnum}>" />
-		</div>
-		<div class="input_group">
-			<input style="text-indent:7em;" type="text" name="str[agent_num]" value="<{$vo.agent_num}>" />
-			<div class="title">代理商编号：</div>
 		</div>
 		<div class="input_group" id="cardPic">
 			<img class="upload_pic" src="<{if $vo.pic}>/data/image_c/<{$vo.pic}><{else}>images/upload.gif<{/if}>" />
@@ -100,7 +96,7 @@
 	
 	<div class="tabs_info">
 		<div class="input_group">
-			<div class="title">代理商编号：</div>
+			<div class="title">推荐人编号：</div>
 			<input style="text-indent:7em;width:80%;" type="text" id="my_num" value="<{$userRow.my_num}>" />
 			<div class='tixian' style="width:13%;float:right;margin-top:15px;" onclick="num_bind()">绑定</div>
 		</div>

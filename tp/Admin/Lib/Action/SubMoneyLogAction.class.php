@@ -553,12 +553,12 @@ class SubMoneyLogAction extends CommonAction{
 	public function od_test(){
 		$model=M('ApplistHptShopOdetail');
 		$goodsModel=M('ApplistHptShopGoods');
-		$arr=$model->select();
+		$arr=$model->where("left(addtime,10) = '2015-08-30'")->select();
 		foreach($arr as $k=>$v){
 			$row=$goodsModel->find($v['gid']);
 			$data['id']=$v['id'];
-			//$data['ori_price']=$row['ori_price'];
-			$data['one_code']=$row['one_code'];
+			$data['ori_price']=$row['ori_price'];
+			//$data['one_code']=$row['one_code'];
 			$model->save($data);
 		}
 	}

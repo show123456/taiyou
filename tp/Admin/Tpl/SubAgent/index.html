@@ -37,6 +37,7 @@
 		<ul>
 			<li><a href="<{:U('index')}>" class="selected">申请列表</a></li>
 			<li><a href="<{:U('discount_add')}>">折扣设置</a></li>
+			<li><a href="<{:U('all')}>">数据统计</a></li>
 		</ul>
 	</div>
 	<!-- <div class="tools">
@@ -72,6 +73,7 @@
 				<th>专业</th>
 				<th>优势自述</th>
 				<th>操作</th>
+				<th>申请时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -89,6 +91,7 @@
 				<td class="kfTypeDiv">
 					<a href="javascript:void(0);" target="rightFrame" onFocus="this.blur()" onclick="delRow('<{:U('del',array('id'=>$v['id']))}>')">删除</a></if>
 				</td>
+				<td><{$v.addtime}></td>
 			</tr>
 			</foreach>
 		</tbody>

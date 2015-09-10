@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>按月查询返现金额</title>
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="font/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script src="js/jquery.min.js"></script>
+</head>
+<style type="text/css">
+.year_sel{float:left;margin-left:5%;width:37%;height:35px;line-height:35px;}
+.month_sel{float:right;margin-right:1%;width:37%;height:35px;line-height:35px;}
+.year_month_font{height:35px;line-height:35px;width:2%;margin-top:15px;}
+.tab_left{float:left;text-align:center;width:49%;border-right:1px solid #bbb;height:30px;line-height:30px;color:#333;}
+.tab_right{float:left;text-align:center;width:49%;height:30px;line-height:30px;color:#ff7101;font-weight:bold;}
+</style>
+<body style="background-color:#f6f6f6;">
+<div class="main">
+	<div style="background-color:#f6f6f6;">
+	<form action="index.php" method="get" id="meminfo">
+	<input type="hidden" name="m" value="agent" />
+	<input type="hidden" name="a" value="back" />
+	<div class="tabs_info" style="width:100%;margin:0 auto;">
+		<div>
+			<select class="year_sel" name="year">
+				<{foreach from=$yarr item=v}>
+				<option value="<{$v}>" <{if $v==$year}>selected<{/if}> ><{$v}></option>
+				<{/foreach}>
+			</select>
+			<div class='year_month_font' style="float:left;margin-left:1%;">年</div>
+			<div class='year_month_font' style="float:right;margin-right:5%;">月</div>
+			<select class="month_sel" name="month" onchange="$('#meminfo').submit();">
+				<{foreach from=$marr item=v}>
+				<option value="<{$v}>" <{if $v==$month}>selected<{/if}> ><{$v}></option>
+				<{/foreach}>
+			</select>
+			<div class="clear"></div>		
+		</div>
+		<div style="height:10px;margin-bottom:10px;/*border-bottom:1px solid #ddd;*/"></div>
+		<div style="border-top:1px solid #bbb;">
+			<div class="tab_left">成交单数：</div>
+			<div class="tab_right"><{$num}></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="border-top:1px solid #bbb;">
+			<div class="tab_left">成交金额：</div>
+			<div class="tab_right">￥<{$money}></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="border-top:1px solid #bbb;">
+			<div class="tab_left">返 现 比 ：</div>
+			<div class="tab_right">15%</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="border-top:1px solid #bbb;">
+			<div class="tab_left">返现金额：</div>
+			<div class="tab_right">￥<{$return_money}></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="border-top:1px solid #bbb;">
+			<div class="tab_left">税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</div>
+			<div class="tab_right">￥<{$tax}></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="border-top:1px solid #bbb;border-bottom:1px solid #bbb;">
+			<div class="tab_left">实收金额：</div>
+			<div class="tab_right">￥<{$final_money}></div>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+	</form>
+</div>
+<{include file="footer.html"}>
+<script type="text/javascript">
+function save(){
+	if($('input[name="str[name]"]').val()==''){
+		alert("请填写姓名");return;
+	}
+	if(!isMobil($('input[name="str[tel]"]').val())){
+		alert("请填写正确格式的手机号");return;
+	}
+	$('#loading').show();
+	$.post('index.php?m=agent&a=add',$('#meminfo').serialize(),function(res){
+		$('#loading').hide();
+		res=$.trim(res);
+		if(res=='suc'){
+			alert('您的资料已提报，如果符合我们的代理要求，我们工作人员会与您电话联系。');
+			window.history.go(-1);
+		}else{
+			alert('保存失败');
+		}
+	});
+}
+//验证为正整数
+function isNumber(s){  
+	var patrn=/^[1-9][0-9]*$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+//验证手机号
+function isMobil(s){  
+	var patrn=/^1[0-9]{10}$/;  
+	if (!patrn.exec(s)) return false
+	return true
+}
+</script>
+</body>
+</html>

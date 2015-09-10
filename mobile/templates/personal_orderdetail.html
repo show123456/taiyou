@@ -56,7 +56,13 @@
 			<a href="javascript:void(0)"><dl>
 				<dt><img src="../../data/image_c/<{$row.pic}>" style="vertical-align:middle;width:90px;height:50px;"></dt>
 				<dd style="padding-left:100px;"><{$row.name}></dd>
-				<p style="margin-left:100px;">数量：<{$row.num}><span style="margin-left:20px;font-size:12px;">单价：<{$row.price}></span></p>
+				<p style="margin-left:100px;">数量：<{$row.num}><span style="margin-left:20px;font-size:12px;">
+				<{if $row.discount < 1}>
+					折扣价：<{$row.discount_price}>
+				<{else}>
+					单价：<{$row.price}>
+				<{/if}>
+				</span></p>
 			</dl></a> 
 		<{/foreach}>
 	</div>

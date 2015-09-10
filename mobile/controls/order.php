@@ -50,6 +50,21 @@
 		$res=$model->add($data);
 		echo json_encode($res);exit;
 	}
+	
+	/* 店铺名及折扣 */
+	/************************* 折扣一律在卖价上打折，之后再乘以数量算总金额 ***************************/
+	$discount=1;//折扣
+	if($userRow['my_num']){
+		$agent_user_row=$userModel->field("id,code,agent_num")->where("agent_num='".$userRow['my_num']."'")->dataRow();
+		$smarty->assign('shop_name',$agent_user_row['code']);
+		//登录之后，若有代理商编号，显示折扣价
+		if($agent_user_row){
+			$kvRow=D('sub_kv')->where("k='discount'")->dataRow();
+			$discount=$kvRow['v'];
+		}
+	}
+	$smarty->assign('discount',$discount);
+	
 	//生成订单
 	if($_REQUEST['a']=='add'){
 		$data=$_POST;
@@ -63,7 +78,7 @@
 				$totalNum++;//商品件数
 				//获取商品信息
 				$vo=$goodsModel->find($key);
-				$totalMoney+=$vo['fact_price']*$value['num'];
+				$totalMoney+=round($vo['fact_price']*$discount,2)*$value['num'];
 			}
 		}
 		//运费
@@ -132,6 +147,8 @@
 		$data[info]['num']=$totalNum;
 		$data[info]['money']=$totalMoney;
 		$data[info]['uid']=$userRow['id'];
+		$data[info]['agent_num']=$userRow['my_num'];//代理商编号
+		$data[info]['discount']=$discount;//代理商折扣
 		$res=$model->add($data);
 		//写金额日志
 		if($data['num']['pay_type']==1){
@@ -157,7 +174,8 @@
 				$listArr[info]['pic']=$vo['pic'];
 				$listArr[info]['ori_price']=$vo['ori_price'];
 				$listArr[info]['price']=$vo['fact_price'];
-				$listArr[info]['money']=$vo['fact_price']*$value['num'];
+				$listArr[info]['discount']=$discount;
+				$listArr[info]['money']=round($vo['fact_price']*$discount,2)*$value['num'];
 				$result=$m->add($listArr);//保存订单详情
 				//增加售出量
 				$goodsModel->query("update applist_hpt_shop_goods set outnum=outnum+{$value[num]} where id={$key}");

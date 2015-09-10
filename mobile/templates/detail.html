@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>商品详情</title>
+    <title><{$shop_name|default:'云淘坊'}></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="cleartype" content="on">
     <link rel="stylesheet" href="css/common1.css" />
@@ -30,7 +30,7 @@
             <div style="clear:both;"></div>
         </div>
         <div class='productPrice'>
-            <p>现价：<{$vo.fact_price}></p>
+            <p><{if $discount==1}>现价<{else}>折扣价<{/if}>：<{$vo.fact_price}></p>
             <p class='delete'>原价：<{$vo.price}></p>
             <div class="clearfix"></div>
         </div>
