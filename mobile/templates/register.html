@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
 <title><{if $smarty.get.type==2}>企业用户注册<{else}>个人用户注册<{/if}></title>
 <meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
-<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
-<meta content="no-cache" http-equiv="pragma">
-<meta content="0" http-equiv="expires">
-<meta content="telephone=no, address=no" name="format-detection">
-<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no" />
 <link rel="stylesheet" type="text/css" href="css/global.css"/>
 <link rel="stylesheet" type="text/css" href="css/main.css"/>
 <script src="js/jquery.min.js"></script>
@@ -44,7 +37,7 @@
 		<input type="password" name="repass" placeholder="请再次输入密码"/>
 		
 		<{if $smarty.get.type!=2}>
-		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">推荐人登录用户名(手机号码)/推广码：</div>
+		<div style="margin-left:5px;margin-top:10px;margin-bottom:-10px;color:#ff7101;">推荐人手机号或编号：</div>
 		<input type="text" name="tjr_phone" placeholder="此项可以为空"/>
 		<{/if}>
 		
@@ -141,7 +134,7 @@ function save(){
 	if($('input[name="code"]').val()==''){
 		alert("请填写验证码");return;
 	}
-	<{if $smarty.get.type==2}>
+	if('<{$smarty.get.type}>'=='2'){
 		//企业验证
 		if($('input[name="nickname"]').val()==''){
 			alert("请填写公司名称");return;
@@ -158,15 +151,7 @@ function save(){
 		if($('#pic').val()==''){
 			alert("法人身份证照片不能为空");return;
 		}
-	<{else}>
-		//推荐人验证
-		var tjr_phone=$('input[name="tjr_phone"]').val();
-		if(tjr_phone!=''){
-			if(!isMobil(tjr_phone) && tjr_phone.length!=4){
-				alert("请填写正确的推荐人手机号或推广码");return;
-			}
-		}
-	<{/if}>
+	}
 	
 	if(!isPasswd($('input[name="pass"]').val())){
 		alert("请填写正确格式的密码");return;
@@ -187,14 +172,14 @@ function save(){
 			}else if(res=='wxerr'){
 				alert("微信身份标识丢失，请点击底部菜单，从推送的图文打开");
 			}else if(res=='no_tjr'){
-				alert("该推荐人或推广码不存在");
+				alert("该推荐人不存在");
 			}else{
 				alert("恭喜您，注册成功");
-				<{if $smarty.get.type==2}>
+				if('<{$smarty.get.type}>'=='2'){
 					window.location.href="index.php?m=user&a=user_index";
-				<{else}>
-					window.location.href="index.php?m=task&a=index";//个人用户注册后调到兼职列表
-				<{/if}>
+				}else{
+					window.location.href="index.php?m=task&a=index";//个人用户注册后跳到兼职列表
+				}
 			}
 		}else{
 			alert("注册失败");

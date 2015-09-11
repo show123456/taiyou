@@ -21,20 +21,14 @@ if($_REQUEST['a']=='doregister'){
 	}
 	//填写的推荐人是否存在
 	if($data['tjr_phone']){
-		if(strlen($data['tjr_phone'])==4){
-			$code_row=D('sub_code')->where("code = '".$data['tjr_phone']."'")->dataRow();
-			if(!$code_row){
-				echo 'no_tjr';die;
-			}else{
-				$tjr_uid=$code_row['uid'];
-			}
-		}else{
-			$userRow=$model->where("username='".$data['tjr_phone']."'")->dataRow();
-			if(!$userRow){
-				echo 'no_tjr';die;
-			}else{
-				$tjr_uid=$userRow['id'];
-			}
+		$userRow=$model->where("username='".$data['tjr_phone']."'")->dataRow();
+		$userRow1=$model->where("agent_num='".$data['tjr_phone']."'")->dataRow();
+		if(empty($userRow) && empty($userRow1)){
+			echo 'no_tjr';die;
+		}elseif($userRow){
+			$tjr_uid=$userRow['id'];
+		}elseif($userRow1){
+			$my_num=$data['tjr_phone'];
 		}
 	}
 	//账号查重
@@ -54,6 +48,7 @@ if($_REQUEST['a']=='doregister'){
 	$info['info']['fromuser']=$data['fromuser'];
 	$info['info']['username']=$data['username'];
 	$info['info']['pass']=md5($data['pass']);
+	if($my_num) $info['info']['my_num']=$my_num;
 	if($data['type']){
 		$info['info']['type']=$data['type'];
 		$info['info']['nickname']=$data['nickname'];
@@ -69,10 +64,7 @@ if($_REQUEST['a']=='doregister'){
 		//写登录session
 		$_SESSION['tyuser']=$model->field('id,username,pass,fromuser')->where("id={$res}")->dataRow();
 		//推荐人处理
-		if($data['tjr_phone']){
-			if(strlen($data['tjr_phone'])==4){//推广码注册
-				$tj_data['info']['is_zj']=1;
-			}
+		if($tjr_uid){
 			$tj_data['info']['tjr_uid']=$tjr_uid;
 			$tj_data['info']['reg_uid']=$res;
 			$tj_data['info']['add_date']=date('Y-m-d');

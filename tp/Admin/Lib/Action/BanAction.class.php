@@ -3,6 +3,9 @@ class BanAction extends CommonAction{
     public function index(){
 		$userModel=M('SubUser');
 		$where=array();
+		if(I('get.jinbi')){
+			$where['_string']="end_time > '".date('Y-m-d')."' and type!=1 ";
+		}
 		if(I('get.username')) $where['username']=I('get.username');
 		if(I('get.cardnum')) $where['cardnum']=I('get.cardnum');
 		//搜索姓名

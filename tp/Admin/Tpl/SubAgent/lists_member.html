@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="__PUBLIC__/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/alert-tip.js"></script>
+<script language="javascript">
+	$(function() {
+		//导航切换
+		$(".imglist li").click(function() {
+			$(".imglist li.selected").removeClass("selected")
+			$(this).addClass("selected");
+		})
+	})
+</script>
+<style type="text/css">
+.imgtable tbody tr{height:50px;}
+/*搜索样式*/
+.toolbar1 li{border:0;}
+.toolbar1 li span input{height:23px;line-height:23px;padding-left:5px;
+	border:1px solid #d3dbde;font-family:"Microsoft Yahei","微软雅黑";}
+.toolbar1 li select{height:25px;line-height:25px;color:#333;font-family:"Microsoft Yahei","微软雅黑";
+	border:1px solid #d3dbde;margin-left:5px;margin-top:5px;}
+.toolbar1 li b{padding:4px 10px;color:#fff;background-color:#3EAFE0;margin-top:5px;cursor:pointer;
+	border-radius:4px;margin-left:5px;font-family:"Microsoft Yahei","微软雅黑";}
+</style>
+</head>
+<body>
+<div class="rightinfo">
+	<div class="itab">
+		<ul>
+			<li><a href="<{:U('index')}>">申请列表</a></li>
+			<li><a href="<{:U('discount_add')}>">折扣设置</a></li>
+			<li><a href="<{:U('lists')}>" class="selected">代理商列表</a></li>
+			<li><a href="<{:U('all')}>">数据统计</a></li>
+		</ul>
+	</div>
+	<table class="imgtable" style="margin-top:10px;">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>手机</th>
+				<th>注册时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<foreach name="list" item='v'>
+			<tr>
+				<td><{$v.nickname}></td>
+				<td><{$v.username}></td>
+				<td><{$v.addtime}></td>
+			</tr>
+			</foreach>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+function search(){
+	document.searchForm.submit();
+}
+</script>
+<!-- 日期插件开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/datepicker/date_picker.css" media="all" />
+<script type="text/javascript" src="__PUBLIC__/datepicker/jquery.date_input.pack.js"></script>
+<style type="text/css">
+.date_selector .month_name{margin-left:30px;}
+</style>
+<script type="text/javascript">
+$(function(){$('.date_picker').date_input();})
+</script>
+<!-- 日期插件结束 -->
+</body>
+</html>

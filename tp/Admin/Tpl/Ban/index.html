@@ -40,6 +40,12 @@
 		<ul class="toolbar1">
 			<li>
 				<span>
+					<select name="jinbi" style="margin-top:0;">
+						<option value="">在禁闭期且非隔离</option>
+						<option value="1" <{:$_GET['jinbi']==1 ? 'selected' : ''}> >是</option>
+					</select>
+				</span>
+				<span>
 					<input type="text" name="nickname" placeholder="请输入姓名" value="<{:I('get.nickname')}>" />
 				</span>
 				<span>
